@@ -1,5 +1,4 @@
 import { put } from '../../utils/database'
-import { toValidTailwindVersion } from '../../utils/toValidTailwindVersion'
 
 export default async function share(req, res) {
   if (req.method !== 'POST') {
@@ -22,7 +21,6 @@ export default async function share(req, res) {
       html: req.body.html,
       css: req.body.css,
       config: req.body.config,
-      version: toValidTailwindVersion(req.body.version),
     })
     res.statusCode = 200
     res.json({ ID })

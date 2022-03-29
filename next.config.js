@@ -27,7 +27,6 @@ module.exports = {
             r.issuer.and[0].source.replace(/\\/g, '') ===
               path.resolve(process.cwd(), 'src/pages/_app')
           ) {
-            console.log(r.issuer.and)
             r.issuer.or = [
               ...r.issuer.and,
               /[\\/]node_modules[\\/]monaco-editor[\\/]/,
