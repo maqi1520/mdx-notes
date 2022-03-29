@@ -1,0 +1,260 @@
+@import 'tailwindcss/tailwind.css';
+@import './codemirror/base.css';
+@import './codemirror/dark.css';
+
+@font-face {
+  font-family: 'Inter var';
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+  font-named-instance: 'Regular';
+  src: url('./fonts/Inter-roman-latin.var.woff2') format('woff2');
+}
+
+#__next {
+  width: 100%;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+}
+
+body.cursor-ew-resize,
+body.cursor-ew-resize * {
+  cursor: ew-resize !important;
+}
+
+body.cursor-ns-resize,
+body.cursor-ns-resize * {
+  cursor: ns-resize !important;
+}
+
+body.cursor-nesw-resize,
+body.cursor-nesw-resize * {
+  cursor: nesw-resize !important;
+}
+
+body.cursor-nwse-resize,
+body.cursor-nwse-resize * {
+  cursor: nwse-resize !important;
+}
+
+.disable-transitions * {
+  transition: none !important;
+}
+
+/* purgecss start ignore */
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row > .contents {
+  display: block;
+}
+
+.monaco-editor
+  .suggest-widget
+  .monaco-list
+  .monaco-list-row
+  > .contents
+  > .main
+  > .left {
+  flex: none !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .monaco-list
+  .monaco-list-row
+  > .contents
+  > .main
+  > .right {
+  flex: auto !important;
+  justify-content: flex-end !important;
+  max-width: none !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .monaco-list
+  .monaco-list-row
+  > .contents
+  > .main
+  > .right
+  > .details-label {
+  margin-left: 2em !important;
+  opacity: 1 !important;
+  color: theme('colors.gray.400');
+}
+
+.monaco-editor
+  .suggest-widget:not(.docs-side)
+  .monaco-list
+  .monaco-list-row:hover
+  > .contents
+  > .main
+  > .right.can-expand-details
+  > .details-label {
+  width: auto !important;
+  padding-right: 26px !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .details
+  > .monaco-scrollable-element
+  > .body
+  > .docs
+  .code {
+  font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace !important;
+}
+
+.monaco-editor .suggest-widget {
+  border: 0 !important;
+  border-radius: 8px;
+  overflow: hidden;
+  @apply shadow-lg ring-1 ring-gray-900/10;
+}
+
+.monaco-list:not(.drop-target)
+  .monaco-list-row:hover:not(.selected):not(.focused) {
+  @apply bg-gray-400/[0.05] !important;
+}
+
+.vs-dark
+  .monaco-list:not(.drop-target)
+  .monaco-list-row:hover:not(.selected):not(.focused) {
+  @apply bg-gray-400/[0.07] !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list-rows {
+  padding: 4px 0;
+}
+
+.monaco-editor .suggest-details {
+  border-radius: 8px;
+  border: 0 !important;
+  @apply shadow-lg ring-1 ring-gray-900/10;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon {
+  margin-left: 2px !important;
+  margin-right: 5px !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .monaco-list
+  .monaco-list-row
+  .icon.customcolor
+  .colorspan {
+  width: 0.8571428571em !important;
+  height: 0.8571428571em !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .details
+  > .monaco-scrollable-element
+  > .body
+  > .header
+  > .codicon-close::before {
+  content: none !important;
+}
+
+.monaco-editor
+  .suggest-widget
+  .details
+  > .monaco-scrollable-element
+  > .body
+  > .header
+  > .codicon-close {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9'%3E%3Cpath d='M1 1L8 8M8 1L1 8' stroke='%2394a3b8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 9px 9px;
+}
+
+.monaco-editor
+  .suggest-widget
+  .details
+  > .monaco-scrollable-element
+  > .body
+  > .header
+  > .type {
+  opacity: 1 !important;
+  color: theme('colors.gray.400');
+}
+
+.monaco-hover {
+  border: 0 !important;
+  border-radius: 8px;
+  @apply shadow-lg ring-1 ring-gray-900/10;
+  color: theme('colors.gray.700') !important;
+}
+
+.vs-dark .monaco-hover {
+  color: theme('colors.gray.300') !important;
+}
+
+.hover-contents [style^='opacity'] {
+  color: theme('colors.gray.400') !important;
+  opacity: 1 !important;
+}
+
+.vs-dark .hover-contents [style^='opacity'] {
+  color: theme('colors.gray.400') !important;
+}
+
+.monaco-hover a {
+  color: theme('colors.indigo.500') !important;
+}
+
+.vs-dark .monaco-hover a {
+  color: theme('colors.sky.400') !important;
+}
+
+.monaco-editor .monaco-hover .hover-row:not(:first-child):not(:empty) {
+  border-color: theme('colors.gray.200') !important;
+}
+
+.monaco-editor.vs-dark .monaco-hover .hover-row:not(:first-child):not(:empty) {
+  border-color: theme('colors.gray.600') !important;
+}
+
+.monaco-editor .monaco-hover .hover-row .actions {
+  background-color: transparent !important;
+}
+
+.Resizer {
+  background-color: theme('colors.gray.200');
+  z-index: 1;
+  background-clip: padding-box;
+}
+
+.dark .Resizer {
+  background-color: theme('colors.gray.800');
+}
+
+.Resizer.horizontal {
+  height: 11px;
+  margin: -5px 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  cursor: ns-resize;
+  width: 100%;
+}
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  cursor: ew-resize;
+}
+
+.Resizer.Resizer-collapsed {
+  width: 0;
+  height: 0;
+}
+
+.Resizer.disabled {
+  pointer-events: none;
+}
+/* purgecss end ignore */
