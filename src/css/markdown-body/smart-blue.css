@@ -1,0 +1,180 @@
+.markdown-body {
+  color: #595959;
+  font-size: 15px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue,
+    PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background-image: linear-gradient(
+      90deg,
+      rgba(60, 10, 30, 0.04) 3%,
+      rgba(0, 0, 0, 0) 3%
+    ),
+    linear-gradient(360deg, rgba(60, 10, 30, 0.04) 3%, rgba(0, 0, 0, 0) 3%);
+  background-size: 20px 20px;
+  background-position: center center;
+  padding: 0 12px;
+}
+
+/* 段落 */
+.markdown-body p {
+  color: #595959;
+  font-size: 15px;
+  line-height: 2;
+  font-weight: 400;
+}
+
+/* 段落间距控制 */
+.markdown-body p + p {
+  margin-top: 16px;
+}
+
+/* 标题的通用设置 */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  padding: 30px 0;
+  margin: 0;
+  color: #135ce0;
+}
+
+/* 一级标题 */
+.markdown-body h1 {
+  text-align: center;
+  font-size: 22px;
+  margin: 50px 0;
+}
+
+/* 二级标题 */
+.markdown-body h2 {
+  position: relative;
+  font-size: 20px;
+  border-left: 4px solid;
+  padding: 0 0 0 10px;
+  margin: 30px 0;
+}
+
+/* 三级标题 */
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+/* 无序列表 */
+.markdown-body ul {
+  list-style: disc outside;
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+/* 无序列表内容 */
+.markdown-body li {
+  line-height: 2;
+  color: #595959;
+  margin-bottom: 0;
+  list-style: inherit;
+}
+
+.markdown-body img {
+  max-width: 100%;
+}
+
+/* 已加载图片 */
+.markdown-body img.loaded {
+  margin: 0 auto;
+  display: block;
+}
+
+/* 引用 */
+.markdown-body blockquote {
+  background: #fff9f9;
+  margin: 2em 0;
+  padding: 2px 20px;
+  border-left: 4px solid #b2aec5;
+}
+
+/* 引用文字 */
+.markdown-body blockquote p {
+  color: #666;
+  line-height: 2;
+}
+
+/* 链接 */
+.markdown-body a,
+.link {
+  color: #036aca;
+  border-bottom: 1px solid rgba(3, 106, 202, 0.8);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+/* 加粗 */
+.markdown-body strong {
+  color: #036aca;
+}
+
+/* 加粗斜体 */
+.markdown-body em strong {
+  color: #036aca;
+}
+
+/* 分隔线 */
+.markdown-body hr {
+  border-top: 1px solid #135ce0;
+}
+
+/* 代码 */
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body pre,
+.markdown-body code {
+  overflow: auto;
+  position: relative;
+  line-height: 1.75;
+  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+}
+
+.markdown-body pre > code {
+  font-size: 12px;
+  margin: 0;
+  word-break: normal;
+  display: block;
+  overflow-x: auto;
+  padding: 0 12px 12px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.markdown-body p code,
+.markdown-body li code {
+  word-break: break-word;
+  border-radius: 2px;
+  overflow-x: auto;
+  background-color: #fff5f5;
+  color: #ff502c;
+  font-size: 0.87em;
+  padding: 0.065em 0.4em;
+}
+
+/* 表格 */
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  border: 1px solid #dfe2e5;
+  padding: 0.6em 1em;
+  background: inherit;
+}
+
+.markdown-body table tr {
+  border-top: 1px solid #dfe2e5;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}

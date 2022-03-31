@@ -316,10 +316,10 @@ export const Preview = forwardRef(
                       font-family: -apple-system-font, BlinkMacSystemFont, 'Helvetica Neue',
                         'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
                         Arial, sans-serif;
-                      padding: 20px;
                       text-align: justify;
                       font-size: 17px;
                       color: #333;
+                      padding:20px 16px 9px;
                     }
                     body * {
                       max-width: 100% !important;
@@ -351,6 +351,9 @@ export const Preview = forwardRef(
                       margin: 0;
                       padding: 0;
                     }
+                    .markdown-body{
+                      overflow-x:hidden;
+                    }
                     </style>
                     <style type="text/css" media="print">
                     @page {
@@ -359,10 +362,6 @@ export const Preview = forwardRef(
                     }
                     p,.code__card {
                       page-break-inside: avoid;
-                    }
-                    html, body {
-                      width: 210mm;
-                      height: 297mm;
                     }
                     body {-webkit-print-color-adjust: exact;}
                     </style>

@@ -1,4 +1,4 @@
-import { useState, useImperativeHandle, forwardRef } from 'react'
+import { useState } from 'react'
 import clsx from 'clsx'
 import juice from 'juice/client'
 import { copyHtml, download } from './utils/index'
@@ -9,31 +9,17 @@ function inlineCSS(html, css) {
   })
 }
 
-export const CopyBtn = forwardRef(function ({ editorRef, previewRef }, ref) {
-  const [{ state, html, css }, setState] = useState({
-    state: 'disabled',
+export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
+  const [{ state }, setState] = useState({
+    state: 'idle',
     errorText: undefined,
-    html: undefined,
-    css: undefined,
   })
-
-  useImperativeHandle(
-    ref,
-    () => ({
-      set: ({ html, css }) => {
-        setState((prev) => ({
-          ...prev,
-          html,
-          css,
-          state: 'idle',
-        }))
-      },
-    }),
-    []
-  )
 
   const handleClick = () => {
     setState({ state: 'loading' })
+    const css = baseCss + editorRef.current.getValue('css')
+    const html = htmlRef.current
+    console.log(htmlRef.current)
     const inlineHtml = inlineCSS(html, css)
     copyHtml(
       inlineHtml.replace(/<div/g, '<section').replace(/<\/div>/g, '</section>')
@@ -116,4 +102,4 @@ export const CopyBtn = forwardRef(function ({ editorRef, previewRef }, ref) {
       </button>
     </div>
   )
-})
+}

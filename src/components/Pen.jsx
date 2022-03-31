@@ -11,7 +11,9 @@ import Router from 'next/router'
 import { Header } from './Header'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
+import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
+import { themes } from '../css/markdown-body'
 
 import * as runtime from 'react/jsx-runtime'
 import * as Babel from '@babel/standalone'
@@ -24,6 +26,7 @@ import remarkToc from 'remark-toc'
 import ReactDOMServer from 'react-dom/server'
 import { validateReactComponent } from '../utils/validateJavaScript'
 import { MDXComponents } from '../components/MDX/MDXComponents'
+import mdxcss from '!!raw-loader!../css/mdx.css'
 import { VFile } from 'vfile'
 import { VFileMessage } from 'vfile-message'
 import rehypeDivToSection from '../components/utils/rehype-div'
@@ -32,18 +35,19 @@ import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
 const RESIZER_SIZE = 1
+const DEFAULT_THEME = localStorage.getItem('markdownTheme') || 'default'
 const DEFAULT_RESPONSIVE_SIZE = { width: 540, height: 720 }
 
 export default function Pen({
+  initialTheme,
   initialContent,
   initialPath,
   initialLayout,
   initialResponsiveSize,
   initialActiveTab,
 }) {
-  const copyRef = useRef(null)
+  const htmlRef = useRef()
   const previewRef = useRef()
-  const worker = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
   const [resizing, setResizing] = useState(false)
   const [activeTab, setActiveTab] = useState(initialActiveTab)
@@ -60,10 +64,8 @@ export default function Pen({
     initialResponsiveSize ? true : false
   )
   const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
-  const [isLoading, setIsLoading, setIsLoadingImmediate] = useDebouncedState(
-    false,
-    1000
-  )
+  const [isLoading, setIsLoading] = useState(false)
+  const [theme, setTheme] = useState(initialTheme || DEFAULT_THEME)
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
   )
@@ -118,8 +120,8 @@ export default function Pen({
   }, [])
 
   async function compileNow(content) {
+    console.log(11)
     cancelSetError()
-    setIsLoading(true)
     localStorage.setItem('content', JSON.stringify(content))
     let RootComponents = {}
 
@@ -170,6 +172,9 @@ export default function Pen({
     //remarkPlugins.push(capture('mdast'))
 
     try {
+      setIsLoading(true)
+
+      console.time('22')
       const { default: Content } = await evaluate(content.html, {
         ...runtime,
         format: 'mdx',
@@ -179,16 +184,19 @@ export default function Pen({
         //recmaPlugins: [capture('esast')],
         useMDXComponents,
       })
-      content.html = ReactDOMServer.renderToString(
+      const html = ReactDOMServer.renderToString(
         <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
           <Content />
         </MDXProvider>
       )
-      const { css, html } = content
+      const { css } = content
 
+      console.timeEnd('22')
+      setIsLoading(false)
       if (css || html) {
-        copyRef.current.set({ css, html })
-        inject({ css, html })
+        //编译后的html保存到ref 中
+        htmlRef.current = html
+        inject({ css: themes[theme].css + mdxcss + css, html })
       }
     } catch (error) {
       const message =
@@ -204,8 +212,6 @@ export default function Pen({
         file: 'MDX',
       })
     }
-
-    setIsLoadingImmediate(false)
   }
 
   const compile = useCallback(debounce(compileNow, 200), [])
@@ -321,6 +327,17 @@ export default function Pen({
     [size.layout, responsiveDesignMode, responsiveSize]
   )
 
+  const onMarkdownThemeChange = useCallback(
+    (value) => {
+      inject({
+        css: themes[value].css + mdxcss + editorRef.current.getValue('css'),
+      })
+      window.localStorage.setItem('markdownTheme', value)
+      setTheme(value)
+    },
+    [inject]
+  )
+
   // initial state resets
   useEffect(() => {
     setSize((size) => ({ ...size, layout: initialLayout }))
@@ -342,6 +359,13 @@ export default function Pen({
         onToggleResponsiveDesignMode={() =>
           setResponsiveDesignMode(!responsiveDesignMode)
         }
+        rightbtn={
+          <ThemeDropdown
+            value={theme}
+            onChange={onMarkdownThemeChange}
+            themes={themes}
+          />
+        }
       >
         <Share
           editorRef={editorRef}
@@ -353,7 +377,12 @@ export default function Pen({
           responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
           activeTab={activeTab}
         />
-        <CopyBtn editorRef={editorRef} previewRef={previewRef} ref={copyRef} />
+        <CopyBtn
+          htmlRef={htmlRef}
+          baseCss={themes[theme].css + mdxcss}
+          editorRef={editorRef}
+          previewRef={previewRef}
+        />
       </Header>
       <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
         {initialContent && typeof size.current !== 'undefined' ? (
@@ -415,9 +444,6 @@ export default function Pen({
                   onLoad={() => {
                     inject({
                       html: initialContent.html,
-                      ...(initialContent.compiledCss
-                        ? { css: initialContent.compiledCss }
-                        : {}),
                     })
                     compileNow({
                       css: initialContent.css,

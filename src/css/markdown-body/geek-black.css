@@ -1,0 +1,261 @@
+.markdown-body {
+  word-break: break-word;
+  line-height: 1.7;
+  font-weight: 400;
+  font-size: 16px;
+  overflow-x: hidden;
+  color: #212122;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  line-height: 1.5;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+.markdown-body h1 {
+  color: #a0a0a0;
+  font-size: 38px;
+  margin-top: 32px;
+  padding-top: 32px;
+}
+.markdown-body h2 {
+  color: white;
+  background-color: #212122;
+  width: fit-content;
+  border-bottom-right-radius: 100px;
+  margin-top: 47px;
+  padding-top: 4px;
+  margin-bottom: 16px;
+  padding-bottom: 4px;
+  padding-right: 48px;
+  padding-left: 8px;
+  line-height: 1.7;
+  font-size: 30px;
+  transition: all 0.3s ease-out;
+}
+.markdown-body h3 {
+  font-size: 24px;
+  padding-left: 8px;
+  margin-top: 32px;
+  border-bottom: 2px solid #c6c4c4;
+  line-height: 1.7;
+}
+.markdown-body h4 {
+  font-size: 20px;
+  padding-left: 8px;
+  margin-top: 32px;
+  border-bottom: 1px solid #dddddd;
+}
+.markdown-body h5 {
+  font-size: 16px;
+  margin-top: 24px;
+}
+.markdown-body h6 {
+  margin-top: 14px;
+  margin-top: 16px;
+  line-height: 1.1;
+}
+.markdown-body p {
+  font-size: 16px;
+  text-align: start;
+  white-space: normal;
+  text-size-adjust: auto;
+  line-height: 2;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.markdown-body img {
+  max-width: 100%;
+  margin: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.markdown-body hr {
+  border-top: 4px double #212122;
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.markdown-body hr:after {
+  content: '♥';
+  display: inline-block;
+  position: relative;
+  top: -15px;
+  padding: 0 10px;
+  color: #212122;
+  font-size: 18px;
+}
+.markdown-body li code,
+.markdown-body p code {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  word-break: break-word;
+  border-radius: 2px;
+  overflow-x: auto;
+  background-color: #f1f1f1;
+  color: #ef7060;
+  font-size: 14px;
+  padding: 0.065em 6px;
+}
+.markdown-body pre {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+  overflow: auto;
+  position: relative;
+  line-height: 1.75;
+  margin: 16px;
+}
+.markdown-body pre > code {
+  font-size: 14px;
+  margin: 0;
+  word-break: normal;
+  display: block;
+  overflow-x: auto;
+  padding: 0 12px 12px 12px;
+  -webkit-overflow-scrolling: touch;
+}
+.markdown-body a,
+.link {
+  color: #ef7060;
+  padding: 2px 2px;
+  text-decoration: none;
+  border-bottom: 0.125em solid #ef7060;
+  border-radius: 2px;
+  box-shadow: inset 0 -0.025em 0 #ef7060;
+  transition: box-shadow 270ms cubic-bezier(0.77, 0, 0.175, 1),
+    color 270ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+.markdown-body a::before {
+  content: '⇲ ';
+  vertical-align: top;
+  margin-left: 2px;
+  font-family: 'dart' !important;
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.7;
+}
+.markdown-body table {
+  background: #fbfbfb;
+  border-radius: 4px;
+  border-collapse: collapse;
+  margin: auto;
+  padding: 5px;
+  width: 95%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation: float 5s infinite;
+}
+.markdown-body table th {
+  color: white;
+  background: #212122;
+  border-bottom: 1px solid #9ea7af;
+  border-right: 1px solid #343a45;
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+.markdown-body table th:first-child {
+  border-top-left-radius: 4px;
+}
+.markdown-body table th:last-child {
+  border-top-right-radius: 4px;
+  border-right: none;
+}
+.markdown-body table tr {
+  border-top: 1px solid #c1c3d1;
+  border-bottom: 1px solid #c1c3d1;
+  color: #666b85;
+}
+.markdown-body table tr:first-child {
+  border-top: none;
+}
+.markdown-body table tr:last-child {
+  border-bottom: none;
+}
+.markdown-body table tr:nth-child(odd) td {
+  background: #f1f1f1;
+}
+.markdown-body table tr:last-child td:first-child {
+  border-bottom-left-radius: 4px;
+}
+.markdown-body table tr:last-child td:last-child {
+  border-bottom-right-radius: 4px;
+}
+.markdown-body table td {
+  background: #fbfbfb;
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-right: 1px solid #c1c3d1;
+}
+.markdown-body table td:last-child {
+  border-right: 0px;
+}
+.markdown-body blockquote {
+  color: #777777;
+  padding: 1px 16px;
+  margin: 24px 0;
+  border-left: 4px solid #c6c4c4;
+  background-color: #f1f1f1;
+  transition: all 0.3s ease-out;
+  border-radius: 4px;
+}
+.markdown-body blockquote::after {
+  display: block;
+  content: '';
+}
+.markdown-body blockquote > p {
+  margin: 10px 0;
+}
+.markdown-body ol,
+.markdown-body ul {
+  padding-left: 24px;
+}
+.markdown-body ol li,
+.markdown-body ul li {
+  margin-bottom: 6px;
+  list-style: inherit;
+}
+.markdown-body ol li .task-list-item,
+.markdown-body ul li .task-list-item {
+  list-style: none;
+}
+.markdown-body ol li .task-list-item ul,
+.markdown-body ol li .task-list-item ol,
+.markdown-body ul li .task-list-item ul,
+.markdown-body ul li .task-list-item ol {
+  margin-top: 0;
+}
+.markdown-body ol ul,
+.markdown-body ol ol,
+.markdown-body ul ul,
+.markdown-body ul ol {
+  margin-top: 3px;
+}
+.markdown-body ol li {
+  padding-left: 6px;
+}
+.markdown-body span.math {
+  margin-left: 32px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.markdown-body h1 {
+  font-size: 30.4px;
+}
+.markdown-body h2 {
+  font-size: 24px;
+}
+.markdown-body h3 {
+  font-size: 19.2px;
+}
+.markdown-body h4 {
+  font-size: 16px;
+}
+.markdown-body h5 {
+  font-size: 12.8px;
+}

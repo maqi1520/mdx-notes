@@ -1,0 +1,73 @@
+/* --- code --- */
+.code__card {
+  margin: 12px 0;
+  background-color: #1e293b;
+  border-radius: 9px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%), 0 2px 4px -2px rgb(0 0 0 / 10%);
+}
+
+.code__tools {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+}
+
+.code__circle {
+  display: inline-block;
+  align-items: center;
+  width: 9px;
+  height: 9px;
+  margin-right: 8px;
+  padding: 1px;
+  border-radius: 50%;
+}
+.red {
+  background-color: #ff605c;
+}
+
+.yellow {
+  background-color: #ffbd44;
+}
+
+.green {
+  background-color: #00ca4e;
+}
+
+.markdown-body figcaption {
+  text-align: center;
+  font-size: 14px;
+}
+
+.markdown-body .footnote-ref {
+  font-size: 75%;
+  position: relative;
+  top: -4px;
+  left: 2px;
+  font-weight: bold;
+}
+
+.markdown-body .footnote-item {
+  display: flex;
+  font-size: 14px;
+}
+
+.markdown-body .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light,
+    'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.markdown-body .footnote-item .footnote-content {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  word-break: break-all;
+}

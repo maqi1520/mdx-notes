@@ -8,6 +8,7 @@ export function Header({
   responsiveDesignMode,
   onToggleResponsiveDesignMode,
   children,
+  rightbtn,
 }) {
   return (
     <header
@@ -19,6 +20,7 @@ export function Header({
         {children}
       </div>
       <div className="flex items-center">
+        {rightbtn}
         <div className="hidden lg:flex items-center ml-6 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
           <HeaderButton
             isActive={layout === 'vertical'}
