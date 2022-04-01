@@ -7,7 +7,7 @@ import defaultContent from 'raw-loader!./index.md'
 export async function getDefaultContent() {
   const html = defaultContent
   const css = `
-.list {
+.list-card {
   margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 15px;
@@ -45,7 +45,7 @@ export async function getDefaultContent() {
   color: #fff;
   font-size: 15px;
 }
-.markdown-body .list ul {
+.markdown-body .list-card ul {
   display: flex;
   flex-direction: column;
   min-height: 40px;
@@ -54,10 +54,10 @@ export async function getDefaultContent() {
   justify-content: space-between;
   align-items: flex-start;
 }
-.markdown-body .list ul li a {
+.markdown-body .list-card ul li a {
   border-bottom: 0;
 }
-.list ul li {
+.list-card ul li {
   font-size: 14px;
   margin-bottom: 15px;
   color:rgb(14 165 233);
@@ -73,7 +73,7 @@ export async function getDefaultContent() {
 `
   const config = `function List({ children, title }) {
   return (
-    <div className="list">
+    <div className="list-card">
       <div className="list-head">
         <div className="list-head-line"></div>
         <div className="list-head-line"></div>
