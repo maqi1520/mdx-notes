@@ -358,7 +358,10 @@ export const Preview = forwardRef(
                     <style type="text/css" media="print">
                     @page {
                       size: A4;
-                      margin:8mm 12mm;
+                      margin:0;
+                    }
+                    body{
+                      padding:0;
                     }
                     p,.code__card {
                       page-break-inside: avoid;

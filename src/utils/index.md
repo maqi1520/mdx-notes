@@ -148,15 +148,12 @@ export default {
 
 在 MDX 中使用
 
-```jsx
+```md
 <List title="往期推荐">
-  - [《如何使用 react 和 three.js
-  在网站渲染自己的3D模型》](https://juejin.cn/post/7073065656580571173) -
-  [《初步尝试 tauri，并且与 electron.js
-  对比》](https://juejin.cn/post/7059400669916037133) - [《React
-  新的文档用到了哪些技术？》](https://juejin.cn/post/7052646487632642084) -
-  [《使用 react-pdf
-  打造在线简历生成器》](https://juejin.cn/post/7067108714355884069)
+- [《如何使用 react 和 three.js在网站渲染自己的3D模型》](https://juejin.cn/post/7073065656580571173)
+- [《初步尝试 tauri，并且与electron.js对比》](https://juejin.cn/post/7059400669916037133) 
+- [《React 新的文档用到了哪些技术？》](https://juejin.cn/post/7052646487632642084)
+- [《使用 react-pdf 打造在线简历生成器》](https://juejin.cn/post/7067108714355884069)
 </List>
 ```
 
@@ -167,7 +164,7 @@ export default {
 MDX Editor 不会存储数据，只使用`localStorage`存储到本地，
 如你想分享你的文章，可以点击左上角的分享按钮，同时文章将存储到云数据库中，但不保证永久存储。建议下载 MDX 存储在本地。
 
-mdx 的功能远不止于此，甚至我们可以根据它写一个简历模板，然后我们就可以使用 markdown 来排版简历了！
+mdx 的功能远不止于此，甚至我们可以根据它写一个[简历模板](https://editor.runjs.cool/624688ccb6fe2900015728ac)，然后我们就可以使用 markdown 来排版简历了！
 
 ## 开源
 

@@ -62,6 +62,14 @@ export async function getDefaultContent() {
   margin-bottom: 15px;
   color:rgb(14 165 233);
 }
+@media print {
+  body {
+    padding: 20px;
+  }
+  .markdown-body {
+    line-height: 1.5;
+  }
+}
 `
   const config = `function List({ children, title }) {
   return (
