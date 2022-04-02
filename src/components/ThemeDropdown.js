@@ -6,10 +6,10 @@ export default function ThemeDropdown({ themes, onChange, value }) {
     <>
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="px-3 py-3 flex justify-center text-gray-200  content-center ml-4 sm:ml-0 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
+          <Menu.Button className="px-3 py-3 flex justify-center text-gray-600 dark:text-gray-200  content-center ml-4 sm:ml-0 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
             主题
             <svg
-              className="w-5 h-5 ml-2 -mr-1 text-gray-200 hover:text-gray-100"
+              className="w-5 h-5 ml-2 -mr-1"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

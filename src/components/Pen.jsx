@@ -14,23 +14,8 @@ import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
-
-import * as runtime from 'react/jsx-runtime'
-import * as Babel from '@babel/standalone'
-import { evaluate } from '@mdx-js/mdx'
-import { MDXProvider, useMDXComponents } from '@mdx-js/react'
-import remarkGfm from 'remark-gfm'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkMath from 'remark-math'
-import remarkToc from 'remark-toc'
-import ReactDOMServer from 'react-dom/server'
-import { validateReactComponent } from '../utils/validateJavaScript'
-import { MDXComponents } from '../components/MDX/MDXComponents'
-import mdxcss from '!!raw-loader!../css/mdx.css'
-import { VFile } from 'vfile'
-import { VFileMessage } from 'vfile-message'
-import rehypeDivToSection from '../components/utils/rehype-div'
-import reHypeLinkFoot from '../components/utils/rehype-link-foot'
+import { compileMdx } from '../hooks/compileMdx'
+import mdxcss from '../css/mdx'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -120,101 +105,29 @@ export default function Pen({
   }, [])
 
   async function compileNow(content) {
-    console.log(11)
     cancelSetError()
     localStorage.setItem('content', JSON.stringify(content))
-    let RootComponents = {}
-
-    if (content.config) {
-      try {
-        //jsx 先通过编译成js
-        let res = Babel.transform(content.config, { presets: ['react'] })
-        let code = res.code.replace('export default ', 'return ')
-
-        // eslint-disable-next-line no-new-func
-        RootComponents = Function('React', code)(React)
-        if (!validateReactComponent(RootComponents)) {
-          return setError({
-            error: {
-              message: 'not react component',
-              file: 'Config',
-            },
-          })
+    setIsLoading(true)
+    compileMdx(content.config, content.html).then((res) => {
+      if (res.err) {
+        setError(res.err)
+      } else {
+        setErrorImmediate()
+      }
+      if (res.html) {
+        const { html } = res
+        const { css } = content
+        if (css || html) {
+          //编译后的html保存到ref 中
+          htmlRef.current = html
+          inject({ css: themes[theme].css + mdxcss + css, html })
         }
-      } catch (error) {
-        setError({
-          message: error,
-          file: 'Config',
-        })
       }
-      setError()
-    }
-
-    const file = new VFile({ basename: 'index.mdx', value: content.html })
-
-    // const capture = (name) => (opt) => (tree) => {
-    //   file.data[name] = tree;
-    // };
-
-    const remarkPlugins = []
-
-    remarkPlugins.push(remarkGfm)
-    remarkPlugins.push(remarkFrontmatter)
-    remarkPlugins.push(remarkMath)
-    //remarkPlugins.push(remarkLinkFoot)
-    remarkPlugins.push(() =>
-      remarkToc({
-        heading: '目录',
-        maxDepth: 2,
-      })
-    )
-
-    //remarkPlugins.push(capture('mdast'))
-
-    try {
-      setIsLoading(true)
-
-      console.time('22')
-      const { default: Content } = await evaluate(content.html, {
-        ...runtime,
-        format: 'mdx',
-        useDynamicImport: true,
-        remarkPlugins,
-        rehypePlugins: [rehypeDivToSection, reHypeLinkFoot],
-        //recmaPlugins: [capture('esast')],
-        useMDXComponents,
-      })
-      const html = ReactDOMServer.renderToString(
-        <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
-          <Content />
-        </MDXProvider>
-      )
-      const { css } = content
-
-      console.timeEnd('22')
       setIsLoading(false)
-      if (css || html) {
-        //编译后的html保存到ref 中
-        htmlRef.current = html
-        inject({ css: themes[theme].css + mdxcss + css, html })
-      }
-    } catch (error) {
-      const message =
-        error instanceof VFileMessage ? error : new VFileMessage(error)
-      message.fatal = true
-      if (!file.messages.includes(message)) {
-        file.message(message)
-      }
-
-      let errorMessage = file.messages[0].message
-      setError({
-        message: errorMessage,
-        file: 'MDX',
-      })
-    }
+    })
   }
 
-  const compile = useCallback(debounce(compileNow, 200), [])
+  const compile = useCallback(debounce(compileNow, 200), [theme])
 
   const onChange = useCallback(
     (document, content) => {
