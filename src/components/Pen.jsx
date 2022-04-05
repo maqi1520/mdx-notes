@@ -8,7 +8,7 @@ import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
 import Router from 'next/router'
-import { Header } from './Header'
+import { Header, HeaderButton } from './Header'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
@@ -106,7 +106,10 @@ export default function Pen({
 
   async function compileNow(content) {
     cancelSetError()
-    localStorage.setItem('content', JSON.stringify(content))
+    localStorage.setItem(
+      initialContent.ID || 'content',
+      JSON.stringify(content)
+    )
     setIsLoading(true)
     compileMdx(content.config, content.html).then((res) => {
       if (res.err) {
@@ -266,36 +269,88 @@ export default function Pen({
   return (
     <>
       <Header
-        layout={size.layout}
         onChangeLayout={(layout) => setSize((size) => ({ ...size, layout }))}
-        responsiveDesignMode={responsiveDesignMode}
-        onToggleResponsiveDesignMode={() =>
-          setResponsiveDesignMode(!responsiveDesignMode)
-        }
         rightbtn={
-          <ThemeDropdown
-            value={theme}
-            onChange={onMarkdownThemeChange}
-            themes={themes}
-          />
+          <>
+            <ThemeDropdown
+              value={theme}
+              onChange={onMarkdownThemeChange}
+              themes={themes}
+            />
+
+            <div className="hidden lg:flex items-center ml-2 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
+              <HeaderButton
+                isActive={size.layout === 'vertical'}
+                label="Switch to vertical split layout"
+                onClick={() =>
+                  setSize((size) => ({ ...size, layout: 'vertical' }))
+                }
+              >
+                <path
+                  d="M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9"
+                  fill="none"
+                />
+                <path d="M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z" />
+              </HeaderButton>
+              <HeaderButton
+                isActive={size.layout === 'horizontal'}
+                label="Switch to horizontal split layout"
+                onClick={() =>
+                  setSize((size) => ({ ...size, layout: 'horizontal' }))
+                }
+              >
+                <path d="M23 11V3H3v8h20Z" strokeWidth="0" />
+                <path
+                  d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2ZM22 11H4"
+                  fill="none"
+                />
+              </HeaderButton>
+              <HeaderButton
+                isActive={size.layout === 'preview'}
+                label="Switch to preview-only layout"
+                onClick={() =>
+                  setSize((size) => ({ ...size, layout: 'preview' }))
+                }
+              >
+                <path
+                  d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
+                  fill="none"
+                />
+              </HeaderButton>
+              <HeaderButton
+                isActive={responsiveDesignMode}
+                label="Toggle responsive design mode"
+                onClick={() => setResponsiveDesignMode(!responsiveDesignMode)}
+                className="hidden md:block"
+              >
+                <path
+                  d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"
+                  fill="none"
+                />
+                <path d="M12 17V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2Z" />
+              </HeaderButton>
+            </div>
+          </>
         }
       >
-        <Share
-          editorRef={editorRef}
-          onShareStart={onShareStart}
-          onShareComplete={onShareComplete}
-          dirty={dirty}
-          initialPath={initialPath}
-          layout={size.layout}
-          responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
-          activeTab={activeTab}
-        />
-        <CopyBtn
-          htmlRef={htmlRef}
-          baseCss={themes[theme].css + mdxcss}
-          editorRef={editorRef}
-          previewRef={previewRef}
-        />
+        <div className="hidden sm:flex space-x-2">
+          <Share
+            editorRef={editorRef}
+            onShareStart={onShareStart}
+            onShareComplete={onShareComplete}
+            dirty={dirty}
+            initialPath={initialPath}
+            layout={size.layout}
+            responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
+            activeTab={activeTab}
+          />
+          <CopyBtn
+            htmlRef={htmlRef}
+            baseCss={themes[theme].css + mdxcss}
+            editorRef={editorRef}
+            previewRef={previewRef}
+          />
+        </div>
       </Header>
       <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
         {initialContent && typeof size.current !== 'undefined' ? (
@@ -362,6 +417,7 @@ export default function Pen({
                       css: initialContent.css,
                       config: initialContent.config,
                       html: initialContent.html,
+                      ID: initialContent.ID,
                     })
                   }}
                 />

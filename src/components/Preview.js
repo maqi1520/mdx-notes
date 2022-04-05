@@ -63,14 +63,16 @@ export const Preview = forwardRef(
       let isInitial = true
       const observer = new ResizeObserver(() => {
         window.clearTimeout(timeout.current)
-        const rect = containerRef.current.getBoundingClientRect()
-        const width = Math.round(rect.width)
-        const height = Math.round(rect.height)
-        setSize({
-          visible: !isInitial && width !== 0 && height !== 0,
-          width,
-          height,
-        })
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect()
+          const width = Math.round(rect.width)
+          const height = Math.round(rect.height)
+          setSize({
+            visible: !isInitial && width !== 0 && height !== 0,
+            width,
+            height,
+          })
+        }
         timeout.current = window.setTimeout(() => {
           setSize((size) => ({ ...size, visible: false }))
         }, 1000)

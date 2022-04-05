@@ -1,15 +1,9 @@
 import { Logo } from './Logo'
 import clsx from 'clsx'
+import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
 
-export function Header({
-  layout,
-  onChangeLayout,
-  responsiveDesignMode,
-  onToggleResponsiveDesignMode,
-  children,
-  rightbtn,
-}) {
+export function Header({ children, rightbtn }) {
   return (
     <header
       className="relative z-20 flex-none py-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center space-x-4 antialiased"
@@ -21,52 +15,20 @@ export function Header({
       </div>
       <div className="flex items-center">
         {rightbtn}
-        <div className="hidden lg:flex items-center ml-6 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
-          <HeaderButton
-            isActive={layout === 'vertical'}
-            label="Switch to vertical split layout"
-            onClick={() => onChangeLayout('vertical')}
-          >
-            <path d="M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9" fill="none" />
-            <path d="M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z" />
-          </HeaderButton>
-          <HeaderButton
-            isActive={layout === 'horizontal'}
-            label="Switch to horizontal split layout"
-            onClick={() => onChangeLayout('horizontal')}
-          >
-            <path d="M23 11V3H3v8h20Z" strokeWidth="0" />
-            <path
-              d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2ZM22 11H4"
-              fill="none"
-            />
-          </HeaderButton>
-          <HeaderButton
-            isActive={layout === 'preview'}
-            label="Switch to preview-only layout"
-            onClick={() => onChangeLayout('preview')}
-          >
-            <path
-              d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
-              fill="none"
-            />
-          </HeaderButton>
-          <HeaderButton
-            isActive={responsiveDesignMode}
-            label="Toggle responsive design mode"
-            onClick={onToggleResponsiveDesignMode}
-            className="hidden md:block"
-          >
-            <path
-              d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"
-              fill="none"
-            />
-            <path d="M12 17V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2Z" />
-          </HeaderButton>
-        </div>
-        <div className="hidden sm:block mx-6 lg:mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700" />
+
+        {rightbtn && (
+          <div className="hidden sm:block mx-2 lg:mx-2 w-px h-6 bg-gray-200 dark:bg-gray-700" />
+        )}
+        <Link href="/templates">
+          <a className="px-3 py-3 flex justify-center text-gray-600 dark:text-gray-200 content-center ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
+            <span aria-label="火" role="img">
+              🔥
+            </span>
+            模板
+          </a>
+        </Link>
         <HeaderButton
-          className="ml-4 sm:ml-0 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4"
+          className="ml-2 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4"
           naturalWidth={24}
           naturalHeight={24}
           width={36}
@@ -99,7 +61,7 @@ export function Header({
         <a
           href="https://github.com/maqi1520/mdx-editor"
           target="_blank"
-          className="ml-4"
+          className="ml-2"
           rel="noreferrer"
         >
           <HeaderButton
@@ -129,7 +91,7 @@ export function Header({
   )
 }
 
-function HeaderButton({
+export function HeaderButton({
   isActive = false,
   label,
   onClick,

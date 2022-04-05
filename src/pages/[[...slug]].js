@@ -15,15 +15,15 @@ const Pen = dynamic(() => import('../components/Pen'), {
 export default function App({ errorCode, ...props }) {
   const [initialContent, setContent] = useState(props.initialContent)
   useEffect(() => {
-    if (!props.initialPath) {
-      try {
-        const data = JSON.parse(localStorage.getItem('content'))
+    try {
+      const data = JSON.parse(
+        localStorage.getItem(initialContent.ID || 'content')
+      )
 
-        if (data) {
-          setContent(data)
-        }
-      } catch (error) {}
-    }
+      if (data) {
+        setContent({ ID: initialContent.ID || 'content', ...data })
+      }
+    } catch (error) {}
   }, [])
   if (errorCode) {
     return <Error statusCode={errorCode} />

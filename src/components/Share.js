@@ -123,7 +123,7 @@ export function Share({
   }, [dirty])
 
   return (
-    <div className="hidden sm:flex items-center space-x-4 min-w-0">
+    <div className="flex items-center space-x-2 min-w-0">
       <button
         type="button"
         className={clsx(

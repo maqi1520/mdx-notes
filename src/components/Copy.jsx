@@ -54,7 +54,7 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
     }
   }
   return (
-    <div className="hidden sm:flex items-center space-x-4 min-w-0">
+    <>
       <button
         type="button"
         className={clsx(
@@ -85,7 +85,7 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       <button
         type="button"
         className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white ml-2'
+          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white '
         )}
         onClick={handleExport}
       >
@@ -94,12 +94,12 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       <button
         type="button"
         className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white ml-2'
+          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white'
         )}
         onClick={handleExportPDF}
       >
         导出 PDF
       </button>
-    </div>
+    </>
   )
 }
