@@ -1,0 +1,32 @@
+name: deploy to oss
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      # load repo to /github/workspace
+    - uses: actions/checkout@v2
+      with:
+          repository: maqi1520/mdx-editor
+          fetch-depth: 0
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - run: npm install
+    # 打包文档命令
+    - run: npm run build
+    - name: upload files to OSS
+      uses: fangbinwei/aliyun-oss-website-action@v1
+      with:
+          accessKeyId: ${{ secrets.ACCESS_KEY_ID }}
+          accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
+          bucket: "mdx-editor"
+          endpoint: "oss-cn-hangzhou.aliyuncs.com" 
+          folder: "_next/static"
