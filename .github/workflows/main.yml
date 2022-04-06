@@ -29,4 +29,7 @@ jobs:
           accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
           bucket: "mdx-editor"
           endpoint: "oss-cn-hangzhou.aliyuncs.com" 
-          folder: ".next/static"
+          folder: ".next"
+          exclude: |
+            cache/
+          
