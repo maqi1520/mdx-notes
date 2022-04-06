@@ -3,33 +3,35 @@ name: deploy to oss
 on:
   push:
     branches:
-      - main
+      - main-oss
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
       # load repo to /github/workspace
-    - uses: actions/checkout@v2
-      with:
+      - uses: actions/checkout@v2
+        with:
           repository: maqi1520/mdx-editor
           fetch-depth: 0
-    - name: Use Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12'
-    - run: npm install
-    # 打包文档命令
-    - run: npm run build
-    - name: upload files to OSS
-      uses: fangbinwei/aliyun-oss-website-action@v1
-      with:
-          accessKeyId: ${{ secrets.ACCESS_KEY_ID }}
-          accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
-          bucket: "mdx-editor"
-          endpoint: "oss-cn-hangzhou.aliyuncs.com" 
-          folder: ".next"
-          exclude: |
-            cache/
-          
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - run: npm install
+      # 打包文档命令
+      - run: npm run build
+
+
+      # 设置阿里云OSS的 id/secret，存储到 github 的 secrets 中
+      - name: setup aliyun oss
+        uses: manyuanrong/setup-ossutil@master
+        with:
+          endpoint: oss-cn-hangzhou.aliyuncs.com
+          access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+      - name: 删除冗余文件
+        run: ossutil rm oss://.next/static -rf
+      - name: cp files to aliyun
+        run: |
+          ossutil cp -rf --meta Cache-Control:max-age=31536000 .next/static oss://.next/static
