@@ -7,15 +7,34 @@ function CodeBlock(props) {
   const { children = '', className = 'language-js' } = props.children.props
   // e.g. "language-js"
 
-  const language = className.substring(9)
+  let language = className.substring(9)
+
+  console.log(language)
+
+  const isDiff = language.startsWith('diff-')
+
+  let highlightStyle = []
+
+  let code = children
+  if (isDiff) {
+    code = []
+    language = language.substr(5)
+    highlightStyle = children.split('\n').map((line) => {
+      if (line.startsWith('+')) {
+        code.push(line.substr(1))
+        return 'inserted'
+      }
+      if (line.startsWith('-')) {
+        code.push(line.substr(1))
+        return 'deleted'
+      }
+      code.push(line)
+    })
+    code = code.join('\n')
+  }
 
   const codeblock = (
-    <Highlight
-      {...defaultProps}
-      theme={theme}
-      code={children}
-      language={language}
-    >
+    <Highlight {...defaultProps} theme={theme} code={code} language={language}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           className={className}
@@ -31,7 +50,7 @@ function CodeBlock(props) {
             {tokens.map(
               (line, i) =>
                 i < tokens.length - 1 && (
-                  <span key={i}>
+                  <span className={highlightStyle[i]} key={i}>
                     {line.map((token, key) => (
                       <span {...getTokenProps({ token, key })} />
                     ))}

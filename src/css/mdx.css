@@ -32,7 +32,25 @@
 .green {
   background-color: #00ca4e;
 }
-
+.inserted {
+  background-color: rgba(45, 212, 191, 0.15);
+  margin: 0 -12px;
+  padding: 0 12px;
+  display: block;
+}
+.inserted:before {
+  content: '+';
+}
+.deleted {
+  background-color: rgba(244, 63, 94, 0.15);
+  margin: 0 -12px;
+  padding: 0 12px;
+  display: block;
+  /* 拷贝到微信必须使用 span 标签，不然缩进会消失 */
+}
+.deleted:before {
+  content: '-';
+}
 .markdown-body figcaption {
   text-align: center;
   font-size: 14px;
