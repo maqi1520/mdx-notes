@@ -14,7 +14,7 @@ export default function QRCodeBlock({ url, text, image }) {
           <img
             width="90"
             height="90"
-            src={`http://localhost:3000/api/qrcode?url=${url}&type=image`}
+            src={`/api/qrcode?url=${url}&type=image`}
             alt=""
           />
         </div>
