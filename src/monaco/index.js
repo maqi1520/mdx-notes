@@ -188,6 +188,7 @@ export function createMonacoEditor({ container, initialContent, onChange }) {
     lineHeight: 21,
     minimap: { enabled: false },
     theme: getTheme() === 'dark' ? 'tw-dark' : 'tw-light',
+    wordWrap: 'on',
     fixedOverflowWidgets: true,
     unicodeHighlight: {
       ambiguousCharacters: false,

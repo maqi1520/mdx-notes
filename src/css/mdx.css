@@ -51,6 +51,40 @@
 .deleted:before {
   content: '-';
 }
+
+.qrcode-block {
+  border: 1px solid #efefef;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.qrcode-block img {
+  display: block;
+}
+.qrcode-box {
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  color: #718096;
+}
+
+.qrcode-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  word-break: break-all;
+  font-size: 1rem;
+  font-weight: 600;
+  width: calc(100% - 96px);
+  color: #718096;
+}
+
+.qrcode-img {
+  width: 90px;
+  height: 90px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
 .markdown-body figcaption {
   text-align: center;
   font-size: 14px;

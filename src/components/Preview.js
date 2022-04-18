@@ -365,7 +365,7 @@ export const Preview = forwardRef(
                     body{
                       padding:0;
                     }
-                    p,.code__card {
+                    p,.code__card,table,img {
                       page-break-inside: avoid;
                     }
                     body {-webkit-print-color-adjust: exact;}
