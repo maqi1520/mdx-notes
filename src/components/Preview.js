@@ -324,7 +324,6 @@ export const Preview = forwardRef(
                       padding:20px 16px 9px;
                     }
                     body * {
-                      max-width: 100% !important;
                       box-sizing: border-box;
                       box-sizing: border-box !important;
                       word-wrap: break-word !important;
