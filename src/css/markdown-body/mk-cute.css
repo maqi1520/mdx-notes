@@ -154,21 +154,20 @@
   margin: 0 4px;
 }
 .markdown-body pre {
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
   position: relative;
   line-height: 1.75;
 }
+
 .markdown-body pre > code {
-  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-size: 12px;
-  border-radius: 10px;
-  padding: 15px;
-  margin: 0;
   word-break: normal;
   display: block;
-  overflow-x: auto;
-  color: #4ec9b0;
-  background: #282c34;
+  flex: none;
+  padding: 0 12px 12px 12px;
 }
 .markdown-body a {
   text-decoration: none;

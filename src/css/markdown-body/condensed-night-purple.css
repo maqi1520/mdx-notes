@@ -84,19 +84,18 @@
   border-radius: 2px;
 }
 .markdown-body pre {
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
+  display: flex;
   position: relative;
   line-height: 1.75;
 }
+
 .markdown-body pre > code {
-  display: block;
-  font-family: -apple-system-font, BlinkMacSystemFont, Helvetica Neue,
-    PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial,
-    sans-serif;
   font-size: 12px;
-  margin: 0;
   word-break: normal;
-  overflow-x: auto;
+  display: block;
+  flex: none;
   padding: 0 12px 12px 12px;
   -webkit-overflow-scrolling: touch;
 }

@@ -41,6 +41,8 @@
 }
 .markdown-body h2 {
   font-size: 22px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ececec;
 }
 .markdown-body h3 {
   font-size: 20px;
@@ -132,10 +134,11 @@
 /*链接*/
 .markdown-body a,
 .markdown-body .link {
+  padding: 2px 4px;
   text-decoration: none;
   color: rgb(14 165 233);
   word-wrap: break-word;
-  font-weight: bold;
+  font-weight: 600;
   border-bottom: 1px solid rgb(14 165 233);
 }
 
@@ -189,6 +192,7 @@
 .markdown-body pre {
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
+  display: flex;
   position: relative;
   line-height: 1.75;
 }
@@ -197,7 +201,7 @@
   font-size: 12px;
   word-break: normal;
   display: block;
-  overflow-x: auto;
+  flex: none;
   padding: 0 12px 12px 12px;
   -webkit-overflow-scrolling: touch;
 }

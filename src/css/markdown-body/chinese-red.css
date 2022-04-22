@@ -81,20 +81,20 @@
   padding: 1px 2px;
 }
 .markdown-body pre {
-  font-family: -apple-system, -apple-system-body, BlinkMacSystemFont, 'Segoe UI',
-    Helvetica, Arial, PingFang SC, '思源黑体 CN', '思源黑体', 'JetBrains Mono',
-    'Fira Code', Menlo, 'Ubuntu Mono', Consolas, sans-serif;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
+  display: flex;
   position: relative;
   line-height: 1.75;
 }
+
 .markdown-body pre > code {
-  border-radius: 3px;
-  font-size: 15px;
-  padding: 16px 12px;
+  font-size: 12px;
   word-break: normal;
   display: block;
-  overflow-x: auto;
+  flex: none;
+  padding: 0 12px 12px 12px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .markdown-body a,

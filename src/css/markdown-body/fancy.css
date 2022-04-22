@@ -181,43 +181,21 @@
 .markdown-body .math > p {
   margin: 0;
 }
-.markdown-body code {
-  padding: 2px 0.4em;
-  overflow-x: auto;
-  color: #a862ea;
-  font-weight: bold;
-  word-break: break-word;
-  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
-  background-color: #f8f5ff;
-}
 .markdown-body pre {
-  margin: 2em 0;
-}
-.markdown-body pre > code {
-  display: block;
-  padding: 1.5em;
-  word-break: normal;
-  font-size: 0.9em;
-  font-style: normal;
-  font-weight: normal;
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
-  line-height: 18px;
-  color: #383838;
-  border-radius: 2px;
-  scroll-behavior: smooth;
-  box-shadow: 0 0 10px #e7daff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  position: relative;
+  line-height: 1.75;
 }
-.markdown-body pre > code:hover {
-  box-shadow: 0 0 20px #e7daff;
-}
-.markdown-body pre > code::-webkit-scrollbar {
-  height: 6px;
-  background-color: #f8f5ff;
-}
-.markdown-body pre > code::-webkit-scrollbar-thumb {
-  background-color: #e7daff;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+
+.markdown-body pre > code {
+  font-size: 12px;
+  word-break: normal;
+  display: block;
+  flex: none;
+  padding: 0 12px 12px 12px;
 }
 .markdown-body hr {
   margin: 2em 0;

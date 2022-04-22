@@ -178,22 +178,20 @@
   padding: 5px;
 }
 .markdown-body pre {
-  font-family: Arial, serif;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
   position: relative;
   line-height: 1.75;
 }
+
 .markdown-body pre > code {
-  font-family: Arial, serif;
-  border-left: 2px solid #77af9c;
-  display: block;
-  padding: 16px 12px;
-  margin: 0;
-  font-size: 0.9em;
-  color: #6e7783;
+  font-size: 12px;
   word-break: normal;
-  overflow-x: auto;
-  background: #f8f8f8;
+  display: block;
+  flex: none;
+  padding: 0 12px 12px 12px;
 }
 .markdown-body a {
   color: #77af9c;
