@@ -37,7 +37,7 @@
   margin: 0 -12px;
   padding: 0 12px;
   display: block;
-  max-width: unset !important;
+  min-width: calc(100% + 24px);
 }
 .inserted:before {
   content: '+';
@@ -47,7 +47,7 @@
   margin: 0 -12px;
   padding: 0 12px;
   display: block;
-  max-width: unset !important;
+  min-width: calc(100% + 24px);
   /* 拷贝到微信必须使用 span 标签，不然缩进会消失 */
 }
 .deleted:before {
