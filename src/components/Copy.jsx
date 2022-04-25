@@ -1,11 +1,33 @@
 import { useState } from 'react'
 import clsx from 'clsx'
 import juice from 'juice/client'
+import cheerio from 'cheerio'
 import { copyHtml, download } from './utils/index'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
     inlinePseudoElements: true,
+  })
+}
+
+function toDataURL(src, outputFormat) {
+  return new Promise((resolve) => {
+    var img = new Image()
+    img.crossOrigin = 'Anonymous'
+    img.onload = function () {
+      var canvas = document.createElement('CANVAS')
+      var ctx = canvas.getContext('2d')
+      var dataURL
+      canvas.height = this.naturalHeight
+      canvas.width = this.naturalWidth
+      ctx.drawImage(this, 0, 0)
+      dataURL = canvas.toDataURL(outputFormat)
+      resolve(dataURL)
+    }
+    img.src = src + '&a=1'
+    if (img.complete || img.complete === undefined) {
+      img.src = src + '&a=2'
+    }
   })
 }
 
@@ -15,11 +37,25 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
     errorText: undefined,
   })
 
-  const handleClick = () => {
+  const handleClick = async () => {
     setState({ state: 'loading' })
     const css = baseCss + editorRef.current.getValue('css')
-    const html = htmlRef.current
-    console.log(htmlRef.current)
+
+    //console.log(htmlRef.current)
+
+    //将image url 转换为 base64
+
+    const $ = cheerio.load(htmlRef.current)
+
+    for (let index = 0; index < $('img').length; index++) {
+      const item = $('img')[index]
+      if (item.attribs.src.includes('/api/qrcode')) {
+        const dataUrl = await toDataURL(item.attribs.src)
+        item.attribs.src = dataUrl
+      }
+    }
+    const html = $.html()
+
     const inlineHtml = inlineCSS(html, css)
     copyHtml(
       inlineHtml.replace(/<div/g, '<section').replace(/<\/div>/g, '</section>')
