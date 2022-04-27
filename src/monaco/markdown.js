@@ -1,4 +1,4 @@
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { debounce } from 'debounce'
 
 export const HTML_URI = 'file:///index.md'
