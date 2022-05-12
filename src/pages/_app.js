@@ -1,9 +1,9 @@
 import '../css/main.css'
 import Head from 'next/head'
 
-const TITLE = ' MDX Editor | 一个好用的排版编辑器'
+const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
-  '一个微信排版编辑器，使用 MDX 来排版，可以在线写样式，写组件，一个专属于前端的排版编辑器'
+  '微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF'
 const FAVICON_VERSION = 3
 
 if (typeof window !== 'undefined') {
@@ -57,7 +57,7 @@ export default function App({ Component, pageProps }) {
         <meta property="og:site_name" content={TITLE} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
-        <meta name="twitter:site" content="@tailwindlabs" />
+        <meta name="twitter:site" content={TITLE} />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
       </Head>
