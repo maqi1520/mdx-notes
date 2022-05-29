@@ -257,4 +257,39 @@ body.cursor-nwse-resize * {
 .Resizer.disabled {
   pointer-events: none;
 }
-/* purgecss end ignore */
+.terminal {
+  font-size: 1em;
+  line-height: 1.2em;
+  min-height: 450px;
+  margin-top: 25px;
+  padding: 8px;
+  border-radius: 7px;
+  position: relative;
+}
+
+.terminal::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  background: #f95c5b;
+  border-radius: 100%;
+  box-shadow: 0 0 0 1px #da3d42, 22px 0 0 0 #fabe3b, 22px 0 0 1px #ecb03e,
+    44px 0 0 0 #38cd46, 44px 0 0 1px #2eae32;
+}
+.bg-grid-slate-900\/\[0\.04\] {
+  mask-image: linear-gradient(to bottom, transparent, black);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(148 163 184 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+.index_beams {
+  background-image: url(/img/hero.jpg);
+  background-size: 130rem;
+}
+
+.dark .index_beams {
+  background-image: url(/img/hero-dark.jpg);
+  background-size: 153rem;
+}

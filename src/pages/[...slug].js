@@ -74,7 +74,7 @@ export async function getServerSideProps({ params, res, query }) {
 
   if (
     !params.slug ||
-    (params.slug.length === 1 && params.slug[0] === 'index')
+    (params.slug.length === 1 && params.slug[0] === 'create')
   ) {
     res.setHeader(
       'cache-control',

@@ -3,7 +3,7 @@ import React from 'react'
 export default function QRCodeBlock({ url, text, image }) {
   return (
     <section className="qrcode-block">
-      <img src={image} alt={text} />
+      {image && <img src={image} alt={text} />}
       <section className="qrcode-box">
         <section className="qrcode-text">
           <section className="qrcode-title">{text}</section>

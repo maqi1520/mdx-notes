@@ -402,7 +402,7 @@ export default function Pen({
                   />
                 )}
               </div>
-              <div className="absolute inset-0 w-full h-full">
+              <div className="absolute inset-0 w-full h-full top-12 lg:top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-black">
                 <Preview
                   ref={previewRef}
                   responsiveDesignMode={isLg && responsiveDesignMode}

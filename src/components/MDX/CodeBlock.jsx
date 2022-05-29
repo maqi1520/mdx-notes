@@ -1,6 +1,6 @@
 import React from 'react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
-import theme from 'prism-react-renderer/themes/vsDark'
+import theme from 'prism-react-renderer/themes/okaidia'
 
 function CodeBlock(props) {
   const { isMac = true } = props
@@ -8,8 +8,6 @@ function CodeBlock(props) {
   // e.g. "language-js"
 
   let language = className.substring(9)
-
-  console.log(language)
 
   const isDiff = language.startsWith('diff-')
 

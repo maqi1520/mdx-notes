@@ -85,7 +85,11 @@ export const Preview = forwardRef(
     }, [])
 
     useIsomorphicLayoutEffect(() => {
-      if (size.width > 50 && size.height > 50) {
+      if (
+        size.width > 50 &&
+        size.height > 50 &&
+        typeof onChangeResponsiveSize == 'function'
+      ) {
         onChangeResponsiveSize(({ width, height }) => ({ width, height }))
       }
 
@@ -213,10 +217,7 @@ export const Preview = forwardRef(
     }
 
     return (
-      <div
-        className="absolute inset-0 top-12 lg:top-0 flex flex-col border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-black"
-        ref={containerRef}
-      >
+      <div className="absolute inset-0 flex flex-col" ref={containerRef}>
         {responsiveDesignMode && (
           <div className="flex-none text-center text-xs leading-4 tabular-nums whitespace-pre py-3 text-gray-900 dark:text-gray-400">
             {constrainedResponsiveSize.width}

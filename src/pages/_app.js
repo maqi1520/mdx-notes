@@ -1,4 +1,5 @@
 import '../css/main.css'
+import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
 
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'

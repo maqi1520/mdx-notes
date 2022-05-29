@@ -69,7 +69,6 @@ export default function EditorMobile({
       if (skipNextOnChange.current) {
         skipNextOnChange.current = false
       } else {
-        console.log('---', content.current)
         onChange(activeTab, content.current)
       }
     }
