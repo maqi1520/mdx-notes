@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import TypeIt from 'typeit'
-import Prism from 'prismjs'
-import 'prismjs/components/prism-markdown'
 
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
@@ -10,8 +8,6 @@ import { useDebouncedState } from '../hooks/useDebouncedState'
 
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
-import code1 from '!!raw-loader!./hero/code1.md'
-import code2 from '!!raw-loader!./hero/code2.md'
 
 const DEFAULT_THEME = localStorage.getItem('markdownTheme') || 'default'
 
@@ -27,27 +23,90 @@ export default function Hero({ children }) {
   )
 
   const previewRef = useRef()
+  const paused = useRef(false) //暂停
+  function pause() {
+    paused.current = !paused.current
+  }
   useEffect(() => {
-    // Returns a highlighted HTML string
-    const html1 = Prism.highlight(code1, Prism.languages.markdown, 'markdown')
-    const html2 = Prism.highlight(code2, Prism.languages.markdown, 'markdown')
-
     const instance = new TypeIt(ref.current, {
-      strings: html1,
       speed: 50,
       //loop: true,
       waitUntilVisible: true,
-      startDelay: 900,
+      startDelay: 1000,
       afterStep: () => {
         setCode(ref.current.innerText.replace('|', ''))
       },
     })
+      .type(
+        '<span class="token punctuation">##</span><span class="token title important"> 什么是 MDX ？</span>'
+      )
+      .pause(500)
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .type(
+        'mdx 是 markdown + jsx 的结合，即可以支持 markdown 语法也可以写自定义组件。'
+      )
+      .pause(500)
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .type('比如： 内置的二维码生成器')
+      .pause(500)
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .exec(pause)
+      .type(`<span class="token punctuation">&lt;</span>`)
+      .type('<span class="token tag">QRCodeBlock</span>')
+      .type(' ')
+      .type('<span class="token punctuation">/&gt;</span>')
+      .pause(500)
+      .move(-3)
+      .type('<span class="token attr-name"> url</span>=""')
+      .move(-1)
+      .type('<span class="token attr-value">https://baidu.com</span>')
+      .move(1)
+      .type(' <span class="token attr-name">text</span>=""')
+      .move(-1)
+      .type('<span class="token attr-value">长按二维码识别</span>')
+      .exec(pause)
+      .move(null, { to: 'END' })
+      .pause(500)
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .pause(3000)
+      .type(
+        '<span class="token punctuation">##</span><span class="token title important"> 代码片段</span>'
+      )
+
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .type(
+        '<span class="token punctuation">```</span><br><br><span class="token punctuation">```</span>'
+      )
+      .move(-5)
+      .type(`js`)
+      .move(1)
+      .type(
+        `console.<span class="token function">log</span>(<span class="token string">'hello world'</span>);`
+      )
       .pause(1000)
-      .empty()
-      .exec(() => {
-        setCode('')
-      })
-      .type(html2)
+      .move(-30, { instant: true })
+      .type(`diff-`)
+      .move(3)
+      .type(`- `)
+      .move(27, { instant: true })
+      .type('<br>')
+      .type(
+        `+ console.<span class="token function">log</span>(<span class="token string">'hello mdx'</span>);`
+      )
+      .move(null, { to: 'END' })
+      .pause(500)
+      .break({ delay: 500 })
+      .break({ delay: 500 })
+      .type('---')
+      .type('<br><br>')
+      .type('更多功能等你挖掘探索！')
+
+      //.type()
       .go()
 
     return () => {
@@ -56,7 +115,12 @@ export default function Hero({ children }) {
   }, [])
 
   const inject = useCallback(async (content) => {
-    previewRef.current.contentWindow.postMessage(content, '*')
+    if (!paused.current) {
+      previewRef.current.contentWindow.postMessage(
+        { ...content, scrollEnd: true },
+        '*'
+      )
+    }
   }, [])
 
   useEffect(() => {
@@ -79,7 +143,7 @@ export default function Hero({ children }) {
                 JS酷
               </a>
             </span>
-            <em class="rich_media_meta rich_media_meta_text">2022-02-25 14:13</em>
+            <em class="rich_media_meta rich_media_meta_text">2022-06-29 19:13</em>
           </div>`
           const css = `
           .rich_media_title {

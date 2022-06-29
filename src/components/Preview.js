@@ -392,6 +392,13 @@ export const Preview = forwardRef(
                       }
                       if (typeof e.data.html !== 'undefined') {
                         setHtml(e.data.html)
+                        if(e.data.scrollEnd){
+                          window.scrollTo({
+                            top: 999,
+                            left: 0,
+                            behavior: 'smooth'
+                          });
+                        }
                       }
                       checkVisibility()
                     })
