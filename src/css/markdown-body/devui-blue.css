@@ -122,18 +122,18 @@
   width: auto;
   max-width: 100%;
   overflow: auto;
-  border: solid 1px #5e7ce0;
   border-spacing: 0;
 }
 .markdown-body thead {
-  color: #fff;
+  color: #252b3a;
   text-align: left;
 }
 .markdown-body thead tr {
   background: #5e7ce0;
 }
-.markdown-body thead th {
-  border-bottom: solid 1px #dfe1e6;
+.markdown-body th,
+.markdown-body td {
+  border: solid 1px #5e7ce0;
 }
 .markdown-body tr {
   background-color: #fff;

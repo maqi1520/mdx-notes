@@ -167,10 +167,6 @@
   background: inherit;
 }
 
-.markdown-body table tr {
-  border-top: 1px solid #dfe2e5;
-}
-
 .markdown-body table tr:nth-child(2n) {
   background-color: #f6f8fa;
 }

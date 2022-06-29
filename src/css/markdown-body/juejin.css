@@ -100,7 +100,6 @@
   width: auto;
   max-width: 100%;
   overflow: auto;
-  border: solid 1px #f6f6f6;
 }
 .markdown-body thead {
   background: #f6f6f6;

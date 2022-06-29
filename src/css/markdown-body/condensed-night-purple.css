@@ -118,12 +118,11 @@
   width: auto;
   max-width: 100%;
   overflow: auto;
-  border: solid 1px #916dd5;
   border-collapse: collapse;
 }
 .markdown-body thead {
   background-color: #916dd5;
-  color: #fff;
+  color: #333;
   text-align: left;
 }
 .markdown-body th,

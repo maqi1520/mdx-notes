@@ -286,10 +286,9 @@ body.cursor-nwse-resize * {
 
 .index_beams {
   background-image: url(/img/hero.jpg);
-  background-position: center center;
+  background-size: cover;
 }
 
 .dark .index_beams {
   background-image: url(/img/hero-dark.jpg);
-  background-position: bottom center;
 }

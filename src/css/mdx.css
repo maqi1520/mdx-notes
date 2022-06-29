@@ -87,6 +87,14 @@
   margin-left: 4px;
   flex-shrink: 0;
 }
+.markdown-body {
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light,
+    'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #ccc;
+}
 .markdown-body figcaption {
   text-align: center;
   font-size: 14px;

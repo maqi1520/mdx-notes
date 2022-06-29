@@ -127,7 +127,6 @@
   width: auto;
   max-width: 100%;
   overflow: auto;
-  border: solid 1px #3eaf7c;
 }
 .markdown-body thead {
   background: #3eaf7c;
@@ -141,6 +140,7 @@
 .markdown-body td {
   padding: 12px 7px;
   line-height: 24px;
+  border: 1px solid #3eaf7c;
   background-color: inherit;
 }
 .markdown-body td {

@@ -123,7 +123,7 @@ export default function Pen({
         if (css || html) {
           //编译后的html保存到ref 中
           htmlRef.current = html
-          inject({ css: themes[theme].css + mdxcss + css, html })
+          inject({ css: mdxcss + themes[theme].css + css, html })
         }
       }
       setIsLoading(false)

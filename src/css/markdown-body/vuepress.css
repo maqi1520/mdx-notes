@@ -126,9 +126,7 @@
   border-collapse: collapse;
 }
 .markdown-body thead {
-  background: #f6f6f6;
   background: #3eaf7c;
-  color: #000;
   color: #fff;
   text-align: left;
 }
