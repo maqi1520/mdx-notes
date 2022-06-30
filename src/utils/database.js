@@ -57,7 +57,7 @@ export function get(Key) {
 }
 
 export function getTemplates(data) {
-  return fetch(process.env.NEXT_PUBLIC_API_URL + '/api/templates', {
+  return fetch(process.env.NEXT_PUBLIC_API_URL + '/api/share', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {

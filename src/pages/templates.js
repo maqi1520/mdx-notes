@@ -64,7 +64,7 @@ export default function Templates({ data }) {
 export async function getServerSideProps({ params, res, query }) {
   try {
     const res = await getTemplates({
-      dbName: 'template',
+      action: 'template',
       search: query.search,
     })
 
