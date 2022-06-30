@@ -21,7 +21,7 @@ const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
 const RESIZER_SIZE = 1
 const DEFAULT_THEME = localStorage.getItem('markdownTheme') || 'default'
-const DEFAULT_RESPONSIVE_SIZE = { width: 540, height: 720 }
+const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen({
   initialTheme,
