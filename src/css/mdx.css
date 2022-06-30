@@ -81,6 +81,9 @@
   color: #718096;
 }
 
+.qrcode-img img {
+  border: 0;
+}
 .qrcode-img {
   width: 90px;
   height: 90px;
