@@ -61,6 +61,12 @@
     "worker-loader": "^3.0.8"
   },
   "devDependencies": {
+    "git-cz": "^4.9.0",
     "typeit": "^8.5.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/git-cz"
+    }
   }
 }
