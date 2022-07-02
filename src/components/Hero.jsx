@@ -175,7 +175,7 @@ export default function Hero({ children }) {
   }, [code])
 
   return (
-    <div className="grid min-h-screen grid-cols-2 relative">
+    <div className="grid grid-cols-2 relative">
       <div className="mx-auto h-[712px] w-full">
         {children}
         <div className="terminal bg-slate-800  dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10">

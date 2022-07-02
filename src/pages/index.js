@@ -13,8 +13,8 @@ const Hero = dynamic(() => import('../components/Hero'), {
 export default function page() {
   return (
     <div className="relative min-h-full">
-      <div className="absolute inset-0 bottom-10 bg-bottom bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
-        <div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-slate-400/[0.05] dark:bg-bottom dark:border-b dark:border-slate-100/5"></div>
+      <div className="absolute inset-0  bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
+        <div className="absolute inset-0 bg-grid-slate-900/[0.04]  dark:bg-grid-slate-400/[0.05]  dark:border-slate-100/5"></div>
       </div>
       <Header />
       <div className="container mx-auto">

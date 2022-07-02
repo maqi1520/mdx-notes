@@ -6,8 +6,7 @@ import defaultContent from 'raw-loader!./index.md'
 
 export async function getDefaultContent() {
   const html = defaultContent
-  const css = `
-.list-card {
+  const css = `.list-card {
   margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 15px;
@@ -60,7 +59,7 @@ export async function getDefaultContent() {
 .list-card ul li {
   font-size: 14px;
   margin-bottom: 15px;
-  color:rgb(14 165 233);
+  color: rgb(14 165 233);
 }
 @media print {
   body {
@@ -70,6 +69,23 @@ export async function getDefaultContent() {
     line-height: 1.5;
   }
 }
+
+.snowfall {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.snowfall-bar {
+  flex-basis: 0;
+  flex-grow: 1;
+  margin: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  font-size: 10px;
+  color: #eff6ff;
+}  
 `
   const config = `function List({ children, title }) {
   return (
@@ -84,8 +100,28 @@ export async function getDefaultContent() {
   )
 }
 
+function Chart({ data = [], color }) {
+  return (
+    <div className="snowfall">
+      {data.map((d, i) => (
+        <div
+          key={i}
+          className="snowfall-bar"
+          style={{
+            height: d * 20,
+            backgroundColor: color,
+          }}
+        >
+          <span>{i + 1}月</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default {
   List,
+  Chart,
 }`
 
   // let { css: compiledCss } = await postcss([
