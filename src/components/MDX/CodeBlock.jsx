@@ -40,6 +40,7 @@ function CodeBlock(props) {
             ...style,
             textAlign: 'left',
             margin: 0,
+            padding: 0,
             overflow: 'scroll',
             background: 'none',
           }}

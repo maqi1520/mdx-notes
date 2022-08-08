@@ -14,7 +14,7 @@
 
 Chart 这个组件定义在 config 中
 
-```js
+```jsx
 function Chart({ data = [], color }) {
   return (
     <div className="snowfall">
