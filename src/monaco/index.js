@@ -196,6 +196,132 @@ export function createMonacoEditor({ container, initialContent, onChange }) {
   })
   disposables.push(editor)
 
+  editor.addAction({
+    id: 'mdx-link',
+    label: '链接',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 0,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        { range: ed.getSelection(), text: `[${text}](url)` },
+      ])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-blod',
+    label: '粗体',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 0,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        { range: ed.getSelection(), text: `**${text}**` },
+      ])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-delete',
+    label: '删除线',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyU],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 0,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        { range: ed.getSelection(), text: `~~${text}~~` },
+      ])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-italic',
+    label: '倾斜',
+    keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 0,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [{ range: ed.getSelection(), text: `*${text}*` }])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-code',
+    label: '代码',
+    keybindings: [
+      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyC,
+    ],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 1,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        { range: ed.getSelection(), text: '```\n' + text + '\n```' },
+      ])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-inline-code',
+    label: '行内代码',
+    keybindings: [
+      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyV,
+    ],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 1,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        { range: ed.getSelection(), text: '`' + text + '`' },
+      ])
+    },
+  })
+
+  editor.addAction({
+    id: 'mdx-table',
+    label: '表格',
+    keybindings: [
+      monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyT,
+    ],
+    // A precondition for this action.
+    precondition: null,
+    keybindingContext: null,
+    contextMenuGroupId: '1_modification',
+    contextMenuOrder: 1,
+    run: function (ed) {
+      let text = ed.getModel().getValueInRange(ed.getSelection())
+      editor.executeEdits('', [
+        {
+          range: ed.getSelection(),
+          text: `|  ${text}  |     |\n| --- | --- |\n|     |     |`,
+        },
+      ])
+    },
+  })
+
   setupKeybindings(editor)
 
   function triggerOnChange(id, newContent) {
