@@ -74,13 +74,18 @@
   flex-direction: column;
   justify-content: space-around;
   word-break: break-all;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 600;
   width: calc(100% - 96px);
   color: #718096;
 }
 
-.qrcode-img img {
+.qrcode-url {
+  font-weight: normal;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light,
+    'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.qrcode-block .qrcode-img img {
   border: 0;
 }
 .qrcode-img {
@@ -93,6 +98,7 @@
   font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light,
     'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+
 .markdown-body th,
 .markdown-body td {
   border: 1px solid #ccc;
