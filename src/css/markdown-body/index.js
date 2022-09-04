@@ -8,7 +8,7 @@ import channingCyan from '!!raw-loader!./channing-cyan.css'
 import condensedNightPurple from '!!raw-loader!./condensed-night-purple.css'
 import jzman from '!!raw-loader!./jzman.css'
 import devuiBlue from '!!raw-loader!./devui-blue.css'
-//import geekBlack from '!!raw-loader!./geek-black.css'
+import geekBlack from '!!raw-loader!./geek-black.css'
 
 export const themes = {
   default: {
@@ -50,5 +50,9 @@ export const themes = {
   devuiBlue: {
     name: '科技蓝',
     css: devuiBlue,
+  },
+  geekBlack: {
+    name: '极客黑',
+    css: geekBlack,
   },
 }

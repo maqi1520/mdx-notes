@@ -95,8 +95,7 @@
   flex-shrink: 0;
 }
 .markdown-body {
-  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light,
-    'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
 }
 
 .markdown-body th,

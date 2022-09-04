@@ -2,8 +2,6 @@
 
 /*全局属性*/
 .markdown-body {
-  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light,
-    'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   color: rgb(30 41 59);
   line-height: 1.6;
   word-spacing: 0px;
@@ -219,6 +217,10 @@
   max-width: 100%;
   border-radius: 10px;
   border: 1px solid rgb(229, 231, 235);
+}
+.qrcode-block img {
+  border-radius: 0;
+  border: 0;
 }
 
 /*图片*/
