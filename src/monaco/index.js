@@ -134,7 +134,7 @@ export function createMonacoEditor({ container, initialContent, onChange }) {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      { foreground: getColor('slate.50') },
+      { foreground: getColor('gray.300') },
       ...makeTheme({
         comment: 'slate.400',
         string: 'sky.300',
@@ -147,15 +147,14 @@ export function createMonacoEditor({ container, initialContent, onChange }) {
         'delimiter.html': 'slate.500',
         // JS
         'keyword.js': 'slate.300',
-        'identifier.js': 'slate.50',
         // CSS
         'attribute.name.css': 'sky.300',
-        'attribute.value.unit.css': 'teal.200',
-        'attribute.value.number.css': 'slate.50',
-        'attribute.value.css': 'slate.50',
-        'attribute.value.hex.css': 'slate.50',
+        'attribute.value.unit.css': 'teal.400',
+        'attribute.value.number.css': 'teal.500',
+        'attribute.value.css': 'slate.300',
+        'attribute.value.hex.css': 'slate.300',
         'keyword.css': 'slate.300',
-        'function.css': 'teal.200',
+        'function.css': 'slate.200',
         'pseudo.css': 'slate.300',
         'variable.css': 'slate.50',
       }),
