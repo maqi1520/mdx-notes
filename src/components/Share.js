@@ -31,7 +31,7 @@ export function Share({
     if (state === 'loading') {
       if (onShareStart) onShareStart()
       window
-        .fetch(process.env.NEXT_PUBLIC_API_URL + '/api/share', {
+        .fetch('/api/share', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
