@@ -163,10 +163,13 @@ export default function Pen({
             ...size,
             min,
             max,
-            current: Math.max(
-              Math.min(Math.round(windowSize * size.percentage), max),
-              min
-            ),
+            current:
+              size.layout === 'editor'
+                ? document.documentElement.clientWidth
+                : Math.max(
+                    Math.min(Math.round(windowSize * size.percentage), max),
+                    min
+                  ),
           }
         }
 
@@ -189,7 +192,7 @@ export default function Pen({
     return () => {
       window.removeEventListener('resize', updateSize)
     }
-  }, [isLg, setSize, size.layout, activePane])
+  }, [isLg, size.layout, activePane])
 
   useEffect(() => {
     if (isLg) {
@@ -269,7 +272,6 @@ export default function Pen({
   return (
     <>
       <Header
-        onChangeLayout={(layout) => setSize((size) => ({ ...size, layout }))}
         rightbtn={
           <>
             <ThemeDropdown
@@ -293,16 +295,18 @@ export default function Pen({
                 <path d="M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z" />
               </HeaderButton>
               <HeaderButton
-                isActive={size.layout === 'horizontal'}
-                label="Switch to horizontal split layout"
+                isActive={size.layout === 'editor'}
+                label="Switch to preview-only layout"
                 onClick={() =>
-                  setSize((size) => ({ ...size, layout: 'horizontal' }))
+                  setSize((size) => ({
+                    ...size,
+                    layout: 'editor',
+                  }))
                 }
               >
-                <path d="M23 11V3H3v8h20Z" strokeWidth="0" />
                 <path
-                  d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2ZM22 11H4"
                   fill="none"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                 />
               </HeaderButton>
               <HeaderButton
@@ -405,7 +409,9 @@ export default function Pen({
               <div className="absolute inset-0 w-full h-full top-12 lg:top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-black">
                 <Preview
                   ref={previewRef}
-                  responsiveDesignMode={isLg && responsiveDesignMode}
+                  responsiveDesignMode={
+                    size.layout !== 'editor' && isLg && responsiveDesignMode
+                  }
                   responsiveSize={responsiveSize}
                   onChangeResponsiveSize={setResponsiveSize}
                   iframeClassName={resizing ? 'pointer-events-none' : ''}

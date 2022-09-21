@@ -24,7 +24,7 @@ export function Header({ children, rightbtn }) {
             <span aria-label="火" role="img">
               🔥
             </span>
-            模板
+            <span className="ml-1">模板</span>
           </a>
         </Link>
         <HeaderButton
