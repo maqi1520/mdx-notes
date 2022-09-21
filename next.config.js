@@ -2,17 +2,12 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const path = require('path')
 
 module.exports = {
-  async headers() {
+  async rewrites(){
     return [
       {
-        source: '/plugins/:path*',
-        headers: [
-          {
-            key: 'cache-control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+        source: "/api/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
+      }
     ]
   },
   webpack: (config, { isServer, webpack, dev }) => {
