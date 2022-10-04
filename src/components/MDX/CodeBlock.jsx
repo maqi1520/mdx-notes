@@ -2,6 +2,10 @@ import React from 'react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import theme from 'prism-react-renderer/themes/okaidia'
 
+import Prism from 'prism-react-renderer/prism'
+;(typeof global !== 'undefined' ? global : window).Prism = Prism
+require('prismjs/components/prism-rust')
+
 function CodeBlock(props) {
   const { isMac = true } = props
   const { children = '', className = 'language-js' } = props.children.props
