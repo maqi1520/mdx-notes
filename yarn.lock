@@ -5298,6 +5298,11 @@ which@^1.2.9:
   dependencies:
     isexe "^2.0.0"
 
+word-count@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.npmmirror.com/word-count/-/word-count-0.2.2.tgz#699192fca6829fe936d41cb0d95db9248c570451"
+  integrity sha512-tPRTbQ+nTCPY3F0z1f/y0PX22ScE6l/4/8j9KqA3h77JhlZ/w6cbVS8LIO5Pq/aV96SWBOoiE2IEgzxF0Cn+kA==
+
 word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.npmmirror.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"

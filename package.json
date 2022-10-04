@@ -60,7 +60,8 @@
     "vfile-statistics": "2.0.0",
     "worker-loader": "^3.0.8",
     "git-cz": "^4.9.0",
-    "typeit": "^8.5.4"
+    "typeit": "^8.5.4",
+    "word-count": "^0.2.2"
   },
   "config": {
     "commitizen": {

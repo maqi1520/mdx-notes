@@ -3,6 +3,7 @@ import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
 import { Editor } from './Editor'
 import SplitPane from 'react-split-pane'
+import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
@@ -50,6 +51,7 @@ export default function Pen({
   )
   const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+  const [wordCount, setWordCount] = useState(0)
   const [theme, setTheme] = useState(initialTheme || DEFAULT_THEME)
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
@@ -126,6 +128,7 @@ export default function Pen({
           inject({ css: mdxcss + themes[theme].css + css, html })
         }
       }
+      setWordCount(Count(content.html))
       setIsLoading(false)
     })
   }
@@ -269,6 +272,8 @@ export default function Pen({
     setActiveTab(initialActiveTab)
   }, [initialActiveTab])
 
+  console.log(wordCount)
+
   return (
     <>
       <Header
@@ -365,6 +370,7 @@ export default function Pen({
                   size.layout === 'vertical' && isLg ? size.current : '100%'
                 }
                 isLoading={isLoading}
+                wordCount={wordCount}
                 showPreviewTab={!isLg}
                 activeTab={
                   isLg || activePane === 'editor' ? activeTab : 'preview'

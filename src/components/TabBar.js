@@ -2,7 +2,7 @@ import clsx from 'clsx'
 
 export function TabBar({
   errorMessage,
-
+  wordCount,
   activeTab,
   width,
   isLoading,
@@ -45,7 +45,7 @@ export function TabBar({
           </TabButton>
         )}
       </div>
-      {isLoading && (
+      {isLoading ? (
         <p className="ml-auto">
           <span className="sr-only">Loading</span>
           <svg fill="none" viewBox="0 0 24 24" className="w-4 h-4 animate-spin">
@@ -64,6 +64,10 @@ export function TabBar({
             />
           </svg>
         </p>
+      ) : (
+        <span className="ml-auto text-gray-700  dark:text-gray-300">
+          字数: <strong className="ml-1">{wordCount}</strong>
+        </span>
       )}
       {errorMessage}
     </div>
