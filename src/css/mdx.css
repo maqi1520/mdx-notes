@@ -1,14 +1,11 @@
 /* --- code --- */
-.code__card {
-  margin: 12px 0;
-  background-color: #272822;
-  border-radius: 7px;
-}
-
 .code__tools {
   display: flex;
   align-items: center;
   padding: 12px;
+}
+.markdown-body .code__tools + code {
+  padding-top: 0;
 }
 
 .code__circle {
@@ -95,7 +92,9 @@
   flex-shrink: 0;
 }
 .markdown-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
+    Arial, sans-serif;
 }
 
 .markdown-body th,

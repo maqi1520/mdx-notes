@@ -77,13 +77,9 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
   const handleExportPDF = () => {
     let md = editorRef.current.getValue('html')
     if (md) {
-      const title = md.split('\n')[0].replace('# ', '').slice(0, 50)
-      document.title = title
-
       previewRef.current.contentWindow.postMessage(
         {
           print: true,
-          title,
         },
         '*'
       )

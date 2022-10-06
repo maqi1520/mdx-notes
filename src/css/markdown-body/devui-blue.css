@@ -80,7 +80,6 @@
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  display: flex;
   position: relative;
   line-height: 1.75;
 }
@@ -91,7 +90,7 @@
   word-break: normal;
   display: block;
   flex: none;
-  padding: 0 12px 12px 12px;
+  padding: 12px;
 }
 .markdown-body a,
 .link {

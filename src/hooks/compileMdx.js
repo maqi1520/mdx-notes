@@ -16,7 +16,9 @@ import { VFileMessage } from 'vfile-message'
 import rehypeDivToSection from '../components/utils/rehype-div'
 import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
-export const compileMdx = async (jsx, mdx) => {
+export const Context = React.createContext({ isMac: true })
+
+export const compileMdx = async (jsx, mdx, isMac) => {
   let err = null
   let html = null
   let RootComponents = {}
@@ -79,9 +81,11 @@ export const compileMdx = async (jsx, mdx) => {
       useMDXComponents,
     })
     html = ReactDOMServer.renderToString(
-      <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
-        <Content />
-      </MDXProvider>
+      <Context.Provider value={{ isMac }}>
+        <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
+          <Content />
+        </MDXProvider>
+      </Context.Provider>
     )
   } catch (error) {
     const message =

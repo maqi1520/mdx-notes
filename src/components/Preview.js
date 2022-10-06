@@ -360,12 +360,8 @@ export const Preview = forwardRef(
                     <style type="text/css" media="print">
                     @page {
                       size: A4;
-                      margin:0;
                     }
-                    body{
-                      padding:0;
-                    }
-                    p,.code__card,table,img {
+                    p,table,img {
                       page-break-inside: avoid;
                     }
                     body {-webkit-print-color-adjust: exact;}
@@ -377,7 +373,6 @@ export const Preview = forwardRef(
                     var visible = false
                     window.addEventListener('message', (e) => {
                       if (typeof e.data.print  !== 'undefined') {
-                        document.title=e.data.title;
                         window.print();
                         return
                       }

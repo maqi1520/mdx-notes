@@ -5,6 +5,7 @@ import { Editor } from './Editor'
 import SplitPane from 'react-split-pane'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
+import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
@@ -16,12 +17,11 @@ import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
-import mdxcss from '../css/mdx'
+import { baseCss, codeThemes } from '../css/mdx'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
 const RESIZER_SIZE = 1
-const DEFAULT_THEME = localStorage.getItem('markdownTheme') || 'default'
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen({
@@ -52,7 +52,11 @@ export default function Pen({
   const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
-  const [theme, setTheme] = useState(initialTheme || DEFAULT_THEME)
+  const [theme, setTheme] = useLocalStorage('theme', {
+    markdownTheme: 'default',
+    codeTheme: 'default',
+    isMac: true,
+  })
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
   )
@@ -113,7 +117,7 @@ export default function Pen({
       JSON.stringify(content)
     )
     setIsLoading(true)
-    compileMdx(content.config, content.html).then((res) => {
+    compileMdx(content.config, content.html, theme.isMac).then((res) => {
       if (res.err) {
         setError(res.err)
       } else {
@@ -125,7 +129,14 @@ export default function Pen({
         if (css || html) {
           //编译后的html保存到ref 中
           htmlRef.current = html
-          inject({ css: mdxcss + themes[theme].css + css, html })
+          inject({
+            css:
+              baseCss +
+              themes[theme.markdownTheme].css +
+              codeThemes[theme.codeTheme].css +
+              css,
+            html,
+          })
         }
       }
       setWordCount(Count(content.html))
@@ -249,16 +260,16 @@ export default function Pen({
     [size.layout, responsiveDesignMode, responsiveSize]
   )
 
-  const onMarkdownThemeChange = useCallback(
-    (value) => {
-      inject({
-        css: themes[value].css + mdxcss + editorRef.current.getValue('css'),
+  useEffect(() => {
+    if (editorRef.current) {
+      console.log(123)
+      compileNow({
+        html: editorRef.current.getValue('html'),
+        css: editorRef.current.getValue('css'),
+        config: editorRef.current.getValue('config'),
       })
-      window.localStorage.setItem('markdownTheme', value)
-      setTheme(value)
-    },
-    [inject]
-  )
+    }
+  }, [theme])
 
   // initial state resets
   useEffect(() => {
@@ -272,8 +283,6 @@ export default function Pen({
     setActiveTab(initialActiveTab)
   }, [initialActiveTab])
 
-  console.log(wordCount)
-
   return (
     <>
       <Header
@@ -281,8 +290,9 @@ export default function Pen({
           <>
             <ThemeDropdown
               value={theme}
-              onChange={onMarkdownThemeChange}
+              onChange={setTheme}
               themes={themes}
+              codeThemes={codeThemes}
             />
 
             <div className="hidden lg:flex items-center ml-2 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
@@ -355,7 +365,11 @@ export default function Pen({
           />
           <CopyBtn
             htmlRef={htmlRef}
-            baseCss={themes[theme].css + mdxcss}
+            baseCss={
+              baseCss +
+              themes[theme.markdownTheme].css +
+              codeThemes[theme.codeTheme].css
+            }
             editorRef={editorRef}
             previewRef={previewRef}
           />
