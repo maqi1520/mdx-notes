@@ -3,18 +3,19 @@ import TypeIt from 'typeit'
 
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
-import mdxcss from '../css/mdx'
+import { codeThemes, baseCss } from '../css/mdx'
 import { useDebouncedState } from '../hooks/useDebouncedState'
-
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
 
-const DEFAULT_THEME = localStorage.getItem('markdownTheme') || 'default'
+const theme = {
+  markdownTheme: 'default',
+  codeTheme: 'okaidia',
+  isMac: true,
+}
 
 export default function Hero({ children }) {
   const [code, setCode] = useState()
-
-  const [theme, setTheme] = useState(DEFAULT_THEME)
   const ref = useRef()
 
   const [error, setError, setErrorImmediate] = useDebouncedState(
@@ -166,7 +167,11 @@ export default function Hero({ children }) {
         color: rgba(0,0,0,.3);
     }`
           inject({
-            css: themes[theme].css + mdxcss + css + '',
+            css:
+              baseCss +
+              themes[theme.markdownTheme].css +
+              codeThemes[theme.codeTheme].css +
+              css,
             html: header + html,
           })
         }
