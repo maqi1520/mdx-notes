@@ -43,8 +43,7 @@ export default function Templates({ data }) {
               <p className="pt-2 text-xs font-medium">
                 <Link href={'/' + item.docId}>
                   <a className="mr-1 underline">{item.creator}</a>
-                </Link>{' '}
-                ·{' '}
+                </Link>
                 <span className="mx-1">
                   {new Date(item.createTime).toLocaleDateString('zh-CN', {
                     year: 'numeric',

@@ -10,33 +10,43 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
           <>
             <Popover.Button
               className={clsx(
-                'group inline-flex px-3 py-3 justify-center text-gray-600 dark:text-gray-200  content-center ml-4 sm:ml-0 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400  focus-visible:ring-opacity-75',
-                {
-                  'text-opacity-90': open,
-                }
+                'block ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4',
+                'group focus:outline-none focus-visible:ring-2 rounded-md',
+
+                open
+                  ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
+                  : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500'
               )}
             >
-              <span>设置</span>
+              <span className="sr-only">设置</span>
               <svg
-                className={clsx(
-                  'ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-opacity-80',
-                  {
-                    'text-opacity-70': open,
-                  }
-                )}
-                aria-hidden="true"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                width={36}
+                height={36}
+                viewBox="-6 -6 36 36"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={
+                  open
+                    ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
+                    : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400'
+                }
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
             </Popover.Button>
+
             <Transition
               as={Fragment}
               enter="transition ease-out duration-200"

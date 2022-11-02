@@ -17,14 +17,31 @@ export function Header({ children, rightbtn }) {
         {rightbtn}
 
         {rightbtn && (
-          <div className="hidden sm:block mx-2 lg:mx-2 w-px h-6 bg-gray-200 dark:bg-gray-700" />
+          <div className="block mx-2 lg:mx-2 w-px h-6 bg-gray-200 dark:bg-gray-700" />
         )}
         <Link href="/templates">
-          <a className="px-3 py-3 flex justify-center text-gray-600 dark:text-gray-200 content-center ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
-            <span aria-label="火" role="img">
-              🔥
-            </span>
-            <span className="ml-1">模板</span>
+          <a>
+            <HeaderButton
+              className="block ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4"
+              naturalWidth={24}
+              naturalHeight={24}
+              width={36}
+              height={36}
+              label={
+                <>
+                  <span>模板</span>
+                </>
+              }
+              iconClassName="stroke-sky-500 fill-sky-100 group-hover:stroke-sky-600 dark:stroke-gray-400 dark:fill-gray-400/20 dark:group-hover:stroke-gray-300"
+              ringClassName="focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+              />
+            </HeaderButton>
           </a>
         </Link>
         <HeaderButton

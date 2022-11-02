@@ -180,7 +180,7 @@ export default function Hero({ children }) {
   }, [code])
 
   return (
-    <div className="grid grid-cols-2 relative">
+    <div className="grid-cols-1 grid lg:grid-cols-2 relative">
       <div className="mx-auto h-[712px] w-full">
         {children}
         <div className="terminal bg-slate-800  dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10">
@@ -193,7 +193,7 @@ export default function Hero({ children }) {
         </div>
       </div>
 
-      <div className="mx-auto h-[712px] w-[350px] bg-black rounded-[60px] overflow-hidden border-[14px] border-black relative ring ring-purple-400 shadow-xl">
+      <div className="mx-auto w-full h-[712px] md:w-[350px] bg-black rounded-[60px] overflow-hidden border-[14px] border-black relative ring ring-purple-400 shadow-xl">
         <div className="relative bg-gray-50 h-full flex flex-col">
           <div className="absolute top-0 inset-x-0">
             <div className="mx-auto bg-black h-6 w-40 rounded-b-3xl"></div>

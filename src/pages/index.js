@@ -17,7 +17,7 @@ export default function page() {
         <div className="absolute inset-0 bg-grid-slate-900/[0.04]  dark:bg-grid-slate-400/[0.05]  dark:border-slate-100/5"></div>
       </div>
       <Header />
-      <div className="container mx-auto">
+      <div className="container mx-auto p-5">
         <Hero>
           <div className="mt-12 text-center">
             <div className="mt-12 text-3xl">
