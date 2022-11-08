@@ -1,13 +1,28 @@
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const path = require('path')
 
+const headers = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+]
+
 module.exports = {
-  async rewrites(){
+  async headers() {
     return [
       {
-        source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
-      }
+        source: '/fonts/(.*)',
+        headers,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+      },
     ]
   },
   webpack: (config, { isServer, webpack, dev }) => {
