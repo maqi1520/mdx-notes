@@ -41,8 +41,6 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
     setState({ state: 'loading' })
     const css = baseCss + editorRef.current.getValue('css')
 
-    //console.log(htmlRef.current)
-
     //将image url 转换为 base64
 
     const $ = cheerio.load(htmlRef.current)

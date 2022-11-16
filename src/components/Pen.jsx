@@ -262,7 +262,6 @@ export default function Pen({
 
   useEffect(() => {
     if (editorRef.current) {
-      console.log(123)
       compileNow({
         html: editorRef.current.getValue('html'),
         css: editorRef.current.getValue('css'),

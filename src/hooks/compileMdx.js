@@ -101,7 +101,6 @@ export const compileMdx = async (jsx, mdx, isMac) => {
       file: 'MDX',
     }
   }
-  console.log(html)
 
   return {
     err,
