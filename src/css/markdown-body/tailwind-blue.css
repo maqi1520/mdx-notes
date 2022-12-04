@@ -239,7 +239,7 @@
 
 /*表格*/
 .markdown-body table {
-  width: 100%;
+  width: auto;
   table-layout: auto;
   text-align: left;
   margin-top: 2em;

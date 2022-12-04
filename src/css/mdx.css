@@ -97,6 +97,19 @@
     Arial, sans-serif;
 }
 
+/*表格*/
+.markdown-body table {
+  display: table;
+  text-align: left;
+  width: auto;
+}
+
+/* 表格最小列宽4个汉字 */
+.markdown-body table tr th:nth-of-type(n),
+.markdown-body table tr td:nth-of-type(n) {
+  min-width: 85px;
+}
+
 .markdown-body th,
 .markdown-body td {
   border: 1px solid #ccc;
