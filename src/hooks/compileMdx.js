@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypePrismPlus from 'rehype-prism-plus'
 import remarkToc from 'remark-toc'
 import ReactDOMServer from 'react-dom/server'
 import { validateReactComponent } from '../utils/validateJavaScript'
@@ -18,7 +19,7 @@ import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
 export const Context = React.createContext({ isMac: true })
 
-export const compileMdx = async (jsx, mdx, isMac) => {
+export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
   let err = null
   let html = null
   let RootComponents = {}
@@ -76,14 +77,26 @@ export const compileMdx = async (jsx, mdx, isMac) => {
       format: 'mdx',
       useDynamicImport: true,
       remarkPlugins,
-      rehypePlugins: [rehypeDivToSection, reHypeLinkFoot, rehypeKatex],
+      rehypePlugins: [
+        rehypeDivToSection,
+        reHypeLinkFoot,
+        rehypeKatex,
+        [rehypePrismPlus, { ignoreMissing: true }],
+      ],
       //recmaPlugins: [capture('esast')],
       useMDXComponents,
     })
+    console.log(codeTheme)
     html = ReactDOMServer.renderToString(
-      <Context.Provider value={{ isMac }}>
+      <Context.Provider value={{ isMac, codeTheme }}>
         <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
-          <Content />
+          <section
+            data-tool="mdx 编辑器"
+            data-website="https://editor.runjs.cool/"
+            className={codeTheme}
+          >
+            <Content />
+          </section>
         </MDXProvider>
       </Context.Provider>
     )

@@ -28,28 +28,6 @@
 .green {
   background-color: #00ca4e;
 }
-.inserted {
-  background-color: rgba(45, 212, 191, 0.15);
-  margin: 0 -12px;
-  padding: 0 12px;
-  display: block;
-  min-width: calc(100% + 24px);
-}
-.inserted:before {
-  content: '+';
-}
-.deleted {
-  background-color: rgba(244, 63, 94, 0.15);
-  margin: 0 -12px;
-  padding: 0 12px;
-  display: block;
-  min-width: calc(100% + 24px);
-  /* 拷贝到微信必须使用 span 标签，不然缩进会消失 */
-}
-.deleted:before {
-  content: '-';
-}
-
 .qrcode-block {
   border: 1px solid #efefef;
   margin-top: 1rem;
@@ -150,4 +128,69 @@
   margin: 0;
   line-height: 26px;
   word-break: break-all;
+}
+
+.markdown-body code {
+  max-width: unset !important;
+}
+
+.markdown-body pre[class*='language-'] {
+  padding: 0;
+}
+pre {
+  overflow-x: auto;
+}
+
+/**
+ * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
+ * 1. Make the element just wide enough to fit its content.
+ * 2. Always fill the visible space in .code-highlight.
+ */
+.code-highlight {
+  float: left; /* 1 */
+  min-width: 100%; /* 2 */
+}
+
+.code-line {
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-left: 4px solid rgba(0, 0, 0, 0); /* Set placeholder for highlight accent border color to transparent */
+}
+
+.code-line.inserted {
+  background-color: rgba(16, 185, 129, 0.2); /* Set inserted line (+) color */
+}
+
+.code-line.deleted {
+  background-color: rgba(239, 68, 68, 0.2); /* Set deleted line (-) color */
+}
+
+.highlight-line {
+  margin-left: -16px;
+  margin-right: -16px;
+  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color */
+}
+
+.line-number::before {
+  display: inline-block;
+  width: 1rem;
+  text-align: right;
+  margin-right: 16px;
+  margin-left: -8px;
+  color: rgb(156, 163, 175); /* Line number color */
+  content: attr(line);
+}
+
+.solarizedlight .highlight-line {
+  background-color: rgba(255, 193, 7, 0.5);
+}
+.coy .highlight-line,
+.default .highlight-line {
+  background-color: #fff8c5;
+}
+.materialLight .highlight-line {
+  background-color: rgba(55, 65, 81, 0.2); /* Set highlight bg color */
 }

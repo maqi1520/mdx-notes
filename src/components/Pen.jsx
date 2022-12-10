@@ -117,7 +117,12 @@ export default function Pen({
       JSON.stringify(content)
     )
     setIsLoading(true)
-    compileMdx(content.config, content.html, theme.isMac).then((res) => {
+    compileMdx(
+      content.config,
+      content.html,
+      theme.isMac,
+      theme.codeTheme
+    ).then((res) => {
       if (res.err) {
         setError(res.err)
       } else {
@@ -136,6 +141,7 @@ export default function Pen({
               codeThemes[theme.codeTheme].css +
               css,
             html,
+            codeTheme: theme.codeTheme,
           })
         }
       }
