@@ -86,7 +86,6 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
       //recmaPlugins: [capture('esast')],
       useMDXComponents,
     })
-    console.log(codeTheme)
     html = ReactDOMServer.renderToString(
       <Context.Provider value={{ isMac, codeTheme }}>
         <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>

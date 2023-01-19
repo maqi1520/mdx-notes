@@ -15,9 +15,8 @@
 /*段落*/
 .markdown-body p {
   font-size: 16px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  margin: 0;
+  margin-top: 16px;
+  margin-bottom: 16px;
   line-height: 26px;
   color: rgb(30 41 59);
 }
@@ -56,23 +55,6 @@
   font-size: 16px;
 }
 
-.markdown-body h1 .prefix,
-.markdown-body h2 .prefix,
-.markdown-body h3 .prefix,
-.markdown-body h4 .prefix,
-.markdown-body h5 .prefix,
-.markdown-body h6 .prefix {
-  display: none;
-}
-
-.markdown-body h1 .suffix .markdown-body h2 .suffix,
-.markdown-body h3 .suffix,
-.markdown-body h4 .suffix,
-.markdown-body h5 .suffix,
-.markdown-body h6 .suffix {
-  display: none;
-}
-
 /*列表*/
 .markdown-body ul,
 .markdown-body ol {
@@ -103,35 +85,29 @@
 
 /*引用*/
 .markdown-body blockquote {
-  border: none;
-}
-
-.markdown-body blockquote {
-  display: block;
-  font-size: 0.9em;
-  overflow: auto;
-  background: rgb(240 249 255);
-  padding: 18px;
-  border-radius: 18px;
-  margin: 22px 0;
+  font-weight: 500;
+  font-style: italic;
+  background-color: rgb(241 245 249);
+  border-left-width: 4px;
+  border-left-color: #e2e8f0;
+  border-left-style: solid;
+  quotes: '\201C''\201D''\2018''\2019';
+  margin: 0;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 8px 8px 8px 12px;
 }
 
 .markdown-body blockquote h2,
 .markdown-body blockquote h3,
 .markdown-body blockquote h4,
 .markdown-body blockquote strong {
-  color: rgb(12 74 110);
+  color: rgb(30 41 59);
 }
 .markdown-body blockquote p {
   margin: 0px;
-  color: rgb(7 89 133);
-  line-height: 26px;
-}
-
-.markdown-body .table-of-contents a {
-  border: none;
   color: rgb(30 41 59);
-  font-weight: normal;
+  line-height: 26px;
 }
 
 /*链接*/
@@ -212,19 +188,19 @@
 /*图片*/
 .markdown-body img {
   display: block;
-  margin: 0 auto;
   max-width: 100%;
-  border-radius: 10px;
-  border: 1px solid rgb(229, 231, 235);
+  border-radius: 8px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 0px 4px;
 }
 .qrcode-block img {
   border-radius: 0;
-  border: 0;
+  box-shadow: none;
 }
 
 /*图片*/
 .markdown-body figure {
   margin: 0;
+  padding: 0 5px;
   margin-top: 10px;
   margin-bottom: 10px;
 }

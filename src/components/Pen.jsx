@@ -52,7 +52,7 @@ export default function Pen({
   const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
-  const [theme, setTheme] = useLocalStorage('theme', {
+  const [theme, setTheme] = useLocalStorage('editor-theme', {
     markdownTheme: 'default',
     codeTheme: 'default',
     isMac: true,
@@ -117,37 +117,34 @@ export default function Pen({
       JSON.stringify(content)
     )
     setIsLoading(true)
-    compileMdx(
-      content.config,
-      content.html,
-      theme.isMac,
-      theme.codeTheme
-    ).then((res) => {
-      if (res.err) {
-        setError(res.err)
-      } else {
-        setErrorImmediate()
-      }
-      if (res.html) {
-        const { html } = res
-        const { css } = content
-        if (css || html) {
-          //编译后的html保存到ref 中
-          htmlRef.current = html
-          inject({
-            css:
-              baseCss +
-              themes[theme.markdownTheme].css +
-              codeThemes[theme.codeTheme].css +
-              css,
-            html,
-            codeTheme: theme.codeTheme,
-          })
+    compileMdx(content.config, content.html, theme.isMac, theme.codeTheme).then(
+      (res) => {
+        if (res.err) {
+          setError(res.err)
+        } else {
+          setErrorImmediate()
         }
+        if (res.html) {
+          const { html } = res
+          const { css } = content
+          if (css || html) {
+            //编译后的html保存到ref 中
+            htmlRef.current = html
+            inject({
+              css:
+                baseCss +
+                themes[theme.markdownTheme].css +
+                codeThemes[theme.codeTheme].css +
+                css,
+              html,
+              codeTheme: theme.codeTheme,
+            })
+          }
+        }
+        setWordCount(Count(content.html))
+        setIsLoading(false)
       }
-      setWordCount(Count(content.html))
-      setIsLoading(false)
-    })
+    )
   }
 
   const compile = useCallback(debounce(compileNow, 200), [theme])
