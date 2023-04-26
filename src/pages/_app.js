@@ -1,6 +1,7 @@
 import '../css/main.css'
 import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
+import { Analytics } from '@vercel/analytics/react'
 
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
@@ -63,6 +64,7 @@ export default function App({ Component, pageProps }) {
         <meta name="twitter:description" content={DESCRIPTION} />
       </Head>
       <Component {...pageProps} />
+      <Analytics />
     </>
   )
 }
