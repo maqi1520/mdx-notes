@@ -1,17 +1,27 @@
-//https://3d3b5a2e-dbe3-47da-ae60-53126d4e78d2.bspapp.com/api/templates
-
 import React from 'react'
 import { getTemplates } from '../utils/database'
 import Link from 'next/link'
+import Error from 'next/error'
+import { useAsync } from 'react-use'
 import { Header } from '../components/Header'
 
-export default function Templates({ data }) {
+export default function Templates() {
+  const { error, value } = useAsync(() =>
+    getTemplates({
+      action: 'template',
+      search: '',
+    })
+  )
+  if (error) {
+    return <Error statusCode={500} />
+  }
+
   return (
     <>
       <Header></Header>
       <section className="w-full px-5 py-6 mx-auto space-y-5 sm:py-8 md:py-12 sm:space-y-8 md:space-y-16 max-w-7xl">
         <div className="grid grid-cols-12 pb-10 sm:px-5 gap-x-8 gap-y-16">
-          {data.map((item) => (
+          {value?.data.map((item) => (
             <div
               key={item._id}
               className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
@@ -58,26 +68,4 @@ export default function Templates({ data }) {
       </section>
     </>
   )
-}
-
-export async function getServerSideProps({ params, res, query }) {
-  try {
-    const res = await getTemplates({
-      action: 'template',
-      search: query.search,
-    })
-
-    return {
-      props: {
-        data: res.data,
-        hasmore: res.hasMore,
-      },
-    }
-  } catch (error) {
-    return {
-      props: {
-        errorCode: error.status || 500,
-      },
-    }
-  }
 }

@@ -9,6 +9,7 @@ const headers = [
 ]
 
 module.exports = {
+  output: 'export',
   async headers() {
     return [
       {
