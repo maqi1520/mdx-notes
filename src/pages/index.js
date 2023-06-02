@@ -4,7 +4,7 @@ import React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
-import { Header } from '../components/Header'
+import Header from '../components/Header'
 
 const Hero = dynamic(() => import('../components/Hero'), {
   ssr: false,

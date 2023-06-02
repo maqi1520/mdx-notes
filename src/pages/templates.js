@@ -3,7 +3,7 @@ import { getTemplates } from '../utils/database'
 import Link from 'next/link'
 import Error from 'next/error'
 import { useAsync } from 'react-use'
-import { Header } from '../components/Header'
+import Header from '../components/Header'
 
 export default function Templates() {
   const { error, value } = useAsync(() =>

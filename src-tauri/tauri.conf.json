@@ -12,7 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "editor.runjs.cool",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -58,8 +58,10 @@
         "fullscreen": false,
         "height": 780,
         "resizable": true,
-        "title": "MDX Editor",
-        "width": 1200
+        "title": "",
+        "width": 1200,
+        "url": "/create",
+        "titleBarStyle": "Overlay"
       }
     ]
   }

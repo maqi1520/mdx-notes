@@ -82,7 +82,7 @@ export async function getDefaultContent() {
   margin: 4px;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   font-size: 10px;
   color: #eff6ff;
 }  

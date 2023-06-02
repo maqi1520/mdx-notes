@@ -289,6 +289,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tauri-apps/api@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.npmmirror.com/@tauri-apps/api/-/api-1.3.0.tgz#d0c853ab2cc7506bd826c5f7f260c67c7c15def5"
+  integrity sha512-AH+3FonkKZNtfRtGrObY38PrzEj4d+1emCbwNGu0V2ENbXjlLHMZQlUh+Bhu/CRmjaIwZMGJ3yFvWaZZgTHoog==
+
 "@tauri-apps/cli-darwin-arm64@1.3.1":
   version "1.3.1"
   resolved "https://registry.npmmirror.com/@tauri-apps/cli-darwin-arm64/-/cli-darwin-arm64-1.3.1.tgz#ef0fe290e0a6e3e53fa2cc4f1a72a0c87921427c"

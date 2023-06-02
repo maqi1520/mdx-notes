@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 import { sizeToObject } from '../utils/size'
@@ -17,6 +17,24 @@ export default function App() {
   const query = router.query
   const [errorCode, setErrorCode] = useState()
   const [initialContent, setContent] = useState({})
+  const [filePath, setFilePath] = useState('')
+  // const handleDrop = useCallback(async () => {
+  //   const { listen } = await import('@tauri-apps/api/event')
+  //   const { readTextFile, writeTextFile } = await import('@tauri-apps/api/fs')
+  //   listen('tauri://file-drop', (event) => {
+  //     console.log(event)
+  //     if (/\.mdx?$/.test(event.payload[0])) {
+  //       readTextFile(event.payload[0]).then((res) => {
+  //         setContent((prev) => ({ ...prev, html: res }))
+  //         setFilePath(event.payload[0])
+  //       })
+  //     }
+  //   })
+  // }, [])
+
+  // useEffect(() => {
+  //   handleDrop()
+  // }, [handleDrop])
   useEffect(() => {
     if (!router.isReady) {
       return

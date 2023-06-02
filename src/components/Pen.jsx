@@ -10,7 +10,7 @@ import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
 import Router from 'next/router'
-import { Header, HeaderButton } from './Header'
+import Header, { HeaderButton } from './Header'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
@@ -104,7 +104,7 @@ export default function Pen({
         config: initialContent.config,
       })
     }
-  }, [initialContent.ID])
+  }, [initialContent._id])
 
   const inject = useCallback(async (content) => {
     previewRef.current.contentWindow.postMessage(content, '*')
@@ -113,7 +113,7 @@ export default function Pen({
   async function compileNow(content) {
     cancelSetError()
     localStorage.setItem(
-      initialContent.ID || 'content',
+      initialContent._id || 'content',
       JSON.stringify(content)
     )
     setIsLoading(true)
@@ -445,7 +445,7 @@ export default function Pen({
                       css: initialContent.css,
                       config: initialContent.config,
                       html: initialContent.html,
-                      ID: initialContent.ID,
+                      ID: initialContent._id,
                     })
                   }}
                 />

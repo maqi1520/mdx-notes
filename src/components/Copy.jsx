@@ -3,6 +3,8 @@ import clsx from 'clsx'
 import juice from 'juice/client'
 import cheerio from 'cheerio'
 import { copyHtml, download } from './utils/index'
+import { save } from '@tauri-apps/api/dialog'
+import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -64,12 +66,24 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       setState({ state: 'idle' })
     }, 1000)
   }
-  const handleExport = () => {
+  const handleExport = async () => {
     let md = editorRef.current.getValue('html')
     if (md) {
       const title = md.split('\n')[0].replace('# ', '').slice(0, 50)
+      const filePath = await save({
+        title: '保存',
+        filters: [
+          {
+            name: title,
+            extensions: ['md', 'mdx'],
+          },
+        ],
+      })
 
-      download(title + '.mdx', md)
+      //download(title + '.mdx', md)
+      if (filePath) {
+        await writeTextFile(filePath, md)
+      }
     }
   }
   const handleExportPDF = () => {
