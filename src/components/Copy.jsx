@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import juice from 'juice/client'
 import cheerio from 'cheerio'
 import { copyHtml, download } from './utils/index'
 import { save } from '@tauri-apps/api/dialog'
 import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
+import { WebviewWindow } from '@tauri-apps/api/window'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -86,6 +87,10 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       }
     }
   }
+  useEffect(() => {
+    window.handleCopy = handleClick
+    window.handleExport = handleExport
+  }, [])
   const handleExportPDF = () => {
     let md = editorRef.current.getValue('html')
     if (md) {
@@ -102,7 +107,7 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       <button
         type="button"
         className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3',
+          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 min-w-[76px]',
           {
             'bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40':
               state === 'disabled',
@@ -129,16 +134,16 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       <button
         type="button"
         className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white '
+          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white min-w-[76px]'
         )}
         onClick={handleExport}
       >
-        导出 Markdown
+        存储
       </button>
       <button
         type="button"
         className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white'
+          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white hidden'
         )}
         onClick={handleExportPDF}
       >

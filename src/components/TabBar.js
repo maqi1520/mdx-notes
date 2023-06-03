@@ -66,7 +66,8 @@ export function TabBar({
         </p>
       ) : (
         <span className="ml-auto text-gray-700  dark:text-gray-300">
-          字数: <strong className="ml-1">{wordCount}</strong>
+          <span className="font-mono">字数:</span>
+          <strong className="ml-1">{wordCount}</strong>
         </span>
       )}
       {errorMessage}
