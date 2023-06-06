@@ -29,7 +29,7 @@ jobs:
         with:
           tag_name: '${{ steps.get_version.outputs.VERSION }}'
           # 📝: Edit Name
-          release_name: 'App ${{ steps.get_version.outputs.VERSION }}'
+          release_name: 'MDX Editor ${{ steps.get_version.outputs.VERSION }}'
           body: 'See the assets to download this version and install.'
 
   build-tauri:

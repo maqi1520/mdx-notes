@@ -31,7 +31,7 @@ export function Share({
     if (state === 'loading') {
       if (onShareStart) onShareStart()
       window
-        .fetch('/api/share', {
+        .fetch(process.env.NEXT_PUBLIC_API_URL + '/api/share', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
@@ -56,7 +56,7 @@ export function Share({
             })}`
             if (onShareComplete) onShareComplete(newPath)
             navigator.clipboard
-              .writeText(window.location.origin + newPath)
+              .writeText('https://editor.runjs.cool' + newPath)
               .then(() => {
                 if (current) {
                   setState({ state: 'copied', path: newPath })
