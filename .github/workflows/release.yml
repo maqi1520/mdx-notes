@@ -44,9 +44,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Install Rust stable
         uses: actions-rs/toolchain@v1
@@ -86,11 +86,8 @@ jobs:
 
       - name: Install app dependencies and build it
         run: yarn && yarn build
-
-      - name: fix linux build
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          yarn fix:linux
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - uses: tauri-apps/tauri-action@v0.3
         env:
