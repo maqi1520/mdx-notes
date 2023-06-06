@@ -17,14 +17,6 @@ module.exports = {
       },
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
-      },
-    ]
-  },
   webpack: (config, { isServer, webpack, dev }) => {
     config.module.rules
       .filter((rule) => rule.oneOf)
