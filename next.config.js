@@ -27,8 +27,7 @@ module.exports = {
             r.issuer.and &&
             r.issuer.and.length === 1 &&
             r.issuer.and[0].source &&
-            r.issuer.and[0].source.replace(/\\/g, '') ===
-              path.resolve(process.cwd(), 'src/pages/_app')
+            r.issuer.and[0].source.replace(/\\/g, '').includes('_app')
           ) {
             r.issuer.or = [
               ...r.issuer.and,
