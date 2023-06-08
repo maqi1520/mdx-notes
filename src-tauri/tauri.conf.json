@@ -51,10 +51,7 @@
       "csp": null
     },
     "updater": {
-      "active": false,
-      "endpoints": ["https://maqi1520.github.io/mdx-editor/install.json"],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlBMTQ0QTREN0FDNDFGMApSV1R3UWF6WHBFU2hDWGcrdXF0QXVWdElUSkZjZjFSWWVJWUR2SmhHM0ZHSkJRRy9HYTJEbVUvKwo=%"
+      "active": false
     },
     "windows": [
       {
