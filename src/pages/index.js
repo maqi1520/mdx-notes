@@ -1,38 +1,75 @@
-import React from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Error from 'next/error'
+import { useRouter } from 'next/router'
+import { sizeToObject } from '../utils/size'
+import { getDefaultContent } from '../utils/getDefaultContent'
+import Head from 'next/head'
 
 //import Pen from '../components/Pen'
 import dynamic from 'next/dynamic'
-import Link from 'next/link'
-
-import Header from '../components/Header'
-
-const Hero = dynamic(() => import('../components/Hero'), {
+const Pen = dynamic(() => import('../components/Pen'), {
   ssr: false,
 })
 
-export default function page() {
+export default function App() {
+  const router = useRouter()
+  const query = router.query
+  const [errorCode, setErrorCode] = useState()
+  const [initialContent, setContent] = useState({})
+  useEffect(() => {
+    try {
+      const data = JSON.parse(localStorage.getItem('content'))
+      if (data) {
+        setContent(data)
+      } else {
+        getDefaultContent().then((res) => {
+          setContent(res)
+        })
+      }
+    } catch (error) {}
+  }, [])
+
+  const layoutProps = {
+    initialLayout: ['vertical', 'horizontal', 'preview'].includes(query.layout)
+      ? query.layout
+      : 'vertical',
+    initialResponsiveSize: sizeToObject(query.size),
+    initialActiveTab: ['html', 'css', 'config'].includes(query.file)
+      ? query.file
+      : 'html',
+  }
+  if (errorCode) {
+    return <Error statusCode={errorCode} />
+  }
   return (
-    <div className="relative min-h-full">
-      <div className="absolute inset-0  bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
-        <div className="absolute inset-0 bg-grid-slate-900/[0.04]  dark:bg-grid-slate-400/[0.05]  dark:border-slate-100/5"></div>
-      </div>
-      <Header />
-      <div className="container mx-auto p-5">
-        <Hero>
-          <div className="mt-12 text-center">
-            <div className="mt-12 text-3xl">
-              一个微信排版编辑器，使用 MDX 来排版
-            </div>
-            <div className="mt-12">
-              <Link href="/create">
-                <a className="inline-block mx-auto text-2xl rounded leading-6 py-4 px-6  bg-sky-500 hover:bg-sky-600 text-white">
-                  即刻体验
-                </a>
-              </Link>
-            </div>
-          </div>
-        </Hero>
-      </div>
-    </div>
+    <>
+      <Head>
+        <meta
+          property="og:url"
+          content={`https://editor.runjs.cool${
+            initialContent._id ? `/${initialContent._id}` : ''
+          }`}
+        />
+        <meta
+          name="twitter:card"
+          content={initialContent._id ? 'summary' : 'summary_large_image'}
+        />
+        <meta
+          name="twitter:image"
+          content={
+            initialContent._id
+              ? 'https://editor.runjs.cool/social-square.png'
+              : 'https://editor.runjs.cool/social-card.jpg'
+          }
+        />
+        {!initialContent._id && (
+          <meta
+            property="og:image"
+            content="https://editor.runjs.cool/social-card.jpg"
+          />
+        )}
+      </Head>
+      <Pen {...layoutProps} initialContent={initialContent} />
+    </>
   )
 }

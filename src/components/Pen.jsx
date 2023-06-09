@@ -18,6 +18,8 @@ import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
+import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
+import { listen } from '@tauri-apps/api/event'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -25,7 +27,6 @@ const RESIZER_SIZE = 1
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen({
-  initialTheme,
   initialContent,
   initialPath,
   initialLayout,
@@ -46,6 +47,24 @@ export default function Pen({
   const [error, setError, setErrorImmediate, cancelSetError] =
     useDebouncedState(undefined, 1000)
   const editorRef = useRef()
+
+  const [filePath, setFilePath] = useState('')
+  const handleDrop = useCallback(async () => {
+    listen('tauri://file-drop', (event) => {
+      console.log(event)
+      if (/\.mdx?$/.test(event.payload[0])) {
+        readTextFile(event.payload[0]).then((res) => {
+          editorRef.current.editor.getModel().setValue(res)
+          setFilePath(event.payload[0])
+        })
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    handleDrop()
+  }, [handleDrop])
+
   const [responsiveDesignMode, setResponsiveDesignMode] = useState(
     initialResponsiveSize ? true : false
   )
@@ -97,7 +116,6 @@ export default function Pen({
         },
         '*'
       )
-      inject({ html: initialContent.html })
       compileNow({
         html: initialContent.html,
         css: initialContent.css,
@@ -112,10 +130,6 @@ export default function Pen({
 
   async function compileNow(content) {
     cancelSetError()
-    localStorage.setItem(
-      initialContent._id || 'content',
-      JSON.stringify(content)
-    )
     setIsLoading(true)
     compileMdx(content.config, content.html, theme.isMac, theme.codeTheme).then(
       (res) => {
@@ -147,7 +161,18 @@ export default function Pen({
     )
   }
 
-  const compile = useCallback(debounce(compileNow, 200), [theme])
+  const compile = useCallback(
+    debounce((content) => {
+      compileNow(content)
+      if (filePath) {
+        writeTextFile(filePath, content.html)
+      }
+      if (initialContent._id) {
+        localStorage.setItem(initialContent._id, JSON.stringify(content))
+      }
+    }, 200),
+    [theme, filePath]
+  )
 
   const onChange = useCallback(
     (document, content) => {

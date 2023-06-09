@@ -26,7 +26,7 @@ export const codeThemes = {
     name: 'oneLight',
     css: oneLight,
   },
-  default: {
+  Prism: {
     name: 'Prism',
     css: prism,
   },
@@ -42,7 +42,7 @@ export const codeThemes = {
     name: 'vs',
     css: vs,
   },
-  dark: {
+  default: {
     name: 'Dark',
     css: dark,
   },

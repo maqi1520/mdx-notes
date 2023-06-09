@@ -24,7 +24,7 @@ export default function Templates() {
           {value?.data.map((item) => (
             <div
               key={item._id}
-              className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
+              className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 md:col-span-4"
             >
               <Link href={'/' + item.docId}>
                 <a className="block">
@@ -44,24 +44,12 @@ export default function Templates() {
                     <span>{tag}</span>
                   </div>
                 ))}
-              <h2 className="text-lg font-bold sm:text-xl md:text-2xl">
+              <h2 className="text-lg font-bold md:text-xl">
                 <Link href={'/' + item.docId}>
                   <a>{item.name}</a>
                 </Link>
               </h2>
               <p className="text-sm text-gray-500">{item.desc}</p>
-              <p className="pt-2 text-xs font-medium">
-                <Link href={'/' + item.docId}>
-                  <a className="mr-1 underline">{item.creator}</a>
-                </Link>
-                <span className="mx-1">
-                  {new Date(item.createTime).toLocaleDateString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </span>
-              </p>
             </div>
           ))}
         </div>

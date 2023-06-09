@@ -9,6 +9,7 @@ pub fn get_menu() -> Menu {
         .accelerator("CmdOrCtrl+Shift+C");
     let save_file_item = CustomMenuItem::new("save_file".to_string(), "另存为...")
         .accelerator("CmdOrCtrl+Shift+S");
+    let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "清除缓存...");
     let first_menu = Menu::new()
         .add_native_item(MenuItem::Copy)
         .add_native_item(MenuItem::Cut)
@@ -19,6 +20,7 @@ pub fn get_menu() -> Menu {
         .add_native_item(MenuItem::Separator)
         .add_item(copy_html_item)
         .add_item(save_file_item)
+        .add_item(clear_storage)
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::EnterFullScreen)
         .add_native_item(MenuItem::Minimize)
@@ -41,6 +43,11 @@ pub fn menu_event_handle(event: WindowMenuEvent) {
 
     if event.menu_item_id() == "copy_html" {
         let js_code = "handleCopy();";
+        event.window().eval(js_code).unwrap();
+    }
+
+    if event.menu_item_id() == "clear_storage" {
+        let js_code = "localStorage.clear(); window.location.reload();";
         event.window().eval(js_code).unwrap();
     }
 

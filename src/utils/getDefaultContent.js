@@ -135,6 +135,7 @@ export default {
   // })
 
   return {
+    _id: 'content',
     html,
     css,
     config,

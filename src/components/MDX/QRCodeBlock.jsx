@@ -14,7 +14,7 @@ export default function QRCodeBlock({ url, text, image }) {
           <img
             width="90"
             height="90"
-            src={`/api/qrcode?url=${url}&type=image`}
+            src={`https://editor.runjs.cool/api/qrcode?url=${url}&type=image`}
             alt=""
           />
         </div>

@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "MDX Editor",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "tauri": {
     "allowlist": {
@@ -60,7 +60,6 @@
         "resizable": true,
         "title": "",
         "width": 1200,
-        "url": "/create",
         "titleBarStyle": "Overlay"
       }
     ]

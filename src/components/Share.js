@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 
+const HOSTNAME = 'https://editor.runjs.cool'
+
 export function Share({
   initialPath,
   editorRef,
@@ -56,7 +58,7 @@ export function Share({
             })}`
             if (onShareComplete) onShareComplete(newPath)
             navigator.clipboard
-              .writeText('https://editor.runjs.cool' + newPath)
+              .writeText(HOSTNAME + newPath)
               .then(() => {
                 if (current) {
                   setState({ state: 'copied', path: newPath })
@@ -203,16 +205,14 @@ export function Share({
         <button
           type="button"
           className="flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-          title={`${window.location.origin}${path}`}
+          title={`${HOSTNAME}${path}`}
           onClick={() => {
-            navigator.clipboard
-              .writeText(window.location.origin + path)
-              .then(() => {
-                setState((currentState) => ({
-                  ...currentState,
-                  state: 'copied',
-                }))
-              })
+            navigator.clipboard.writeText(HOSTNAME + path).then(() => {
+              setState((currentState) => ({
+                ...currentState,
+                state: 'copied',
+              }))
+            })
           }}
         >
           <svg
