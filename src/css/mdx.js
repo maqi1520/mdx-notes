@@ -9,6 +9,10 @@ import vs from '!!raw-loader!prism-themes/themes/prism-vs.css'
 import dark from '!!raw-loader!prism-themes/themes/prism-holi-theme.css'
 import materialLight from '!!raw-loader!prism-themes/themes/prism-material-light.css'
 import materialDark from '!!raw-loader!prism-themes/themes/prism-material-dark.css'
+import materialOceanic from '!!raw-loader!prism-themes/themes/prism-material-oceanic.css'
+import atomDark from '!!raw-loader!prism-themes/themes/prism-atom-dark.css'
+import a11yDark from '!!raw-loader!prism-themes/themes/prism-a11y-dark.css'
+import colDarkCold from '!!raw-loader!prism-themes/themes/prism-coldark-cold.css'
 import okaidia from '!!raw-loader!./prism-okaidia.css'
 
 export const baseCss = mdxcss + katex
@@ -22,11 +26,15 @@ export const codeThemes = {
     name: 'Material Dark',
     css: materialDark,
   },
+  materialOceanic: {
+    name: 'Material Oceanic',
+    css: materialOceanic,
+  },
   oneLight: {
     name: 'oneLight',
     css: oneLight,
   },
-  default: {
+  Prism: {
     name: 'Prism',
     css: prism,
   },
@@ -42,13 +50,25 @@ export const codeThemes = {
     name: 'vs',
     css: vs,
   },
-  dark: {
+  default: {
     name: 'Dark',
     css: dark,
   },
   okaidia: {
     name: 'Okaidia',
     css: okaidia,
+  },
+  atomDark: {
+    name: 'Atom Dark',
+    css: atomDark,
+  },
+  a11yDark: {
+    name: 'A11y Dark',
+    css: a11yDark,
+  },
+  colDarkCold: {
+    name: 'Coldark',
+    css: colDarkCold,
   },
   solarizedlight: {
     name: 'Solarized Light',
