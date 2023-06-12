@@ -25,7 +25,7 @@ export default function page() {
             </div>
             <div className="mt-12 flex justify-center space-x-4">
               <Link href="/create">
-                <a className="inline-block text-xl rounded leading-6 py-4 px-6 border-sky-500 border  text-white">
+                <a className="inline-block text-xl rounded leading-6 py-4 px-6 border-sky-500 border ml-2 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2  focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
                   Web 版
                 </a>
               </Link>
@@ -33,7 +33,7 @@ export default function page() {
                 target="_blank"
                 rel="noreferrer"
                 href="https://github.com/maqi1520/mdx-editor/releases"
-                className="flex text-xl rounded leading-6 py-4 px-6  bg-sky-500 hover:bg-sky-600 text-white"
+                className="flex text-xl  rounded leading-6 py-4 px-6  bg-sky-500 hover:bg-sky-600 text-white hover:bg-white/25 hover:ring-slate-900/15"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

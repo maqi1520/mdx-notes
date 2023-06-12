@@ -141,7 +141,7 @@ export default function Pen({
             })
           }
         }
-        setWordCount(Count(content.html))
+        setWordCount(Count(content.html || ''))
         setIsLoading(false)
       }
     )
