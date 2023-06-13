@@ -9,7 +9,7 @@ import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import Header, { HeaderButton } from './Header'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
@@ -33,6 +33,7 @@ export default function Pen({
   initialResponsiveSize,
   initialActiveTab,
 }) {
+  const router = useRouter()
   const htmlRef = useRef()
   const previewRef = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
@@ -281,7 +282,7 @@ export default function Pen({
   const onShareComplete = useCallback(
     (path) => {
       setShouldClearOnUpdate(false)
-      Router.push(path).then(() => {
+      router.push(path).then(() => {
         setShouldClearOnUpdate(true)
       })
     },

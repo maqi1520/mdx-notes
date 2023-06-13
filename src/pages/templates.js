@@ -26,7 +26,7 @@ export default function Templates() {
               key={item._id}
               className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 md:col-span-4"
             >
-              <Link href={'/' + item.docId}>
+              <Link href={'/?id=' + item.docId}>
                 <a className="block">
                   <img
                     alt={item.name}
@@ -45,7 +45,7 @@ export default function Templates() {
                   </div>
                 ))}
               <h2 className="text-lg font-bold md:text-xl">
-                <Link href={'/' + item.docId}>
+                <Link href={'/?id=' + item.docId}>
                   <a>{item.name}</a>
                 </Link>
               </h2>

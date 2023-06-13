@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
+import { writeText } from '@tauri-apps/api/clipboard'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
@@ -51,14 +52,20 @@ export function Share({
         .then((res) => res.json())
         .then((res) => {
           if (current) {
+            const localPath = `/${getLayoutQueryString({
+              id: res.id,
+              layout,
+              responsiveSize,
+              file: activeTab,
+            })}`
+
             const newPath = `/${res.id}${getLayoutQueryString({
               layout,
               responsiveSize,
               file: activeTab,
             })}`
-            if (onShareComplete) onShareComplete(newPath)
-            navigator.clipboard
-              .writeText(HOSTNAME + newPath)
+
+            writeText(HOSTNAME + newPath)
               .then(() => {
                 if (current) {
                   setState({ state: 'copied', path: newPath })
@@ -69,6 +76,7 @@ export function Share({
                   setState({ state: 'disabled', path: newPath })
                 }
               })
+            if (onShareComplete) onShareComplete(localPath)
           }
         })
         .catch((error) => {
@@ -204,10 +212,10 @@ export function Share({
       {(state === 'copied' || state === 'disabled') && path && (
         <button
           type="button"
-          className="flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+          className="max-w-[270px] flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
           title={`${HOSTNAME}${path}`}
           onClick={() => {
-            navigator.clipboard.writeText(HOSTNAME + path).then(() => {
+            writeText(HOSTNAME + path).then(() => {
               setState((currentState) => ({
                 ...currentState,
                 state: 'copied',

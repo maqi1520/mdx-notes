@@ -1,7 +1,8 @@
 import { sizeToString } from './size'
 
-export function getLayoutQueryString({ layout, responsiveSize, file }) {
+export function getLayoutQueryString({ layout, responsiveSize, file, id }) {
   const params = {
+    id,
     layout: ['horizontal', 'preview'].includes(layout) ? layout : undefined,
     size: sizeToString(responsiveSize),
     file: ['css', 'config'].includes(file) ? file : undefined,

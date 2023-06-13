@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Error from 'next/error'
+import { get } from '../utils/database'
 import { useRouter } from 'next/router'
 import { sizeToObject } from '../utils/size'
 import { getDefaultContent } from '../utils/getDefaultContent'
@@ -17,6 +18,19 @@ export default function App() {
   const [errorCode, setErrorCode] = useState()
   const [initialContent, setContent] = useState({})
   useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
+    if (query.id) {
+      try {
+        get(query.id).then((res) => {
+          setContent(res)
+        })
+      } catch (error) {
+        setErrorCode(500)
+      }
+      return
+    }
     try {
       const data = JSON.parse(localStorage.getItem('content'))
       if (data) {
@@ -27,7 +41,7 @@ export default function App() {
         })
       }
     } catch (error) {}
-  }, [])
+  }, [query])
 
   const layoutProps = {
     initialLayout: ['vertical', 'horizontal', 'preview'].includes(query.layout)
