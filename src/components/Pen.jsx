@@ -285,6 +285,16 @@ export default function Pen({
     setActiveTab(initialActiveTab)
   }, [initialActiveTab])
 
+  // useEffect(() => {
+  //   const handleMessage = (e) => {
+  //     if (e.data.event === 'preview-scroll') {
+  //       console.log(e.data)
+  //       editorRef.current.editor.revealLine(e.data.line)
+  //     }
+  //   }
+  //   window.addEventListener('message', handleMessage, false)
+  // }, [])
+
   return (
     <>
       <Header
@@ -424,6 +434,9 @@ export default function Pen({
                     editorRef={(ref) => (editorRef.current = ref)}
                     initialContent={initialContent}
                     onChange={onChange}
+                    onScroll={(line) => {
+                      inject({ line })
+                    }}
                     activeTab={activeTab}
                   />
                 )}

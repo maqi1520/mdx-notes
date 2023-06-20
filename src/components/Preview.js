@@ -370,8 +370,18 @@ export const Preview = forwardRef(
                     <script>
                     var hasHtml = false
                     var hasCss = false
-                    var visible = false
                     window.addEventListener('message', (e) => {
+                      if (typeof e.data.line  !== 'undefined') {
+                        var previewEl = document.documentElement
+                        const el = previewEl.querySelector('[data-line="'+e.data.line+'"]');
+                        if(el){ 
+                          previewEl.scrollTo({
+                            top: el.offsetTop - el.parentNode.scrollTop,
+                            // behavior: 'smooth',
+                          });
+                        }
+                        return
+                      }
                       if (typeof e.data.print  !== 'undefined') {
                         window.print();
                         return
@@ -395,23 +405,14 @@ export const Preview = forwardRef(
                           });
                         }
                       }
-                      checkVisibility()
                     })
-                    function checkVisibility() {
-                      if (!visible && hasHtml && hasCss) {
-                        visible = true
-                        document.body.style.display = ''
-                      } else if (visible && (!hasHtml || !hasCss)) {
-                        visible = false
-                        document.body.style.display = 'none'
-                      }
-                    }
                     function setHtml(html) {
+                      const root = document.getElementById('root')
                       if (typeof html === 'undefined') {
-                        document.body.innerHTML = ''
+                        root.innerHTML = ''
                         hasHtml = false
                       } else {
-                        document.body.innerHTML = html
+                        root.innerHTML = html
                         hasHtml = true
                       }
                     }
@@ -425,9 +426,26 @@ export const Preview = forwardRef(
                     }
                     </script>
                   </head>
-                  <body style="display:none">
-                  </body>
-                  <script>
+                  <body>
+                    <div id="root"></div>
+                    <script>
+                  //  var previewEl = document
+                  //   function getTopRelativeToPreview(el) {
+                  //     return el.offsetTop - document.documentElement.scrollTop;
+                  //   }
+                    
+                  //   previewEl.addEventListener('scroll', function() {
+                  //     const els = previewEl.querySelectorAll('[data-line]');
+                  //     let line;
+                  //     for (const el of els) {
+                  //       if (getTopRelativeToPreview(el) >= 0) {
+                  //         line = parseInt(el.getAttribute('data-line'), 10);
+                  //         break;
+                  //       }
+                  //     }
+                  //     window.top.postMessage({event:'preview-scroll',line:line}, '*');
+                  //   });
+
                   // https://github.com/sveltejs/svelte-repl/blob/master/src/Output/srcdoc/index.html
                   // https://github.com/sveltejs/svelte-repl/blob/master/LICENSE
                   document.body.addEventListener('click', event => {
@@ -446,6 +464,8 @@ export const Preview = forwardRef(
                     window.open(el.href, '_blank');
                   });
                   </script>
+
+                  </body>
                 </html>
               `}
             />
