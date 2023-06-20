@@ -7,6 +7,7 @@ import { onDidChangeTheme } from '../utils/theme'
 export default function Editor({
   initialContent = {},
   onChange,
+  onScroll,
   worker,
   activeTab,
   editorRef: inRef,
@@ -21,6 +22,7 @@ export default function Editor({
       initialContent,
       onChange,
       worker,
+      onScroll,
     })
 
     editorRef.current = editor

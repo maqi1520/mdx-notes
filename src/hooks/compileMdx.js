@@ -14,7 +14,9 @@ import { validateReactComponent } from '../utils/validateJavaScript'
 import { MDXComponents } from '../components/MDX/MDXComponents'
 import { VFile } from 'vfile'
 import { VFileMessage } from 'vfile-message'
-import rehypeDivToSection from '../components/utils/rehype-div'
+import rehypeDivToSection, {
+  rehypeAddLineNumbers,
+} from '../components/utils/rehype-div'
 import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
 export const Context = React.createContext({ isMac: true })
@@ -78,6 +80,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
       useDynamicImport: true,
       remarkPlugins,
       rehypePlugins: [
+        rehypeAddLineNumbers,
         rehypeDivToSection,
         reHypeLinkFoot,
         rehypeKatex,

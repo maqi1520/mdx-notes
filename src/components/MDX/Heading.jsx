@@ -12,7 +12,11 @@ const Heading = function Heading({
   id,
   ...props
 }) {
-  return <Comp className={className}>{children}</Comp>
+  return (
+    <Comp {...props} className={className}>
+      {children}
+    </Comp>
+  )
 }
 
 Heading.displayName = 'Heading'

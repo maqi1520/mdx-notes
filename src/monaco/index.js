@@ -30,7 +30,12 @@ function makeTheme(themeColors) {
   }))
 }
 
-export function createMonacoEditor({ container, initialContent, onChange }) {
+export function createMonacoEditor({
+  container,
+  initialContent,
+  onChange,
+  onScroll,
+}) {
   let editor
   let onChangeCallback = onChange
   const disposables = []
@@ -353,6 +358,16 @@ export function createMonacoEditor({ container, initialContent, onChange }) {
       html.updateDecorations()
     } else if (currentModel === css.getModel()) {
       css.updateDecorations()
+    }
+  })
+
+  editor.onDidScrollChange((e) => {
+    if (!e.scrollTopChanged) return
+    const currentModel = editor.getModel()
+    if (currentModel === html.getModel()) {
+      const range = editor.getVisibleRanges()[0]
+      const line = range.startLineNumber
+      onScroll(line)
     }
   })
 
