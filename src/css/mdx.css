@@ -1,4 +1,11 @@
 /* --- code --- */
+.markdown-body ul.contains-task-list {
+  padding-left: 0;
+}
+
+.markdown-body ul.contains-task-list li.task-list-item {
+  list-style-type: none;
+}
 .code__tools {
   display: flex;
   align-items: center;
