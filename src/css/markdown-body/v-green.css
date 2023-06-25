@@ -208,14 +208,6 @@
 .markdown-body ol li::marker {
   color: #3eaf7c;
 }
-.markdown-body ul li {
-  list-style: none;
-}
-.markdown-body ul li:before {
-  content: '•';
-  margin-right: 4px;
-  color: #3eaf7c;
-}
 @media (max-width: 720px) {
   .markdown-body h1 {
     font-size: 24px;
