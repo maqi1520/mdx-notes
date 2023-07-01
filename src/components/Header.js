@@ -9,14 +9,14 @@ const HeaderElement = dynamic(() => import('./HeaderElement'), {
   ssr: false,
 })
 
-export default function Header({ children, rightbtn }) {
+export default function Header({ children, logo, rightbtn }) {
   return (
     <HeaderElement
       className="relative z-20 flex-none pt-6 pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center space-x-4 antialiased select-none"
       style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
     >
-      <div className="flex-auto flex items-center min-w-0 space-x-6">
-        <Logo className="flex-none text-black dark:text-white" />
+      <div className="flex-auto flex items-center min-w-0 space-x-2">
+        {logo || <Logo className="flex-none text-black dark:text-white" />}
         {children}
       </div>
       <div className="flex items-center">

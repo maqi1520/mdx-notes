@@ -7,6 +7,7 @@ export function TabBar({
   width,
   isLoading,
   showPreviewTab,
+  dirty,
   onChange,
 }) {
   return (
@@ -65,9 +66,15 @@ export function TabBar({
           </svg>
         </p>
       ) : (
-        <span className="ml-auto text-gray-700  dark:text-gray-300">
+        <span className="ml-auto text-gray-700 flex items-center dark:text-gray-300">
           <span className="font-mono">字数:</span>
           <strong className="ml-1">{wordCount}</strong>
+          <span
+            className={clsx(
+              'w-2 h-2 block bg-green-500 rounded ml-2',
+              !dirty && 'opacity-0'
+            )}
+          ></span>
         </span>
       )}
       {errorMessage}

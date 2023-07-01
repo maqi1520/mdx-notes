@@ -34,7 +34,13 @@ function toDataURL(src, outputFormat) {
   })
 }
 
-export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
+export const CopyBtn = ({
+  editorRef,
+  previewRef,
+  htmlRef,
+  baseCss,
+  callback,
+}) => {
   const [{ state }, setState] = useState({
     state: 'idle',
     errorText: undefined,
@@ -85,6 +91,7 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
       if (filePath) {
         await writeTextFile(filePath, md)
       }
+      callback(filePath)
     }
   }
   useEffect(() => {

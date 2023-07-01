@@ -8,11 +8,22 @@
   },
   "package": {
     "productName": "MDX Editor",
-    "version": "0.3.4"
+    "version": "0.4.0"
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "createDir": true,
+        "exists": true,
+        "scope": ["$DOCUMENT/**", "$DOCUMENT/*", "$DOCUMENT"]
+      }
     },
     "bundle": {
       "active": true,
@@ -58,7 +69,8 @@
         "fullscreen": false,
         "height": 780,
         "resizable": true,
-        "title": "",
+        "title": "MDX Editor",
+        "hiddenTitle": true,
         "width": 1200,
         "titleBarStyle": "Overlay"
       }
