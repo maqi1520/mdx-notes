@@ -36,6 +36,6 @@
   @apply text-white;
 }
 
-.menu-active .ant-tree-node-content-wrapper.ant-tree-node-selected {
+.menu-active .ant-tree-node-content-wrapper {
   @apply !text-white;
 }

@@ -128,6 +128,12 @@ export const FileTree = forwardRef(({ onSelect, selectedPath }, ref) => {
     const newPath = payloadArr.join('/')
     if (type === 'rename') {
       await renameFile(path, newPath)
+      const newSelectedKeys = selectedKeys.filter((k) => k !== path)
+      newSelectedKeys.push(newPath)
+      setSelectedKeys(newSelectedKeys)
+      if (selectedPath === path) {
+        onSelect(newPath)
+      }
     } else {
       if (findPathTree(newPath, data)) {
         await message('文件已经存在了！', { title: '提示', type: 'error' })
@@ -179,7 +185,7 @@ export const FileTree = forwardRef(({ onSelect, selectedPath }, ref) => {
                 data-path={item.path}
                 data-dir={!!item.children}
                 onClick={(e) => e.stopPropagation()}
-                className="h-[24px] w-[160px] mt-[1px] bg-white text-black px-1"
+                className="h-[32px] mt-0 border-2 border-sky-500 w-[160px] bg-white text-black px-1 outline-none"
                 defaultValue={strTitle}
               />
             )
@@ -286,7 +292,7 @@ export const FileTree = forwardRef(({ onSelect, selectedPath }, ref) => {
     setTimeout(() => {
       if (refInput.current) {
         const value = refInput.current.value
-        refInput.current.setSelectionRange(0, value.split('.')[0].length)
+        refInput.current.setSelectionRange(0, value.split('.md')[0].length)
       }
     }, 100)
   }

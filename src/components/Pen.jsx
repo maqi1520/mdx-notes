@@ -343,8 +343,6 @@ export default function Pen({
   //   window.addEventListener('message', handleMessage, false)
   // }, [])
 
-  console.log(123)
-
   return (
     <SplitPane
       minSize={160}
