@@ -59,12 +59,14 @@
 .markdown-body h3 {
   font-size: 16px;
 }
+.markdown-body ol,
+.markdown-body ul {
+  padding-left: 28px;
+}
 
 /* 无序列表 */
 .markdown-body ul {
   list-style: disc outside;
-  margin-left: 2em;
-  margin-top: 1em;
 }
 
 /* 无序列表内容 */
