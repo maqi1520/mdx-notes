@@ -40,7 +40,7 @@
 .markdown-body h2 {
   font-size: 22px;
   padding-bottom: 4px;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid rgb(236 236 236 / 50%);
 }
 .markdown-body h3 {
   font-size: 20px;
@@ -85,11 +85,9 @@
 
 /*引用*/
 .markdown-body blockquote {
-  font-weight: 500;
-  font-style: italic;
-  background-color: rgb(241 245 249);
+  background-color: rgb(15 164 233 / 8%);
   border-left-width: 4px;
-  border-left-color: #e2e8f0;
+  border-left-color: #0fa4e9;
   border-left-style: solid;
   quotes: '\201C''\201D''\2018''\2019';
   margin: 0;
@@ -152,7 +150,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   border: none;
-  border-top: 1px solid rgb(209 213 219);
+  border-top: 1px solid rgb(236 236 236 / 50%);
 }
 
 /*行内代码*/
@@ -164,7 +162,7 @@
   border-radius: 4px;
   margin: 0 2px;
   color: rgb(14 165 233);
-  background-color: rgb(241 245 249);
+  background-color: rgb(15 164 233 / 8%);
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
 }
 
@@ -223,24 +221,23 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-spacing: 0;
-  border: 1px solid rgb(229, 231, 235);
+  border: 1px solid rgb(236 236 236 / 50%);
   border-collapse: collapse;
 }
 .markdown-body head {
   border-bottom-width: 1px;
-  border-bottom-color: #e2e8f0;
+  border-bottom-color: rgb(236 236 236 / 50%);
   color: #334155;
 }
 
 .markdown-body table tr {
   border: 0;
-  background-color: white;
 }
 
 .markdown-body table tr th,
 .markdown-body table tr td {
   border: 0;
-  border-bottom: 1px solid rgb(209 213 219);
+  border-bottom: 1px solid rgb(236 236 236 / 50%);
   font-size: 16px;
   padding: 10px;
   text-align: left;
@@ -249,7 +246,6 @@
 .markdown-body table tr th {
   color: rgb(17 24 39);
   font-weight: bold;
-  background-color: rgba(249, 250, 251, 0.75);
 }
 
 .markdown-body sub,
