@@ -348,6 +348,8 @@ export default function Pen({
       minSize={160}
       maxSize={500}
       size={showFileTree ? fileTreeSize : 0}
+      onDragStarted={() => setResizing(true)}
+      onDragFinished={() => setResizing(false)}
       onChange={setFileTreeSize}
     >
       <FileTree
