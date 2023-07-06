@@ -19,6 +19,7 @@ import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
+import { confirm } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
 import { listen } from '@tauri-apps/api/event'
 import { FileTree } from './FileTree'
@@ -81,8 +82,16 @@ export default function Pen({
 
   const refFileTree = useRef()
   const [filePath, setFilePath] = useState()
-  const readMarkdown = (path) => {
+  const readMarkdown = async (path) => {
     if (/\.mdx?$/.test(path)) {
+      if (dirty) {
+        const confirmed = await confirm('如果不保存，你的更改将丢失。', {
+          title: '当前文件未保存',
+          type: 'warning',
+        })
+        if (!confirmed) return
+      }
+
       setFilePath(path)
       readTextFile(path).then((res) => {
         setTimeout(() => {
