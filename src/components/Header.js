@@ -3,19 +3,14 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
 
-import dynamic from 'next/dynamic'
-
-const HeaderElement = dynamic(() => import('./HeaderElement'), {
-  ssr: false,
-})
-
 export default function Header({ children, logo, rightbtn }) {
   return (
-    <HeaderElement
-      className="relative z-20 flex-none pt-6 pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center space-x-4 antialiased select-none"
+    <div
+      data-tauri-drag-region
+      className="relative z-20 flex-none pt-6 pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center justify-between antialiased select-none"
       style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
     >
-      <div className="flex-auto flex items-center min-w-0 space-x-2">
+      <div className="flex items-center min-w-0 space-x-2">
         {logo || <Logo className="flex-none text-black dark:text-white" />}
         {children}
       </div>
@@ -110,7 +105,7 @@ export default function Header({ children, logo, rightbtn }) {
           </HeaderButton>
         </a>
       </div>
-    </HeaderElement>
+    </div>
   )
 }
 

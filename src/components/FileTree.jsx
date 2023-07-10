@@ -334,7 +334,10 @@ export const FileTree = forwardRef(({ onSelect, selectedPath }, ref) => {
   }
   if (!dirPath) {
     return (
-      <div className="w-full flex flex-col justify-center items-center text-sm h-screen">
+      <div
+        data-tauri-drag-region
+        className="w-full flex flex-col justify-center items-center text-sm h-screen"
+      >
         <button
           className="rounded-md text-sm font-semibold leading-6 py-1.5 px-5  hover:bg-sky-400 bg-sky-500 text-white shadow-sm dark:shadow-highlight/20"
           onClick={handleChooseDir}
@@ -350,7 +353,10 @@ export const FileTree = forwardRef(({ onSelect, selectedPath }, ref) => {
 
   return (
     <div className="w-full overflow-auto h-screen">
-      <div className="px-4 pb-3 pt-7 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800">
+      <div
+        data-tauri-drag-region
+        className="px-4 pb-3 pt-7 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800"
+      >
         <div className="flex items-center w-full text-left space-x-3 px-4 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
