@@ -8,24 +8,21 @@ export default class Document extends NextDocument {
 
   render() {
     return (
-      <Html lang="en">
+      <Html className="dark" lang="en">
         <Head>
+          <meta name="theme-color" content="#f8fafc" />
           <script
             dangerouslySetInnerHTML={{
               __html: `
                 try {
-                  if (!('theme' in localStorage)) {
-                    localStorage.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
-                      ? 'dark'
-                      : 'light'
-                  }
-                  if (localStorage.theme === 'dark') {
-                    document.querySelector('html').classList.add('dark')
+                  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark')
+                    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0B1120')
+                  } else {
+                    document.documentElement.classList.remove('dark')
                   }
                 } catch (_) {}
-              `
-                .replace(/\s+/g, '')
-                .replace("'inlocal", "' in local"),
+              `,
             }}
           />
           {/* Global Site Tag (gtag.js) - Google Analytics */}

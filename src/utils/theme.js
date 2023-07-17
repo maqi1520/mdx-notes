@@ -34,11 +34,17 @@ export function toggleTheme() {
   root.classList.add('disable-transitions')
   if (root.classList.contains('dark')) {
     root.classList.remove('dark')
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute('content', '#f8fafc')
     try {
       window.localStorage.setItem('theme', 'light')
     } catch (_) {}
   } else {
     root.classList.add('dark')
+    document
+      .querySelector('meta[name="theme-color"]')
+      .setAttribute('content', '#0B1120')
     try {
       window.localStorage.setItem('theme', 'dark')
     } catch (_) {}

@@ -51,7 +51,6 @@ export default function App({ Component, pageProps }) {
           name="msapplication-config"
           content={v('/favicons/browserconfig.xml')}
         />
-        <meta name="theme-color" content="#ffffff" />
 
         <title>{TITLE}</title>
         <meta content={DESCRIPTION} name="description" />
