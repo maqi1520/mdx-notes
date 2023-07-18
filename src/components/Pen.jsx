@@ -81,7 +81,7 @@ export default function Pen({
   }, [initialActiveTab])
 
   const refFileTree = useRef()
-  const [filePath, setFilePath] = useState()
+  const [filePath, setFilePath] = useLocalStorage('filePath')
   const readMarkdown = async (path) => {
     if (/\.mdx?$/.test(path)) {
       if (dirty) {
@@ -112,16 +112,6 @@ export default function Pen({
   useEffect(() => {
     handleDrop()
   }, [handleDrop])
-
-  useEffect(() => {
-    setDirty(true)
-  }, [
-    activeTab,
-    size.layout,
-    responsiveSize.width,
-    responsiveSize.height,
-    responsiveDesignMode,
-  ])
 
   useEffect(() => {
     if (dirty) {
@@ -183,16 +173,16 @@ export default function Pen({
       } else {
         setDirty(true)
       }
-      localStorage.setItem(
-        initialContent._id || 'content',
-        JSON.stringify(content)
-      )
+      localStorage.setItem('content', JSON.stringify(content))
     }, 200),
-    [theme, filePath, initialContent._id]
+    [theme, filePath]
   )
 
   useEffect(() => {
     setDirty(false)
+    if (initialContent._id) {
+      setFilePath('')
+    }
     if (
       shouldClearOnUpdate &&
       previewRef.current &&
@@ -354,6 +344,7 @@ export default function Pen({
 
   return (
     <SplitPane
+      className={resizing ? '' : 'file-tree-wrapper'}
       minSize={160}
       maxSize={500}
       size={showFileTree ? fileTreeSize : 0}
@@ -362,6 +353,7 @@ export default function Pen({
       onChange={setFileTreeSize}
     >
       <FileTree
+        showFileTree={showFileTree}
         selectedPath={filePath}
         onSelect={readMarkdown}
         ref={refFileTree}
@@ -512,7 +504,12 @@ export default function Pen({
                 <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
                   {renderEditor && (
                     <Editor
-                      editorRef={(ref) => (editorRef.current = ref)}
+                      editorRef={(ref) => {
+                        editorRef.current = ref
+                        if (filePath) {
+                          readMarkdown(filePath)
+                        }
+                      }}
                       initialContent={initialContent}
                       onChange={onChange}
                       onScroll={(line) => {

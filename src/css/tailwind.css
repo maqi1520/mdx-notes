@@ -39,3 +39,7 @@
 .menu-active .ant-tree-node-content-wrapper {
   @apply !text-white;
 }
+
+.file-tree-wrapper > .Pane {
+  transition: width 150ms ease-in;
+}
