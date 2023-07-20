@@ -16,7 +16,7 @@ export default function App() {
   const router = useRouter()
   const query = router.query
   const [errorCode, setErrorCode] = useState()
-  const [initialContent, setContent] = useState({})
+  const [initialContent, setContent] = useState(undefined)
   useEffect(() => {
     if (!router.isReady) {
       return
@@ -51,6 +51,9 @@ export default function App() {
     initialActiveTab: ['html', 'css', 'config'].includes(query.file)
       ? query.file
       : 'html',
+  }
+  if (!initialContent) {
+    return null
   }
   if (errorCode) {
     return <Error statusCode={errorCode} />

@@ -1,4 +1,7 @@
 import Link from 'next/link'
+
+import { HeaderButton } from './Header'
+
 export function Logo({ className }) {
   return (
     <Link href="/">
@@ -18,22 +21,25 @@ export function Logo({ className }) {
   )
 }
 
-export function LogoHome({ className = '', onClick }) {
+export function LogoHome({ isActive, onClick }) {
   return (
-    <svg
+    <HeaderButton
+      className="block ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4"
+      naturalWidth={24}
+      naturalHeight={24}
+      width={36}
+      height={36}
       onClick={onClick}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={`${className} w-8 h-8 cursor-pointer`}
+      isActive={isActive}
+      label="切换侧边栏"
     >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-      />
-    </svg>
+      <g>
+        <rect x="2" y="5" width="20" height="14" rx="2" fill="none" />
+        <path d="M8 5V18" />
+        <path strokeWidth="1" d="M4 8H6" />
+        <path strokeWidth="1" d="M4 10H6" />
+        <path strokeWidth="1" d="M4 12H6" />
+      </g>
+    </HeaderButton>
   )
 }

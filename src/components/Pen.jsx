@@ -362,7 +362,7 @@ export default function Pen({
         <Header
           logo={
             <LogoHome
-              className={showFileTree ? 'text-sky-500' : ''}
+              isActive={showFileTree}
               onClick={() => setShowFileTree((v) => !v)}
             />
           }
