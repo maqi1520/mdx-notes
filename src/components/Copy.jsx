@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import juice from 'juice/client'
 import cheerio from 'cheerio'
-import { copyHtml, download } from './utils/index'
+import { copyHtml, makeDoc } from './utils/index'
 import { save } from '@tauri-apps/api/dialog'
-import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
-import { WebviewWindow } from '@tauri-apps/api/window'
+import { writeTextFile } from '@tauri-apps/api/fs'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -73,6 +72,33 @@ export const CopyBtn = ({
       setState({ state: 'idle' })
     }, 1000)
   }
+  const handleExportHtml = async () => {
+    const css = baseCss + editorRef.current.getValue('css')
+    const html = htmlRef.current
+    let md = editorRef.current.getValue('html')
+
+    const title = md
+      ? md.split('\n')[0].replace('# ', '').slice(0, 50)
+      : 'MDX Editor'
+    if (html) {
+      const doc = makeDoc(title, html, css)
+      const filePath = await save({
+        title: '保存',
+        filters: [
+          {
+            name: title,
+            extensions: ['html'],
+          },
+        ],
+      })
+
+      //download(title + '.mdx', md)
+      if (filePath) {
+        await writeTextFile(filePath, doc)
+      }
+      callback(filePath)
+    }
+  }
   const handleExport = async () => {
     let md = editorRef.current.getValue('html')
     if (md) {
@@ -97,6 +123,7 @@ export const CopyBtn = ({
   useEffect(() => {
     window.handleCopy = handleClick
     window.handleExport = handleExport
+    window.handleExportHtml = handleExportHtml
   }, [])
   const handleExportPDF = () => {
     let md = editorRef.current.getValue('html')

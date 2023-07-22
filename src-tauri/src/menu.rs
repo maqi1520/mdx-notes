@@ -10,11 +10,13 @@ pub fn get_menu() -> Menu {
         CustomMenuItem::new("new_file".to_string(), "新建").accelerator("CmdOrCtrl+N");
     let save_file_item =
         CustomMenuItem::new("save_file".to_string(), "另存为...").accelerator("CmdOrCtrl+Shift+S");
-    let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "清除缓存...");
+    let save_html_file_item = CustomMenuItem::new("save_html_file".to_string(), "导出 HTML");
+    let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "清除缓存");
     let first_menu = Menu::new()
         .add_item(new_file_item)
         .add_item(copy_html_item)
         .add_item(save_file_item)
+        .add_item(save_html_file_item)
         .add_item(clear_storage)
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::EnterFullScreen)
@@ -62,6 +64,10 @@ pub fn menu_event_handle(event: WindowMenuEvent) {
 
     if event.menu_item_id() == "save_file" {
         let js_code = "handleExport();";
+        event.window().eval(js_code).unwrap();
+    }
+    if event.menu_item_id() == "save_html_file" {
+        let js_code = "handleExportHtml();";
         event.window().eval(js_code).unwrap();
     }
 }
