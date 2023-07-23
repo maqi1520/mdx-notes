@@ -1,8 +1,7 @@
 name: 'Publish'
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    tags: [v\d+\.\d+\.\d+]
 env:
   NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
