@@ -88,3 +88,34 @@ export function sortFile(array) {
     return 0
   })
 }
+
+export function listenKeyDown({ handleRename, handleDelete, showFileTree }) {
+  function handle(event) {
+    if (!showFileTree || event.target.tagName !== 'BODY') {
+      return
+    }
+    if (event.key === 'Enter') {
+      handleRename()
+      return
+    }
+    // 获取按下的键和操作系统类型
+    const keyPressed = event.key === 'Delete' || event.key === 'Backspace'
+    const isMacOS = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
+
+    // 检查是否同时按下了 "cmd"（MacOS）或 "Ctrl"（Windows/Linux）和 "delete" 键
+    const isCmdDeleteShortcut =
+      (isMacOS && event.metaKey && keyPressed) ||
+      (!isMacOS && event.ctrlKey && keyPressed)
+
+    // 如果是快捷键组合，执行回调函数
+    if (isCmdDeleteShortcut) {
+      handleDelete()
+    }
+  }
+  // 为了跨平台兼容性，监听 keydown 事件
+  document.addEventListener('keydown', handle)
+
+  return () => {
+    document.removeEventListener('keydown', handle)
+  }
+}

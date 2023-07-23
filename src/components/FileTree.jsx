@@ -2,6 +2,7 @@ import React, {
   useState,
   forwardRef,
   useImperativeHandle,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -13,6 +14,7 @@ import {
   mapTree,
   findPathTree,
   sortFile,
+  listenKeyDown,
 } from './utils/file-tree-util'
 
 import useLocalStorage from 'react-use/lib/useLocalStorage'
@@ -41,6 +43,7 @@ export const FileTree = forwardRef(
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
 
     useEffect(() => {
+      // 新建快捷键
       window.newFile = async () => {
         if (dirPath) {
           const fileName = 'Untitled_' + new Date().valueOf() + '.md'
@@ -138,6 +141,12 @@ export const FileTree = forwardRef(
       const payloadArr = path.split('/')
       payloadArr[payloadArr.length - 1] = name
       const newPath = payloadArr.join('/')
+      //  重命名文件名不变
+      if (type === 'rename' && path === newPath) {
+        setCount(count + 1)
+        return
+      }
+
       if (findPathTree(newPath, data)) {
         await message('文件已经存在了！', { title: '提示', type: 'error' })
         setCount(count + 1)
@@ -233,7 +242,7 @@ export const FileTree = forwardRef(
     }, [searchValue, selectedPath, data])
 
     const menuRef = useRef()
-    const [selectedKeys, setSelectedKeys] = useState([])
+    const [selectedKeys, setSelectedKeys] = useState([selectedPath])
     const [menuStyle, setMenuStyle] = useState({ display: 'none' })
 
     useEffect(() => {
@@ -296,9 +305,12 @@ export const FileTree = forwardRef(
       }, 100)
     }
 
-    const handleRename = () => {
+    const handleRename = useCallback(() => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
+      if (!path || path === dirPath) {
+        return
+      }
       const newData = mapTree(path, data, (item) => {
         return {
           ...item,
@@ -312,35 +324,62 @@ export const FileTree = forwardRef(
           refInput.current.setSelectionRange(0, value.split('.md')[0].length)
         }
       }, 100)
-    }
+    }, [selectedKeys, data, dirPath])
+
     const handleRefresh = async () => {
       setMenuStyle({ display: 'none' })
       setCount(count + 1)
     }
-    const handleDelete = async () => {
+    const handleDelete = useCallback(async () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
+      if (!path || path === dirPath) {
+        return
+      }
       const payloadArr = path.split('/')
       const name = payloadArr[payloadArr.length - 1]
-      await confirm(`确认删除${name}`, { title: '删除确认', type: 'warning' })
-      if (isMdFile(path)) {
-        await removeFile(path)
-      } else {
-        removeDir(path)
+      const confirmed = await confirm(`确认删除${name}`, {
+        title: '删除确认',
+        type: 'warning',
+      })
+      if (confirmed) {
+        if (isMdFile(path)) {
+          await removeFile(path)
+        } else {
+          removeDir(path, {
+            recursive: true,
+          })
+        }
+        setCount((count) => count + 1)
       }
-      setCount(count + 1)
-    }
+    }, [selectedKeys, dirPath])
+
+    /**
+     * 键盘事件
+     */
+    useEffect(() => {
+      const removeListen = listenKeyDown({
+        handleDelete,
+        handleRename,
+        showFileTree,
+      })
+      return removeListen
+    }, [handleDelete, handleRename, showFileTree])
+
     let menu = [
-      { name: '重命名', event: handleRename },
-      { name: '删除', event: handleDelete },
+      { name: '重命名', event: handleRename, extra: 'Enter' },
+      { name: '删除', event: handleDelete, extra: '⌘Backspace' },
+    ]
+    const dirItemMenu = [
+      { name: '新建', event: handleCreate },
+      { name: '新建文件夹', event: handleCreateDir },
+      { name: '刷新', event: handleRefresh },
     ]
     if (!isMdFile(selectedKeys[0])) {
-      menu = [
-        { name: '新建', event: handleCreate },
-        { name: '新建文件夹', event: handleCreateDir },
-        { name: '刷新', event: handleRefresh },
-        ...menu,
-      ]
+      menu = [...dirItemMenu, ...menu]
+    }
+    if (selectedKeys[0] === dirPath) {
+      menu = dirItemMenu
     }
     const handleChooseDir = async () => {
       const selected = await open({
@@ -403,15 +442,16 @@ export const FileTree = forwardRef(
         <div
           ref={menuRef}
           style={menuStyle}
-          className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-10 w-28"
+          className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-10 w-36"
         >
           {menu.map((item) => (
             <div
               key={item.name}
               onClick={item.event}
-              className="py-[2px] px-2  cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded"
+              className="py-[2px] px-2  cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
             >
-              {item.name}
+              <span>{item.name}</span>
+              <span className="opacity-50">{item.extra}</span>
             </div>
           ))}
         </div>
