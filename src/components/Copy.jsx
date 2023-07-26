@@ -43,7 +43,14 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
 
     //将image url 转换为 base64
 
-    const $ = cheerio.load(htmlRef.current)
+    const $ = cheerio.load(htmlRef.current, null, false)
+
+    $('p,section,div').each((index, element) => {
+      const $element = $(element)
+      if ($element.html().trim() === '') {
+        $element.remove()
+      }
+    })
 
     for (let index = 0; index < $('img').length; index++) {
       const item = $('img')[index]
