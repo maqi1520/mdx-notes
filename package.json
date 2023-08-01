@@ -11,12 +11,11 @@
     "clsx": "^1.1.1",
     "eventsource-parser": "^1.0.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "next": "^12.1.0",
+    "next": "^13.4.12",
     "node-fetch": "^3.2.3",
     "qrcode": "^1.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "rehype-mermaidjs": "^1.0.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@babel/standalone": "^7.17.8",
@@ -54,6 +53,7 @@
     "react-use": "^15.3.4",
     "rehype-katex": "^6.0.2",
     "rehype-prism-plus": "^1.5.0",
+    "rehype-mermaidjs": "^1.0.1",
     "remark-frontmatter": "^4.0.1",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",

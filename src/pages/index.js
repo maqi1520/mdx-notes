@@ -24,10 +24,11 @@ export default function page() {
               一个微信排版编辑器，使用 MDX 来排版
             </div>
             <div className="mt-12 flex justify-center space-x-4">
-              <Link href="/create">
-                <a className="inline-block text-xl rounded leading-6 py-4 px-6 border-sky-500 border ml-2 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4  focus:outline-none focus-visible:ring-2  focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400">
-                  Web 版
-                </a>
+              <Link
+                className="inline-block text-xl rounded leading-6 py-4 px-6 border-sky-500 border ml-2 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4  focus:outline-none focus-visible:ring-2  focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400"
+                href="/create"
+              >
+                Web 版
               </Link>
               <a
                 target="_blank"

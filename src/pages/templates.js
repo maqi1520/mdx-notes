@@ -35,14 +35,12 @@ export default function Templates({ data }) {
                   </div>
                 ))}
               <h2 className="text-lg font-bold sm:text-xl md:text-2xl">
-                <Link href={'/' + item.docId}>
-                  <a>{item.name}</a>
-                </Link>
+                <Link href={'/' + item.docId}>{item.name}</Link>
               </h2>
               <p className="text-sm text-gray-500">{item.desc}</p>
               <p className="pt-2 text-xs font-medium">
-                <Link href={'/' + item.docId}>
-                  <a className="mr-1 underline">{item.creator}</a>
+                <Link className="mr-1 underline" href={'/' + item.docId}>
+                  {item.creator}
                 </Link>
                 <span className="mx-1">
                   {new Date(item.createTime).toLocaleDateString('zh-CN', {
