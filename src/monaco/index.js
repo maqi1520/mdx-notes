@@ -7,6 +7,7 @@ import {
   setupCssMode,
   setupJavaScriptMode,
 } from './markdown'
+import { addAction } from './action'
 import { getTheme } from '../utils/theme'
 import colors from 'tailwindcss/colors'
 import dlv from 'dlv'
@@ -200,6 +201,8 @@ export function createMonacoEditor({
   })
   disposables.push(editor)
 
+  addAction(editor)
+
   editor.addAction({
     id: 'mdx-link',
     label: '链接',
@@ -218,7 +221,7 @@ export function createMonacoEditor({
   })
 
   editor.addAction({
-    id: 'mdx-blod',
+    id: 'mdx-bold',
     label: '粗体',
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB],
     // A precondition for this action.

@@ -9,6 +9,7 @@
   "dependencies": {
     "@vercel/analytics": "^1.0.0",
     "clsx": "^1.1.1",
+    "eventsource-parser": "^1.0.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "next": "^12.1.0",
     "node-fetch": "^3.2.3",
