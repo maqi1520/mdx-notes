@@ -16,9 +16,9 @@
   @apply bg-sky-500 bg-opacity-10 border border-sky-500;
 }
 
-.file-tree.ant-tree.ant-tree-directory
-  .ant-tree-treenode-selected
-  .ant-tree-switcher,
+.file-tree.ant-tree.ant-tree-directory .ant-tree-switcher {
+  display: none;
+}
 .file-tree.ant-tree.ant-tree-directory
   .ant-tree-treenode
   .ant-tree-node-content-wrapper.ant-tree-node-selected {

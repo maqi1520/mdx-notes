@@ -8,6 +8,7 @@ import React, {
   useRef,
 } from 'react'
 import { Tree, ConfigProvider } from 'antd'
+import { FileMarkdownOutlined } from '@ant-design/icons'
 import {
   getParentKey,
   isMdFile,
@@ -210,7 +211,7 @@ export const FileTree = forwardRef(
                   data-path={item.path}
                   data-dir={!!item.children}
                   onClick={(e) => e.stopPropagation()}
-                  className="h-[32px] mt-0 border-2 border-sky-500 w-[160px] bg-white text-black px-1 outline-none"
+                  className="h-[30px] mt-0 border-2 border-sky-500 w-[160px] bg-white text-black px-1 outline-none"
                   defaultValue={strTitle}
                 />
               )
@@ -227,6 +228,7 @@ export const FileTree = forwardRef(
             }
             if (isMdFile(item.path)) {
               return {
+                icon: <FileMarkdownOutlined />,
                 className: selectedPath === item.path ? 'menu-active' : '',
                 isLeaf: true,
                 title,
@@ -283,6 +285,11 @@ export const FileTree = forwardRef(
 
       setData(newData)
       setExpandedKeys((prev) => [...prev, `${path}/.md`])
+      setTimeout(() => {
+        if (refInput.current) {
+          refInput.current.setSelectionRange(0, 8)
+        }
+      }, 300)
     }
     const handleCreate = () => {
       setMenuStyle({ display: 'none' })
@@ -302,7 +309,7 @@ export const FileTree = forwardRef(
         if (refInput.current) {
           refInput.current.setSelectionRange(0, 8)
         }
-      }, 100)
+      }, 300)
     }
 
     const handleRename = useCallback(() => {
@@ -463,7 +470,7 @@ export const FileTree = forwardRef(
                   colorBgContainer: 'transparent',
                   colorText: 'inherit',
                   controlItemBgHover: 'rgba(0,0,0,.2)',
-                  controlHeightSM: 32,
+                  controlHeightSM: 30,
                 },
               },
             }}
