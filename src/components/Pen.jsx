@@ -36,7 +36,6 @@ export default function Pen({
   initialResponsiveSize,
   initialActiveTab,
 }) {
-  const router = useRouter()
   const htmlRef = useRef()
   const previewRef = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
@@ -54,7 +53,6 @@ export default function Pen({
   const [responsiveDesignMode, setResponsiveDesignMode] = useState(
     initialResponsiveSize ? true : false
   )
-  const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
   const [showFileTree, setShowFileTree] = useState(false)
@@ -183,11 +181,7 @@ export default function Pen({
     if (initialContent._id) {
       setFilePath('')
     }
-    if (
-      shouldClearOnUpdate &&
-      previewRef.current &&
-      previewRef.current.contentWindow
-    ) {
+    if (previewRef.current && previewRef.current.contentWindow) {
       inject({ html: initialContent.html })
       compileNow({
         html: initialContent.html,
@@ -308,20 +302,6 @@ export default function Pen({
     [showFileTree, fileTreeSize]
   )
 
-  const onShareStart = useCallback(() => {
-    setDirty(false)
-  }, [])
-
-  const onShareComplete = useCallback(
-    (path) => {
-      setShouldClearOnUpdate(false)
-      router.push(path).then(() => {
-        setShouldClearOnUpdate(true)
-      })
-    },
-    [size.layout, responsiveDesignMode, responsiveSize]
-  )
-
   useEffect(() => {
     if (editorRef.current) {
       compileNow({
@@ -435,9 +415,7 @@ export default function Pen({
           <div className="hidden sm:flex space-x-2">
             <Share
               editorRef={editorRef}
-              onShareStart={onShareStart}
-              onShareComplete={onShareComplete}
-              dirty={dirty}
+              dirty
               initialPath={initialPath}
               layout={size.layout}
               responsiveSize={responsiveDesignMode ? responsiveSize : undefined}

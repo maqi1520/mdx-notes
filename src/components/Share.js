@@ -114,11 +114,12 @@ export function Share({
         })
     } else if (state === 'copied') {
       window.setTimeout(() => {
-        setState(({ state, path: currentPath }) =>
-          state === 'copied' && currentPath === path
-            ? { state: 'disabled', path: currentPath }
-            : { state, path: currentPath }
-        )
+        // setState(({ state, path: currentPath }) =>
+        //   state === 'copied' && currentPath === path
+        //     ? { state: 'disabled', path: currentPath }
+        //     : { state, path: currentPath }
+        // )
+        setState({ state: 'idle' })
       }, 1500)
     }
     return () => {
