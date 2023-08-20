@@ -1,6 +1,6 @@
 use tauri::MenuItem;
 
-use tauri::{CustomMenuItem, Menu, Submenu, WindowMenuEvent};
+use tauri::{AboutMetadata, CustomMenuItem, Menu, Submenu, WindowMenuEvent};
 
 pub fn get_menu() -> Menu {
     let close = CustomMenuItem::new("close".to_string(), "关闭编辑器").accelerator("CmdOrCtrl+W");
@@ -12,12 +12,13 @@ pub fn get_menu() -> Menu {
         CustomMenuItem::new("save_file".to_string(), "另存为...").accelerator("CmdOrCtrl+Shift+S");
     let save_html_file_item = CustomMenuItem::new("save_html_file".to_string(), "导出 HTML");
     let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "清除缓存");
+    let check_update = CustomMenuItem::new("check_update".to_string(), "检查更新");
     let first_menu = Menu::new()
-        .add_item(new_file_item)
-        .add_item(copy_html_item)
-        .add_item(save_file_item)
-        .add_item(save_html_file_item)
-        .add_item(clear_storage)
+        .add_native_item(MenuItem::About(
+            "MDX Editor".to_string(),
+            AboutMetadata::new(),
+        ))
+        .add_item(check_update)
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::EnterFullScreen)
         .add_native_item(MenuItem::Minimize)
@@ -29,6 +30,13 @@ pub fn get_menu() -> Menu {
         .add_native_item(MenuItem::Quit);
 
     let second_menu = Menu::new()
+        .add_item(new_file_item)
+        .add_item(copy_html_item)
+        .add_item(save_file_item)
+        .add_item(save_html_file_item)
+        .add_item(clear_storage);
+
+    let third_menu = Menu::new()
         .add_native_item(MenuItem::Copy)
         .add_native_item(MenuItem::Cut)
         .add_native_item(MenuItem::Paste)
@@ -36,9 +44,13 @@ pub fn get_menu() -> Menu {
         .add_native_item(MenuItem::Redo)
         .add_native_item(MenuItem::SelectAll);
 
-    let app_menu = Submenu::new("文件", first_menu);
-    let edit_menu = Submenu::new("编辑", second_menu);
-    Menu::new().add_submenu(app_menu).add_submenu(edit_menu)
+    let app_menu = Submenu::new("MDX Editor", first_menu);
+    let file_menu = Submenu::new("文件", second_menu);
+    let edit_menu = Submenu::new("编辑", third_menu);
+    Menu::new()
+        .add_submenu(app_menu)
+        .add_submenu(file_menu)
+        .add_submenu(edit_menu)
 }
 
 pub fn menu_event_handle(event: WindowMenuEvent) {
@@ -64,6 +76,10 @@ pub fn menu_event_handle(event: WindowMenuEvent) {
 
     if event.menu_item_id() == "save_file" {
         let js_code = "handleExport();";
+        event.window().eval(js_code).unwrap();
+    }
+    if event.menu_item_id() == "check_update" {
+        let js_code = "checkUpdate();";
         event.window().eval(js_code).unwrap();
     }
     if event.menu_item_id() == "save_html_file" {
