@@ -21,7 +21,8 @@
     "node-fetch": "^3.2.3",
     "qrcode": "^1.5.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "rehype-mermaidjs": "^1.0.1"
   },
   "devDependencies": {
     "@babel/standalone": "^7.17.8",
