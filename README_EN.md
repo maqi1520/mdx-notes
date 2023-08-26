@@ -90,6 +90,12 @@ yarn
 yarn tauri dev
 ```
 
+## Sponsor
+
+[Buy me a coffee](https://www.buymeacoffee.com/maqi1520)
+
+Please give it a star ⭐ ☝️ if it's helpful to you.
+
 ## FAQ
 
 ### 1. After installing on macOS, it shows "The file is damaged" or there is no response when opening it
