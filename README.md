@@ -1,4 +1,4 @@
-<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-editor/blob/main/README_CN.md">简体中文</a></h4>
+<h4 align="right"><a href="https://github.com/maqi1520/mdx-editor/blob/main/README_EN.md">English</a> | <strong>简体中文</strong></h4>
 
 <div align="center">
 <a href="https://editor.runjs.cool/">
@@ -17,35 +17,39 @@
 </div>
 <h1 align="center">MDX Editor</h1>
 
-> A versatile WeChat typesetting editor, also serving as a cross-platform Markdown note-taking software.
+> 一个好用的微信排版编辑器，更是一个跨平台 Markdown 笔记软件
 
-## Inspiration
+## 灵感
 
-Markdown, beloved by countless programmers as a writing format, falls short in meeting the typesetting demands of WeChat. Fortunately, MDX comes to the rescue, mending Markdown's inadequacies. As my own blog utilizes MDX for writing, I pondered upon the possibility of achieving a unified solution for writing and typesetting when I stumbled upon the [mdxjs playground](https://mdxjs.com/playground/).
+Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版的需求，MDX 正好弥补了 Markdown 的缺陷。我的博客正好也是使用 MDX 来书写的，如何做到一次书写，排版统一？ 当我看到 [mdxjs playground](https://mdxjs.com/playground/) 的时候，我就在思考能否实现类似的方案？
 
-## Features
+## 功能
 
-### Web Version
+### 网页版
 
-- Seamlessly copy to WeChat Official Accounts with just a click
-- Customize styled components and styles, generate QR codes and code diff highlights
-- Generate article indexes effortlessly
-- Create WeChat footnotes with ease
-- Automatically convert WeChat external links into `span` elements
-- Ensure code formatting precision
-- Facilitate article sharing with built-in functionality
-- Download markdown files effortlessly
-- Export to PDF seamlessly
+[在线体验](https://editor.runjs.cool/)
 
-### Desktop Version
+- 支持一键复制到微信公众号
+- 支持自定义样式组件，自定义样式，生成二维码、代码 diff 高亮，
+- 支持生成文章目录
+- 支持生成微信脚注
+- 自动转换微信外链为`span`
+- 支持代码格式化
+- 支持文章分享
+- 支持下载 markdown
+- 支持导出 pdf
 
-In addition to the web version's features, the desktop version includes:
+### 桌面版
 
-- Real-time local file saving
-- Efficient management of local file directories
-- Hassle-free HTML export functionality
+[下载地址](https://github.com/maqi1520/mdx-editor/releases)
 
-## Template Examples
+桌面版除了网页版的功能之外，还支持
+
+- 支持本地文件实时保存
+- 支持本地文件目录树管理
+- 支持导出 HTML
+
+## 模板效果
 
 <table>
 <tr>
@@ -53,66 +57,82 @@ In addition to the web version's features, the desktop version includes:
     <td><img src="https://user-images.githubusercontent.com/9312044/262275149-3310abc1-5a6d-45cb-aa9a-3359381ec429.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/64b51328337a9f4db79fe677" >Subtle Green Card</a></td>
-    <td><a href="https://editor.runjs.cool/64c0fca121821b2af589cf6e">Early Summer Style</a></td>
+    <td><a href="https://editor.runjs.cool/64b51328337a9f4db79fe677" >浅绿色卡片</a></td>
+    <td><a href="https://editor.runjs.cool/64c0fca121821b2af589cf6e">初夏风格</a></td>
 </tr> 
 <tr>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275160-41c30692-b554-4da6-bcc7-3fb00169ed5d.png"/></td>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275117-fdf35fe4-0b70-45ad-995d-b6622586c6d8.png"/></td>
 </tr>
 <tr>
-  <td><a href="https://editor.runjs.cool/624688ccb6fe2900015728ac">Resume Template</a></td>
-  <td><a href="https://editor.runjs.cool/625550658cc5730001809f0c">Exquisite Code Diff Highlights</a></td>
+  <td><a href="https://editor.runjs.cool/624688ccb6fe2900015728ac">简历模板</a></td>
+  <td><a href="https://editor.runjs.cool/625550658cc5730001809f0c">代码 diff 高亮</a></td>
 </tr>
 <tr>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275165-766ff817-7c09-4288-b8dd-55d7424c2fd6.png"/></td>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275168-6dd4b05c-a604-4ab1-abe3-b2d2dc759d8e.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/6492ae0109e298c79055dfab">Generate Captivating QR Codes</a></td>
-    <td><a href="https://editor.runjs.cool/6492aa37f5cf3a54f14493a8">Travel Itinerary</a></td>
+    <td><a href="https://editor.runjs.cool/6492ae0109e298c79055dfab">生成二维码</a></td>
+    <td><a href="https://editor.runjs.cool/6492aa37f5cf3a54f14493a8">旅行计划</a></td>
 </tr> 
 </table>
 
-## Development
+## 开发
 
-To access the web version, switch to the `main` branch and follow these commands:
+网页版在 `main` 分支
 
 ```bash
 yarn
 yarn dev
 ```
 
-For the desktop version, switch to the `tauri-app` branch and execute the following commands:
+桌面版在 `tauri-app` 分支
 
 ```bash
 yarn
 yarn tauri dev
 ```
 
+## 赞助作者
+
+<table>
+<tr>
+<td>支付宝</td>
+<td>微信</td>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/603e1826-4be7-49de-a65d-c415b52e434b" width="180" alt="支付宝赞赏码">
+</td>
+<td>
+<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/047b369a-0458-48bd-96a1-64dd2c06a6bd" width="190" alt="微信赞赏码"></td>
+</tr>
+</table>
+
 ## FAQ
 
-### 1. After installing on macOS, it shows "The file is damaged" or there is no response when opening it
+### 1. macOS 系统安装完后显示「文件已损坏」或者安装完打开没有反应
 
-Because MDX Editor is not signed, it is blocked by macOS security checks.
+因为 MDX Editor 没有签名，所以会被 macOS 的安全检查所拦下。
 
-If you encounter the "The file is damaged" error after installation, follow these steps:
+1. 安装后打开遇到「文件已损坏」的情况，请按如下方式操作：
 
-Trust the developer, and it will prompt you to enter your password:
+信任开发者，会要求输入密码:
 
 ```bash
 sudo spctl --master-disable
 ```
 
-Then allow MDX Editor:
+然后放行 MDX Editor :
 
 ```bash
 xattr -cr /Applications/MDX\ Editor.app
 ```
 
-After that, you should be able to open it normally.
+然后就能正常打开。
 
-If you see the following message:
+如果提示以下内容
 
 ```sh
 option -r not recognized
@@ -136,23 +156,23 @@ options:
   -z: compress or decompress (if compressed) attribute value in zip format
 ```
 
-Execute the command:
+执行命令
 
 ```bash
 xattr -c /Applications/MDX\ Editor.app/*
 ```
 
-If the above command still doesn't work, you can try the following command:
+如果上述命令依然没有效果，可以尝试下面的命令：
 
 ```bash
 sudo xattr -d com.apple.quarantine /Applications/MDX\ Editor.app/
 ```
 
-## Deployment
+## 部署
 
-Deployed using the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## References
+## 参考
 
 - [mdxjs playground](https://mdxjs.com/playground/)
 - [play.tailwindcss.com](https://play.tailwindcss.com/)
