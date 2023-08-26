@@ -1,6 +1,28 @@
-import { createParser } from 'eventsource-parser'
+import {
+  createParser,
+  ParsedEvent,
+  ReconnectInterval,
+} from 'eventsource-parser'
 
-export async function OpenAIStream(payload) {
+export type ChatGPTAgent = 'user' | 'system'
+
+export interface ChatGPTMessage {
+  role: ChatGPTAgent
+  content: string
+}
+export interface OpenAIStreamPayload {
+  model: string
+  temperature: number
+  messages: ChatGPTMessage[]
+  top_p: number
+  frequency_penalty: number
+  presence_penalty: number
+  max_tokens: number
+  stream: boolean
+  n: number
+}
+
+export async function OpenAIStream(payload: OpenAIStreamPayload) {
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
 
@@ -23,7 +45,7 @@ export async function OpenAIStream(payload) {
   const stream = new ReadableStream({
     async start(controller) {
       // callback
-      function onParse(event) {
+      function onParse(event: ParsedEvent | ReconnectInterval) {
         if (event.type === 'event') {
           const data = event.data
           // https://beta.openai.com/docs/api-reference/completions/create#completions/create-stream
@@ -53,7 +75,7 @@ export async function OpenAIStream(payload) {
       // this ensures we properly read chunks and invoke an event for each SSE event stream
       const parser = createParser(onParse)
       // https://web.dev/streams/#asynchronous-iteration
-      for await (const chunk of res.body) {
+      for await (const chunk of res.body as any) {
         parser.feed(decoder.decode(chunk))
       }
     },

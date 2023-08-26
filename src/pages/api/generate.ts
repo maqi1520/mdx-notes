@@ -1,54 +1,42 @@
 import type { NextRequest } from 'next/server'
-import { Configuration, OpenAIApi } from 'openai-edge'
+import {
+  OpenAIStream,
+  OpenAIStreamPayload,
+  ChatGPTMessage,
+} from '../../utils/OpenAIStream'
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-const openai = new OpenAIApi(configuration)
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error('Missing env var from OpenAI')
+}
 
-const handler = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url)
+export const config = {
+  runtime: 'edge',
+}
 
-  const { messages } = await req.json()
+const handler = async (req: NextRequest): Promise<Response> => {
+  const { messages } = (await req.json()) as {
+    messages: ChatGPTMessage[]
+  }
 
   if (!messages) {
     return new Response('No messages in the request', { status: 400 })
   }
 
-  try {
-    const completion = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: '你是一名智能写作助手。' },
-        ...messages,
-      ],
-      max_tokens: 7,
-      temperature: 0,
-      stream: true,
-    })
-
-    return new Response(completion.body, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'text/event-stream;charset=utf-8',
-        'Cache-Control': 'no-cache, no-transform',
-        'X-Accel-Buffering': 'no',
-      },
-    })
-  } catch (error: any) {
-    console.error(error)
-
-    return new Response(JSON.stringify(error), {
-      status: 400,
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
+  const payload: OpenAIStreamPayload = {
+    // model: "text-davinci-003",
+    model: 'gpt-3.5-turbo',
+    messages,
+    temperature: 0.7,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+    max_tokens: 500,
+    stream: true,
+    n: 1,
   }
-}
 
-export const config = {
-  runtime: 'edge',
+  const stream = await OpenAIStream(payload)
+  return new Response(stream)
 }
 
 export default handler
