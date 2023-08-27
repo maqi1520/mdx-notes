@@ -26,14 +26,12 @@ export default function Templates() {
               key={item._id}
               className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 md:col-span-4"
             >
-              <Link href={'/?id=' + item.docId}>
-                <a className="block">
-                  <img
-                    alt={item.name}
-                    className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
-                    src={item.img}
-                  />
-                </a>
+              <Link className="block" href={'/?id=' + item.docId}>
+                <img
+                  alt={item.name}
+                  className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
+                  src={item.img}
+                />
               </Link>
               {item.tags &&
                 item.tags.map((tag, index) => (
@@ -45,9 +43,7 @@ export default function Templates() {
                   </div>
                 ))}
               <h2 className="text-lg font-bold md:text-xl">
-                <Link href={'/?id=' + item.docId}>
-                  <a>{item.name}</a>
-                </Link>
+                <Link href={'/?id=' + item.docId}>{item.name}</Link>
               </h2>
               <p className="text-sm text-gray-500">{item.desc}</p>
             </div>
