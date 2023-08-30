@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 import { confirm, message, open } from '@tauri-apps/api/dialog'
+import { t } from '@/utils/i18n'
 
 export default function Update() {
   useEffect(() => {
@@ -22,10 +23,13 @@ export default function Update() {
           // You could use this step to display another confirmation dialog.
           await relaunch()
         } else {
-          message('已经是最新版本', { title: '提示', type: 'info' })
+          message(t('Already the latest version'), {
+            title: t('Prompt'),
+            type: 'info',
+          })
         }
       } catch (error) {
-        message(error, { title: '提示', type: 'info' })
+        message(error, { title: t('Prompt'), type: 'info' })
         console.error(error)
       }
     }

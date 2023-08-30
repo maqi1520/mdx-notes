@@ -12,18 +12,36 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true,
+      "all": false,
       "path": {
         "all": true
       },
       "globalShortcut": {
         "all": true
       },
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
+      },
+      "clipboard": {
+        "all": true,
+        "writeText": true,
+        "readText": true
+      },
       "fs": {
+        "all": true,
         "readFile": true,
         "writeFile": true,
         "readDir": true,
+        "copyFile": true,
         "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
         "exists": true,
         "scope": ["**"]
       }

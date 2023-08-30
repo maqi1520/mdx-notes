@@ -10,6 +10,7 @@ import {
 import { getTheme } from '../utils/theme'
 import colors from 'tailwindcss/colors'
 import dlv from 'dlv'
+import { t } from '@/utils/i18n'
 
 function toHex(d) {
   return Number(d).toString(16).padStart(2, '0')
@@ -202,7 +203,7 @@ export function createMonacoEditor({
 
   editor.addAction({
     id: 'mdx-link',
-    label: '链接',
+    label: t('Link'),
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyK],
     // A precondition for this action.
     precondition: null,
@@ -218,8 +219,8 @@ export function createMonacoEditor({
   })
 
   editor.addAction({
-    id: 'mdx-blod',
-    label: '粗体',
+    id: 'mdx-bold',
+    label: t('Bold'),
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB],
     // A precondition for this action.
     precondition: null,
@@ -235,8 +236,8 @@ export function createMonacoEditor({
   })
 
   editor.addAction({
-    id: 'mdx-delete',
-    label: '删除线',
+    id: 'mdx-strikethrough',
+    label: t('Strikethrough'),
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyU],
     // A precondition for this action.
     precondition: null,
@@ -253,7 +254,7 @@ export function createMonacoEditor({
 
   editor.addAction({
     id: 'mdx-italic',
-    label: '倾斜',
+    label: t('Italic'),
     keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI],
     // A precondition for this action.
     precondition: null,
@@ -268,7 +269,7 @@ export function createMonacoEditor({
 
   editor.addAction({
     id: 'mdx-code',
-    label: '代码',
+    label: t('Code'),
     keybindings: [
       monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyC,
     ],
@@ -287,7 +288,7 @@ export function createMonacoEditor({
 
   editor.addAction({
     id: 'mdx-inline-code',
-    label: '行内代码',
+    label: t('Inline code'),
     keybindings: [
       monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyV,
     ],
@@ -306,7 +307,7 @@ export function createMonacoEditor({
 
   editor.addAction({
     id: 'mdx-table',
-    label: '表格',
+    label: t('Table'),
     keybindings: [
       monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.KeyT,
     ],

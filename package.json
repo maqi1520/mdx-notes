@@ -16,6 +16,7 @@
     "@vercel/analytics": "^1.0.0",
     "antd": "^5.2.0",
     "clsx": "^1.1.1",
+    "i18next": "^23.4.6",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "next": "^13.4.19",
     "node-fetch": "^3.2.3",

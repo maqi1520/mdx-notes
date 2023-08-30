@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { writeText } from '@tauri-apps/api/clipboard'
+import { t } from '@/utils/i18n'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
@@ -169,7 +170,7 @@ export function Share({
             state === 'copied' || state === 'loading' ? 'true' : 'false'
           }
         >
-          分享
+          {t('Share')}
         </span>
         <span
           className={clsx('absolute inset-0 flex items-center justify-center', {

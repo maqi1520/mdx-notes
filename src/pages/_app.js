@@ -2,6 +2,11 @@ import '../css/main.css'
 import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
 
+import dynamic from 'next/dynamic'
+const Layout = dynamic(() => import('@/components/Layout'), {
+  ssr: false,
+})
+
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
   '微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF'
@@ -17,7 +22,7 @@ function v(href) {
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <Layout>
       <Head>
         <link
           rel="apple-touch-icon"
@@ -63,6 +68,6 @@ export default function App({ Component, pageProps }) {
         <meta name="twitter:description" content={DESCRIPTION} />
       </Head>
       <Component {...pageProps} />
-    </>
+    </Layout>
   )
 }

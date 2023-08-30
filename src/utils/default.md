@@ -8,7 +8,7 @@
 
 首先这不是一张图片，而是用代码渲染的。
 
-我看到很多公司的微信推文，有许多地方都是用图片排版的，设计师们把大量的时间花了在文案和设计稿的校对上，我正借助了 MDX 的优势，开发了 MDX Editor，来互补微信排版的不足，只需要将文章写成 markdown 格式，便可以一键拷贝到微信公众号后台。
+它可以让你专注于内容创作，而不必关心排版样式，创作完成后你可以一键复制到微信后台或者邮箱编辑器
 
 ## 实现
 
@@ -48,7 +48,7 @@ function Chart({ data = [], color }) {
   margin: 4px;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   font-size: 10px;
   color: #eff6ff;
 }

@@ -2,10 +2,14 @@
 // import tailwindcss from 'tailwindcss'
 // import autoprefixer from 'autoprefixer'
 // import cssnano from 'cssnano'
-import defaultContent from 'raw-loader!./index.md'
+import defaultContent from 'raw-loader!./default.md'
+import defaultENContent from 'raw-loader!./default-en.md'
 
 export async function getDefaultContent() {
-  const html = defaultContent
+  const html =
+    localStorage.getItem('language') === 'zh-CN'
+      ? defaultContent
+      : defaultENContent
   const css = `.list-card {
   margin: 0 auto;
   margin-top: 30px;
@@ -112,7 +116,7 @@ function Chart({ data = [], color }) {
             backgroundColor: color,
           }}
         >
-          <span>{i + 1}月</span>
+          <span>{i + 1}</span>
         </div>
       ))}
     </div>

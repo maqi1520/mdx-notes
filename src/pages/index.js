@@ -11,9 +11,6 @@ import dynamic from 'next/dynamic'
 const Pen = dynamic(() => import('../components/Pen'), {
   ssr: false,
 })
-const Update = dynamic(() => import('../components/Update'), {
-  ssr: false,
-})
 
 export default function App() {
   const router = useRouter()
@@ -89,7 +86,6 @@ export default function App() {
           />
         )}
       </Head>
-      <Update />
       <Pen {...layoutProps} initialContent={initialContent} />
     </>
   )

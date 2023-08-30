@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { t } from '@/utils/i18n'
 
 export function TabBar({
   errorMessage,
@@ -67,7 +68,7 @@ export function TabBar({
         </p>
       ) : (
         <span className="ml-auto text-gray-700 flex items-center dark:text-gray-300">
-          <span className="font-mono">字数:</span>
+          <span className="font-mono">{t('Words')}:</span>
           <strong className="ml-1">{wordCount}</strong>
           <span
             className={clsx(

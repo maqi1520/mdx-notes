@@ -3,21 +3,24 @@ use tauri::MenuItem;
 use tauri::{AboutMetadata, CustomMenuItem, Menu, Submenu, WindowMenuEvent};
 
 pub fn get_menu() -> Menu {
-    let close = CustomMenuItem::new("close".to_string(), "关闭编辑器").accelerator("CmdOrCtrl+W");
+    let close = CustomMenuItem::new("close".to_string(), "Close Editor").accelerator("CmdOrCtrl+W");
     let copy_html_item =
-        CustomMenuItem::new("copy_html".to_string(), "复制").accelerator("CmdOrCtrl+Shift+C");
+        CustomMenuItem::new("copy_html".to_string(), "Copy HTML").accelerator("CmdOrCtrl+Shift+C");
     let new_file_item =
-        CustomMenuItem::new("new_file".to_string(), "新建").accelerator("CmdOrCtrl+N");
+        CustomMenuItem::new("new_file".to_string(), "New File").accelerator("CmdOrCtrl+N");
     let save_file_item =
-        CustomMenuItem::new("save_file".to_string(), "另存为...").accelerator("CmdOrCtrl+Shift+S");
-    let save_html_file_item = CustomMenuItem::new("save_html_file".to_string(), "导出 HTML");
-    let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "清除缓存");
-    let check_update = CustomMenuItem::new("check_update".to_string(), "检查更新");
+        CustomMenuItem::new("save_file".to_string(), "Save As...").accelerator("CmdOrCtrl+Shift+S");
+    let save_html_file_item = CustomMenuItem::new("save_html_file".to_string(), "Export HTML");
+    let clear_storage = CustomMenuItem::new("clear_storage".to_string(), "Clear Storage");
+    let check_update = CustomMenuItem::new("check_update".to_string(), "Check for updates");
+    let open_setting =
+        CustomMenuItem::new("open_setting".to_string(), "Settings").accelerator("CmdOrCtrl+,");
     let first_menu = Menu::new()
         .add_native_item(MenuItem::About(
             "MDX Editor".to_string(),
             AboutMetadata::new(),
         ))
+        .add_item(open_setting)
         .add_item(check_update)
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::EnterFullScreen)
@@ -45,8 +48,8 @@ pub fn get_menu() -> Menu {
         .add_native_item(MenuItem::SelectAll);
 
     let app_menu = Submenu::new("MDX Editor", first_menu);
-    let file_menu = Submenu::new("文件", second_menu);
-    let edit_menu = Submenu::new("编辑", third_menu);
+    let file_menu = Submenu::new("File", second_menu);
+    let edit_menu = Submenu::new("Edit", third_menu);
     Menu::new()
         .add_submenu(app_menu)
         .add_submenu(file_menu)
@@ -80,6 +83,10 @@ pub fn menu_event_handle(event: WindowMenuEvent) {
     }
     if event.menu_item_id() == "check_update" {
         let js_code = "checkUpdate();";
+        event.window().eval(js_code).unwrap();
+    }
+    if event.menu_item_id() == "open_setting" {
+        let js_code = "openSetting();";
         event.window().eval(js_code).unwrap();
     }
     if event.menu_item_id() == "save_html_file" {

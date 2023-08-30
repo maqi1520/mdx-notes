@@ -29,6 +29,7 @@ import {
   writeTextFile,
   removeDir,
 } from '@tauri-apps/api/fs'
+import { t } from '@/utils/i18n'
 const { DirectoryTree } = Tree
 
 export const FileTree = forwardRef(
@@ -53,7 +54,10 @@ export const FileTree = forwardRef(
           setCount((p) => p + 1)
           onSelect(dirPath + '/' + fileName)
         } else {
-          message('请先设置工作目录！', { title: '提示', type: 'error' })
+          message(t('Please set the working directory'), {
+            title: t('Prompt'),
+            type: 'error',
+          })
         }
       }
       readDir(dirPath, { recursive: true }).then((entries) => {
@@ -149,7 +153,10 @@ export const FileTree = forwardRef(
       }
 
       if (findPathTree(newPath, data)) {
-        await message('文件已经存在了！', { title: '提示', type: 'error' })
+        await message(t('File already exists'), {
+          title: t('Prompt'),
+          type: 'error',
+        })
         setCount(count + 1)
         return
       }
@@ -177,7 +184,7 @@ export const FileTree = forwardRef(
           .map((item) => {
             const strTitle = !/^Untitled_\d{13}\.md$/.test(item.name)
               ? item.name
-              : '未命名.md'
+              : t('Untitled.md')
 
             const index = strTitle
               .trim()
@@ -345,10 +352,13 @@ export const FileTree = forwardRef(
       }
       const payloadArr = path.split('/')
       const name = payloadArr[payloadArr.length - 1]
-      const confirmed = await confirm(`确认删除${name}`, {
-        title: '删除确认',
-        type: 'warning',
-      })
+      const confirmed = await confirm(
+        `${t('Are you sure you want to delete')}'${name}'?`,
+        {
+          title: t('Delete confirmation'),
+          type: 'warning',
+        }
+      )
       if (confirmed) {
         if (isMdFile(path)) {
           await removeFile(path)
@@ -374,13 +384,13 @@ export const FileTree = forwardRef(
     }, [handleDelete, handleRename, showFileTree])
 
     let menu = [
-      { name: '重命名', event: handleRename, extra: 'Enter' },
-      { name: '删除', event: handleDelete, extra: '⌘Backspace' },
+      { name: t('Rename'), event: handleRename, extra: 'Enter' },
+      { name: t('Delete'), event: handleDelete, extra: '⌘Backspace' },
     ]
     const dirItemMenu = [
-      { name: '新建', event: handleCreate },
-      { name: '新建文件夹', event: handleCreateDir },
-      { name: '刷新', event: handleRefresh },
+      { name: t('New File'), event: handleCreate },
+      { name: t('New Folder'), event: handleCreateDir },
+      { name: t('Refresh'), event: handleRefresh },
     ]
     if (!isMdFile(selectedKeys[0])) {
       menu = [...dirItemMenu, ...menu]
@@ -408,10 +418,10 @@ export const FileTree = forwardRef(
             className="rounded-md text-sm font-semibold leading-6 py-1.5 px-5  hover:bg-sky-400 bg-sky-500 text-white shadow-sm dark:shadow-highlight/20"
             onClick={handleChooseDir}
           >
-            选择目录
+            {t('Open Folder')}
           </button>
           <p className="mt-4 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            没有选择工作区
+            {t('Has no open folder')}
           </p>
         </div>
       )

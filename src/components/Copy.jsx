@@ -5,6 +5,7 @@ import cheerio from 'cheerio'
 import { copyHtml, makeDoc } from './utils/index'
 import { save } from '@tauri-apps/api/dialog'
 import { writeTextFile } from '@tauri-apps/api/fs'
+import { t } from '@/utils/i18n'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -169,7 +170,7 @@ export const CopyBtn = ({
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
-        {state === 'copied' ? '复制成功' : '复制'}
+        {state === 'copied' ? t('Copy Success') : t('Copy')}
       </button>
 
       <button
@@ -179,7 +180,7 @@ export const CopyBtn = ({
         )}
         onClick={handleExport}
       >
-        存储
+        {t('Save As')}
       </button>
       <button
         type="button"
