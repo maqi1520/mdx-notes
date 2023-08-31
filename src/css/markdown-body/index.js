@@ -9,22 +9,23 @@ import condensedNightPurple from '!!raw-loader!./condensed-night-purple.css'
 import jzman from '!!raw-loader!./jzman.css'
 import devuiBlue from '!!raw-loader!./devui-blue.css'
 import geekBlack from '!!raw-loader!./geek-black.css'
+import { t } from '@/utils/i18n'
 
 export const themes = {
   default: {
-    name: '天空蓝',
+    name: t('SkyBlue'),
     css: tailwind,
   },
   juejin: {
-    name: '掘金',
+    name: t('JueJin'),
     css: juejin,
   },
   smartblue: {
-    name: '灵动蓝',
+    name: t('SmartBlue'),
     css: smartblue,
   },
   vgreen: {
-    name: '微绿',
+    name: t('VGreen'),
     css: vgreen,
   },
   vuepress: {
@@ -32,15 +33,15 @@ export const themes = {
     css: vuepress,
   },
   chineseRed: {
-    name: '中国红',
+    name: t('ChineseRed'),
     css: chineseRed,
   },
   channingCyan: {
-    name: '柠青',
+    name: t('Cyan'),
     css: channingCyan,
   },
   condensedNightPurple: {
-    name: '凝夜紫',
+    name: t('CondensedPurple'),
     css: condensedNightPurple,
   },
   jzman: {
@@ -48,11 +49,11 @@ export const themes = {
     css: jzman,
   },
   devuiBlue: {
-    name: '科技蓝',
+    name: t('DevuiBlue'),
     css: devuiBlue,
   },
   geekBlack: {
-    name: '极客黑',
+    name: t('GeekBlack'),
     css: geekBlack,
   },
 }

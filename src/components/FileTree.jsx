@@ -30,6 +30,12 @@ import {
   removeDir,
 } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
+import { tauri } from '@tauri-apps/api'
+
+async function show_in_folder(path) {
+  await tauri.invoke('show_in_folder', { path })
+}
+
 const { DirectoryTree } = Tree
 
 export const FileTree = forwardRef(
@@ -340,6 +346,12 @@ export const FileTree = forwardRef(
       }, 100)
     }, [selectedKeys, data, dirPath])
 
+    const handleOpenFinder = async () => {
+      setMenuStyle({ display: 'none' })
+      const path = selectedKeys[0]
+      await show_in_folder(path)
+    }
+
     const handleRefresh = async () => {
       setMenuStyle({ display: 'none' })
       setCount(count + 1)
@@ -386,6 +398,7 @@ export const FileTree = forwardRef(
     let menu = [
       { name: t('Rename'), event: handleRename, extra: 'Enter' },
       { name: t('Delete'), event: handleDelete, extra: '⌘Backspace' },
+      { name: t('Reveal in Finder'), event: handleOpenFinder },
     ]
     const dirItemMenu = [
       { name: t('New File'), event: handleCreate },

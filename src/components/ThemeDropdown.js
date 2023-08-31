@@ -1,6 +1,7 @@
 import { Popover, Transition, Listbox, Switch } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import clsx from 'clsx'
+import { t } from '@/utils/i18n'
 
 export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
   return (
@@ -18,7 +19,7 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                   : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500'
               )}
             >
-              <span className="sr-only">设置</span>
+              <span className="sr-only">{t('Preferences')}</span>
               <svg
                 width={36}
                 height={36}
@@ -58,8 +59,8 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
             >
               <Popover.Panel className="absolute top-full right-0 mt-2 rounded-lg shadow-lg">
                 <div className="p-3 w-64 space-y-2 rounded-lg bg-white ring-1 ring-gray-900/10 text-sm leading-6 font-semibold text-gray-700 dark:bg-gray-800 dark:ring-0 dark:text-gray-300 dark:shadow-highlight/4">
-                  <div className="flex items-center">
-                    <label className="flex-none">主题：</label>
+                  <div>
+                    <label>{t('Themes')}</label>
                     <ThemeSelector
                       themes={themes}
                       onChange={(markdownTheme) =>
@@ -69,8 +70,8 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                     />
                   </div>
 
-                  <div className="flex items-center">
-                    <label className="flex-none">代码：</label>
+                  <div className="mt-1">
+                    <label>{t('Code Themes')}</label>
                     <ThemeSelector
                       themes={codeThemes}
                       onChange={(codeTheme) =>
@@ -80,7 +81,7 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                     />
                   </div>
                   <div className="flex items-center">
-                    <label className="flex-none">Mac 风格：</label>
+                    <label className="flex-none pr-2">{t('Mac style')}</label>
                     <Switch
                       checked={value.isMac}
                       onChange={(isMac) => onChange({ ...value, isMac })}

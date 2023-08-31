@@ -19,6 +19,12 @@
       "globalShortcut": {
         "all": true
       },
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true
+      },
       "dialog": {
         "all": true,
         "ask": true,

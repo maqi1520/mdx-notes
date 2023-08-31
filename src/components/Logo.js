@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import { HeaderButton } from './Header'
+import { t } from '@/utils/i18n'
 
 export function Logo({ className }) {
   return (
@@ -29,7 +30,7 @@ export function LogoHome({ isActive, onClick }) {
       height={36}
       onClick={onClick}
       isActive={isActive}
-      label="切换侧边栏"
+      label={t('Display the folder')}
     >
       <g>
         <rect x="2" y="5" width="20" height="14" rx="2" fill="none" />

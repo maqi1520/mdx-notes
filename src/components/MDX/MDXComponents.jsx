@@ -10,7 +10,7 @@ import QRCodeBlock from './QRCodeBlock'
 export const MDXComponents = {
   wrapper: (props) => (
     <section
-      data-tool="mdx 编辑器"
+      data-tool="MDX Editor"
       data-website="https://editor.runjs.cool/"
       className="markdown-body"
       {...props}

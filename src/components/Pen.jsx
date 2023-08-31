@@ -9,7 +9,6 @@ import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
 import { ErrorOverlay } from './ErrorOverlay'
-import { useRouter } from 'next/router'
 import Header, { HeaderButton } from './Header'
 import { LogoHome } from './Logo'
 import { Share } from './Share'
@@ -23,6 +22,7 @@ import { confirm } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
 import { listen } from '@tauri-apps/api/event'
 import { FileTree } from './FileTree'
+import { t } from '@/utils/i18n'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -83,10 +83,13 @@ export default function Pen({
   const readMarkdown = async (path) => {
     if (/\.mdx?$/.test(path)) {
       if (dirty) {
-        const confirmed = await confirm('如果不保存，你的更改将丢失。', {
-          title: '当前文件未保存',
-          type: 'warning',
-        })
+        const confirmed = await confirm(
+          t("If you don't save, your changes will be lost"),
+          {
+            title: t('The current file is not saved'),
+            type: 'warning',
+          }
+        )
         if (!confirmed) return
       }
 

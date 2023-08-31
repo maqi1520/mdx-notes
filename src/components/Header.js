@@ -2,6 +2,7 @@ import { Logo } from './Logo'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
+import { t } from '@/utils/i18n'
 
 export default function Header({ children, logo, rightbtn }) {
   return (
@@ -29,7 +30,7 @@ export default function Header({ children, logo, rightbtn }) {
             height={36}
             label={
               <>
-                <span>模板</span>
+                <span>{t('Templates')}</span>
               </>
             }
             iconClassName="stroke-sky-500 fill-sky-100 group-hover:stroke-sky-600 dark:stroke-gray-400 dark:fill-gray-400/20 dark:group-hover:stroke-gray-300"
@@ -51,8 +52,10 @@ export default function Header({ children, logo, rightbtn }) {
           height={36}
           label={
             <>
-              <span className="dark:hidden">切换到黑色皮肤</span>
-              <span className="hidden dark:inline">切换到白色皮肤</span>
+              <span className="dark:hidden">{t('Switch to dark theme')}</span>
+              <span className="hidden dark:inline">
+                {t('Switch to light theme')}
+              </span>
             </>
           }
           onClick={toggleTheme}
@@ -88,7 +91,7 @@ export default function Header({ children, logo, rightbtn }) {
             height={36}
             label={
               <>
-                <span>源码</span>
+                <span>{t('Source code')}</span>
               </>
             }
             iconClassName="stroke-sky-500 fill-sky-100 group-hover:stroke-sky-600 dark:stroke-gray-400 dark:fill-gray-400/20 dark:group-hover:stroke-gray-300"

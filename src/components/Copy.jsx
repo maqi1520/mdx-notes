@@ -91,7 +91,7 @@ export const CopyBtn = ({
     if (html) {
       const doc = makeDoc(title, html, css)
       const filePath = await save({
-        title: '保存',
+        title: t('Save'),
         filters: [
           {
             name: title,
@@ -112,7 +112,7 @@ export const CopyBtn = ({
     if (md) {
       const title = md.split('\n')[0].replace('# ', '').slice(0, 50)
       const filePath = await save({
-        title: '保存',
+        title: t('Save'),
         filters: [
           {
             name: title,
