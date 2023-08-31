@@ -67,7 +67,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
   //remarkPlugins.push(remarkLinkFoot)
   remarkPlugins.push(() =>
     remarkToc({
-      heading: '目录',
+      heading: '目录|toc|table[ -]of[ -]contents?',
       maxDepth: 2,
     })
   )
@@ -86,7 +86,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
         reHypeLinkFoot,
         rehypeKatex,
         [rehypeMermaid, { strategy: 'img-svg' }],
-        [rehypePrismPlus, { ignoreMissing: true }],
+        [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
       ],
       //recmaPlugins: [capture('esast')],
       useMDXComponents,
@@ -95,7 +95,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
       <Context.Provider value={{ isMac, codeTheme }}>
         <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
           <section
-            data-tool="mdx 编辑器"
+            data-tool="mdx editor"
             data-website="https://editor.runjs.cool/"
             className={codeTheme}
           >
