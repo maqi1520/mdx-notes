@@ -3,7 +3,11 @@ import { getTemplates } from '../utils/database'
 import Link from 'next/link'
 import Error from 'next/error'
 import { useAsync } from 'react-use'
-import Header from '../components/Header'
+import dynamic from 'next/dynamic'
+
+const Header = dynamic(() => import('../components/Header'), {
+  ssr: false,
+})
 
 export default function Templates() {
   const { error, value } = useAsync(() =>
