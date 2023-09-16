@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/router'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
 import { Editor } from './Editor'
@@ -8,6 +9,7 @@ import useMedia from 'react-use/lib/useMedia'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import { Preview } from './Preview'
+import Slide from './Slide'
 import { ErrorOverlay } from './ErrorOverlay'
 import Header, { HeaderButton } from './Header'
 import { LogoHome } from './Logo'
@@ -36,6 +38,7 @@ export default function Pen({
   initialResponsiveSize,
   initialActiveTab,
 }) {
+  const router = useRouter()
   const htmlRef = useRef()
   const previewRef = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
@@ -49,6 +52,7 @@ export default function Pen({
   const [renderEditor, setRenderEditor] = useState(false)
   const [error, setError, setErrorImmediate, cancelSetError] =
     useDebouncedState(undefined, 1000)
+  const slideRef = useRef()
   const editorRef = useRef()
   const [responsiveDesignMode, setResponsiveDesignMode] = useState(
     initialResponsiveSize ? true : false
@@ -61,6 +65,7 @@ export default function Pen({
     markdownTheme: 'default',
     codeTheme: 'default',
     isMac: true,
+    showSlide: true,
   })
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
@@ -128,13 +133,18 @@ export default function Pen({
   }, [dirty])
 
   const inject = useCallback(async (content) => {
-    previewRef.current.contentWindow.postMessage(content, '*')
+    previewRef.current &&
+      previewRef.current.contentWindow.postMessage(content, '*')
   }, [])
 
   async function compileNow(content) {
+    if (slideRef.current) {
+      slideRef.current.setState(content)
+      return
+    }
     cancelSetError()
     setIsLoading(true)
-    compileMdx(content.config, content.html, theme.isMac, theme.codeTheme).then(
+    compileMdx(content.config, content.html, theme.isMac, 'markdown-body').then(
       (res) => {
         if (res.err) {
           setError(res.err)
@@ -315,6 +325,16 @@ export default function Pen({
     }
   }, [theme])
 
+  const handleShowPPT = useCallback(() => {
+    const slideContent = {
+      html: editorRef.current.getValue('html'),
+      css: editorRef.current.getValue('css'),
+      config: editorRef.current.getValue('config'),
+    }
+    localStorage.setItem('slide', JSON.stringify(slideContent))
+    router.push('/slide')
+  }, [])
+
   // useEffect(() => {
   //   const handleMessage = (e) => {
   //     if (e.data.event === 'preview-scroll') {
@@ -340,6 +360,7 @@ export default function Pen({
         selectedPath={filePath}
         onSelect={readMarkdown}
         ref={refFileTree}
+        setShowPPT={handleShowPPT}
       />
       <div className="h-full flex flex-col">
         <Header
@@ -501,26 +522,30 @@ export default function Pen({
                   )}
                 </div>
                 <div className="absolute inset-0 w-full md:h-full top-12 lg:top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-black">
-                  <Preview
-                    ref={previewRef}
-                    responsiveDesignMode={
-                      size.layout !== 'editor' && isLg && responsiveDesignMode
-                    }
-                    responsiveSize={responsiveSize}
-                    onChangeResponsiveSize={setResponsiveSize}
-                    iframeClassName={resizing ? 'pointer-events-none' : ''}
-                    onLoad={() => {
-                      inject({
-                        html: initialContent.html,
-                      })
-                      compileNow({
-                        css: initialContent.css,
-                        config: initialContent.config,
-                        html: initialContent.html,
-                        ID: initialContent._id,
-                      })
-                    }}
-                  />
+                  {theme.showSlide ? (
+                    <Slide ref={slideRef} />
+                  ) : (
+                    <Preview
+                      ref={previewRef}
+                      responsiveDesignMode={
+                        size.layout !== 'editor' && isLg && responsiveDesignMode
+                      }
+                      responsiveSize={responsiveSize}
+                      onChangeResponsiveSize={setResponsiveSize}
+                      iframeClassName={resizing ? 'pointer-events-none' : ''}
+                      onLoad={() => {
+                        inject({
+                          html: initialContent.html,
+                        })
+                        compileNow({
+                          css: initialContent.css,
+                          config: initialContent.config,
+                          html: initialContent.html,
+                          ID: initialContent._id,
+                        })
+                      }}
+                    />
+                  )}
                   <ErrorOverlay error={error} />
                 </div>
               </SplitPane>

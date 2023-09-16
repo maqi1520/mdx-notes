@@ -1,6 +1,7 @@
 @import './tailwind.css';
 @import './codemirror/base.css';
 @import './codemirror/dark.css';
+@import './slide/index.css';
 
 @font-face {
   font-family: 'Inter var';

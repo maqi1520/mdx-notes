@@ -81,7 +81,9 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                     />
                   </div>
                   <div className="flex items-center">
-                    <label className="flex-none pr-2">{t('Mac style')}</label>
+                    <label className="flex-none pr-2 w-20">
+                      {t('Mac style')}
+                    </label>
                     <Switch
                       checked={value.isMac}
                       onChange={(isMac) => onChange({ ...value, isMac })}
@@ -92,6 +94,26 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       <span
                         className={`${
                           value.isMac ? 'translate-x-6' : 'translate-x-1'
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                      />
+                    </Switch>
+                  </div>
+                  <div className="flex items-center">
+                    <label className="flex-none pr-2 w-20">
+                      {t('PPT Preview')}
+                    </label>
+                    <Switch
+                      checked={value.showSlide}
+                      onChange={(showSlide) =>
+                        onChange({ ...value, showSlide })
+                      }
+                      className={`${
+                        value.isMac ? 'bg-sky-500' : 'bg-sky-500/40'
+                      }  inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                      <span
+                        className={`${
+                          value.showSlide ? 'translate-x-6' : 'translate-x-1'
                         } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                       />
                     </Switch>

@@ -3,7 +3,7 @@ import ENtranslation from './locales/en/translation.json'
 import zhCNtranslation from './locales/zh-CN/translation.json'
 
 i18n.init({
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   resources: {
     en: {
       translation: ENtranslation,

@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }) {
           content={v('/favicons/browserconfig.xml')}
         />
         <meta name="theme-color" content="#ffffff" />
-
+        <meta name="referrer" content="no-referrer" />
         <title>{TITLE}</title>
         <meta content={DESCRIPTION} name="description" />
         <meta property="og:type" content="website" />

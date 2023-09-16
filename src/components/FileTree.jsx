@@ -21,6 +21,7 @@ import {
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { confirm, message, open } from '@tauri-apps/api/dialog'
 import { documentDir } from '@tauri-apps/api/path'
+import { appWindow } from '@tauri-apps/api/window'
 import {
   createDir,
   readDir,
@@ -39,7 +40,7 @@ async function show_in_folder(path) {
 const { DirectoryTree } = Tree
 
 export const FileTree = forwardRef(
-  ({ onSelect, selectedPath, showFileTree }, ref) => {
+  ({ onSelect, selectedPath, showFileTree, setShowPPT }, ref) => {
     const [count, setCount] = useState(0)
     const [expandedKeys, setExpandedKeys] = useState([])
     const [searchValue, setSearchValue] = useState('')
@@ -383,6 +384,12 @@ export const FileTree = forwardRef(
       }
     }, [selectedKeys, dirPath])
 
+    const handlePPT = async () => {
+      setMenuStyle({ display: 'none' })
+      setShowPPT()
+      await appWindow.setFullscreen(true)
+    }
+
     /**
      * 键盘事件
      */
@@ -398,6 +405,7 @@ export const FileTree = forwardRef(
     let menu = [
       { name: t('Rename'), event: handleRename, extra: 'Enter' },
       { name: t('Delete'), event: handleDelete, extra: '⌘Backspace' },
+      { name: t('PPT View'), event: handlePPT },
       { name: t('Reveal in Finder'), event: handleOpenFinder },
     ]
     const dirItemMenu = [
@@ -472,7 +480,7 @@ export const FileTree = forwardRef(
         <div
           ref={menuRef}
           style={menuStyle}
-          className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-10 w-36"
+          className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-50 w-36"
         >
           {menu.map((item) => (
             <div

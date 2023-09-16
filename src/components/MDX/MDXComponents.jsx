@@ -8,14 +8,6 @@ import CodeBlock from './CodeBlock'
 import QRCodeBlock from './QRCodeBlock'
 
 export const MDXComponents = {
-  wrapper: (props) => (
-    <section
-      data-tool="MDX Editor"
-      data-website="https://editor.runjs.cool/"
-      className="markdown-body"
-      {...props}
-    />
-  ),
   h1: H1,
   h2: H2,
   h3: H3,

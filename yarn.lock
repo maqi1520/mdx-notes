@@ -512,6 +512,19 @@
     rc-trigger "^5.3.4"
     rc-util "^5.24.4"
 
+"@slidev/parser@^0.36.10":
+  version "0.36.11"
+  resolved "https://registry.npmmirror.com/@slidev/parser/-/parser-0.36.11.tgz#0e6b202d9b703c3bed3abf1cd435c772bc31dafd"
+  integrity sha512-LZna7hNtGiTm7eHr7m+gvjoLlopCZ2PQ7P7bpTq7dXV4EZlFA8HuUTEA3ubidbYKPW69zEILbEXIZ3sfjEdOSg==
+  dependencies:
+    "@slidev/types" "0.36.11"
+    js-yaml "^4.1.0"
+
+"@slidev/types@0.36.11":
+  version "0.36.11"
+  resolved "https://registry.npmmirror.com/@slidev/types/-/types-0.36.11.tgz#bb7534cc041608291da0b823afab1e6ecfdeb109"
+  integrity sha512-aTSN+FeEMmpaktVBPmgjUFaMGphRqzIQwbxfivVk5Px4f4IeSHezQfNN/+GiBVWh8C7DMzPSjNbLQuResYH3Rg==
+
 "@swc/helpers@0.5.1":
   version "0.5.1"
   resolved "https://registry.npmmirror.com/@swc/helpers/-/helpers-0.5.1.tgz#e9031491aa3f26bfcc974a67f48bd456c8a5357a"
@@ -1002,6 +1015,11 @@ argparse@^1.0.7:
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
+
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmmirror.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 aria-query@^4.2.2:
   version "4.2.2"
@@ -3416,6 +3434,13 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
 
 jsesc@^2.5.1:
   version "2.5.2"

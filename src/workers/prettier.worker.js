@@ -1,4 +1,5 @@
 import prettier from 'prettier/standalone'
+import { parse } from '@slidev/parser'
 
 const options = {
   markdown: async () => ({
@@ -39,6 +40,45 @@ addEventListener('message', async (event) => {
   }
 
   const opts = await options[event.data.language]()
+
+  if (event.data.language === 'markdown') {
+    const parsed = parse(event.data.text)
+
+    let pretty = ''
+    parsed.slides.forEach((item, i) => {
+      if (i > 0) {
+        pretty += '\n'
+      }
+      let index = 0
+      const length = Object.keys(item.frontmatter).length
+      if (length === 0) {
+        pretty += '---\n\n'
+      } else {
+        for (const key in item.frontmatter) {
+          if (Object.hasOwnProperty.call(item.frontmatter, key)) {
+            const value = item.frontmatter[key]
+            if (value && index === 0) {
+              pretty += '---'
+            }
+            if (value) {
+              pretty += `\n${key}: "${value}"`
+            }
+            if (value && index === length - 1) {
+              pretty += '\n---\n\n'
+            }
+            index++
+          }
+        }
+      }
+
+      pretty += prettier.format(item.content, opts)
+    })
+    respond({
+      pretty,
+    })
+
+    return
+  }
 
   try {
     respond({

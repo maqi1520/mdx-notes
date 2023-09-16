@@ -48,6 +48,7 @@
         "setIgnoreCursorEvents": true,
         "setResizable": true,
         "show": true,
+        "setFullscreen": true,
         "startDragging": true,
         "unmaximize": true,
         "unminimize": true
