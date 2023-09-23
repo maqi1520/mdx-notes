@@ -13,7 +13,7 @@ function CodeBlock({ children, ...other }) {
           <span className="green code__circle"></span>
         </section>
       )}
-      {children}
+      <pre style={{ margin: 0 }}>{children}</pre>
     </pre>
   )
 }

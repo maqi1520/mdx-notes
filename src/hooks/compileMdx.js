@@ -18,6 +18,7 @@ import { VFileMessage } from 'vfile-message'
 import rehypeDivToSection, {
   rehypeAddLineNumbers,
 } from '../components/utils/rehype-div'
+import { rehypeCodeTitle } from '../components/utils/rehype-code-title'
 import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
 export const Context = React.createContext({ isMac: true })
@@ -64,7 +65,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
   remarkPlugins.push(remarkGfm)
   remarkPlugins.push(remarkFrontmatter)
   remarkPlugins.push(remarkMath)
-  //remarkPlugins.push(remarkLinkFoot)
+  // remarkPlugins.push(remarkCodeTitle)
   remarkPlugins.push(() =>
     remarkToc({
       heading: '目录|toc|table[ -]of[ -]contents?',
@@ -87,6 +88,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
         rehypeKatex,
         [rehypeMermaid, { strategy: 'img-svg' }],
         [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
+        [rehypeCodeTitle, { isMac }],
       ],
       //recmaPlugins: [capture('esast')],
       useMDXComponents,

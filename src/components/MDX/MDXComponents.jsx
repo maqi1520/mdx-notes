@@ -4,7 +4,6 @@
 import React from 'react'
 
 import { H1, H2, H3, H4 } from './Heading'
-import CodeBlock from './CodeBlock'
 import QRCodeBlock from './QRCodeBlock'
 
 export const MDXComponents = {
@@ -18,7 +17,7 @@ export const MDXComponents = {
     }
     return <span className="link">{props.children}</span>
   },
-  pre: CodeBlock,
+  //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
     return (

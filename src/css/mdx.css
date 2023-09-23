@@ -6,12 +6,24 @@
 .markdown-body ul.contains-task-list li.task-list-item {
   list-style-type: none;
 }
+.code__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+}
+.code__tools_right {
+  width: 75px;
+}
 .code__tools {
   display: flex;
   align-items: center;
-  padding: 12px;
+  padding: 10px 12px;
+  width: 75px;
 }
-.markdown-body .code__tools + code {
+.markdown-body .code__header + pre code {
   padding-top: 0;
 }
 
