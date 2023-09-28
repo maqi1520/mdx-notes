@@ -14,6 +14,7 @@ import {
   isMdFile,
   mapTree,
   findPathTree,
+  findPathInTree,
   sortFile,
   listenKeyDown,
 } from './utils/file-tree-util'
@@ -35,6 +36,8 @@ import {
 import { t } from '@/utils/i18n'
 import { tauri } from '@tauri-apps/api'
 import initial from '@/utils/initial/'
+import { open as openLink } from '@tauri-apps/api/shell'
+import { store } from '../monaco/data'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
@@ -53,6 +56,27 @@ export const FileTree = forwardRef(
     const [dataList, setDataList] = useState([])
     const [data, setData] = useState([])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
+
+    useEffect(() => {
+      const handleMessage = async (e) => {
+        if (e.data.event === 'open') {
+          const href = e.data.href
+          if (/^https?:\/\//.test(href)) {
+            await openLink(href)
+          } else {
+            const path = findPathInTree(decodeURIComponent(href), store.mdFiles)
+            if (path) {
+              onSelect(path)
+              setSelectedKeys([path])
+            }
+          }
+        }
+      }
+      window.addEventListener('message', handleMessage, false)
+      return () => {
+        window.removeEventListener('message', handleMessage)
+      }
+    }, [data])
 
     useEffect(() => {
       // 新建快捷键
@@ -99,9 +123,16 @@ export const FileTree = forwardRef(
       readDir(dirPath, { recursive: true }).then((entries) => {
         if (entries) {
           let list = []
+          store.mdFiles = []
           const generateList = (data) => {
             for (let i = 0; i < data.length; i++) {
               const node = data[i]
+              if (isMdFile(node.name)) {
+                store.mdFiles.push({
+                  name: node.name.split('.md')[0],
+                  path: node.path,
+                })
+              }
               list.push({ name: node.name, path: node.path })
               if (node.children) {
                 generateList(node.children)

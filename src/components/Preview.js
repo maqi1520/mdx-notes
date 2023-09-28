@@ -382,6 +382,14 @@ export const Preview = forwardRef(
                         }
                         return
                       }
+                      if (typeof e.data.scrollTop  !== 'undefined') {
+                        console.log(e.data.scrollTop)
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                        });
+                        return
+                      }
                       if (typeof e.data.print  !== 'undefined') {
                         window.print();
                         return
@@ -455,13 +463,12 @@ export const Preview = forwardRef(
 
                     // ensure target is a link
                     let el = event.target;
-                    while (el && el.nodeName !== 'A') el = el.parentNode;
-                    if (!el || el.nodeName !== 'A') return;
+                    if (!el || el.nodeName !== 'SPAN' || !el.getAttribute('data-href')) return;
 
                     if (el.hasAttribute('download') || el.getAttribute('rel') === 'external' || el.target) return;
 
                     event.preventDefault();
-                    window.open(el.href, '_blank');
+                    window.top.postMessage({event:'open',href:el.getAttribute('data-href')}, '*');
                   });
                   </script>
 

@@ -31,6 +31,14 @@ export function mapTree(path, tree, fn) {
   return [...tree]
 }
 
+export function findPathInTree(name, data) {
+  const current = data.find((item) => name === item.name)
+  if (current) {
+    return current.path
+  }
+  return null
+}
+
 export function findPathTree(path, tree) {
   let inTree = false
   for (let i = 0; i < tree.length; i++) {

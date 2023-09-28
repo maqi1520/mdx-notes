@@ -18,6 +18,7 @@ import { VFileMessage } from 'vfile-message'
 import rehypeDivToSection, {
   rehypeAddLineNumbers,
 } from '../components/utils/rehype-div'
+import addDoubleBracketsLinks from '../components/utils/remark-double-brackets-link'
 import { rehypeCodeTitle } from '../components/utils/rehype-code-title'
 import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
@@ -65,7 +66,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
   remarkPlugins.push(remarkGfm)
   remarkPlugins.push(remarkFrontmatter)
   remarkPlugins.push(remarkMath)
-  // remarkPlugins.push(remarkCodeTitle)
+  remarkPlugins.push(addDoubleBracketsLinks)
   remarkPlugins.push(() =>
     remarkToc({
       heading: '目录|toc|table[ -]of[ -]contents?',

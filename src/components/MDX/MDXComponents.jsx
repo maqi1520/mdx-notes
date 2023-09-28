@@ -16,7 +16,11 @@ export const MDXComponents = {
     if (props.href && props.href.indexOf('https://mp.weixin.qq.com') > -1) {
       return <a {...props} />
     }
-    return <span className="link">{props.children}</span>
+    return (
+      <span data-href={props.href} className="link">
+        {props.children}
+      </span>
+    )
   },
   //pre: CodeBlock,
   QRCodeBlock,
@@ -28,9 +32,12 @@ export const MDXComponents = {
       ? src
       : convertFileSrc(`${baseUrl}${/^\//.test(src) ? src : '/' + src}`)
 
+    if (!props.alt) {
+      return <img {...props} src={url} />
+    }
     return (
       <figure>
-        <img {...props} src={url} />
+        <img {...props} style={{ margin: '0 auto' }} src={url} />
         <figcaption>{props.alt}</figcaption>
       </figure>
     )

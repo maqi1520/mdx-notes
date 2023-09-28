@@ -1,10 +1,56 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { debounce } from 'debounce'
+import { store } from '../monaco/data'
 
 export const HTML_URI = 'file:///index.md'
 
+function createSuggestions(range) {
+  const filePath = JSON.parse(localStorage.getItem('filePath'))
+  return store.mdFiles.reduce((result, item) => {
+    if (item.path !== filePath) {
+      result.push({
+        label: item.name,
+        kind: monaco.languages.CompletionItemKind.Text,
+        insertText: item.name,
+        range: range,
+      })
+    }
+    return result
+  }, [])
+}
+
 export function setupMarkdownMode(content, onChange, getEditor) {
   const disposables = []
+
+  disposables.push(
+    monaco.languages.registerCompletionItemProvider('markdown', {
+      triggerCharacters: ['['],
+      provideCompletionItems: function (model, position) {
+        // 光标前2个位置字符
+        var textUntilPosition = model.getValueInRange({
+          startLineNumber: position.lineNumber,
+          startColumn: position.column - 2,
+          endLineNumber: position.lineNumber,
+          endColumn: position.column,
+        })
+
+        var match = textUntilPosition.match(/\[\[/)
+        if (!match) {
+          return { suggestions: [] }
+        }
+        var word = model.getWordUntilPosition(position)
+        var range = {
+          startLineNumber: position.lineNumber,
+          endLineNumber: position.lineNumber,
+          startColumn: word.startColumn,
+          endColumn: word.endColumn,
+        }
+        return {
+          suggestions: createSuggestions(range),
+        }
+      },
+    })
+  )
 
   const model = monaco.editor.createModel(
     content || '',

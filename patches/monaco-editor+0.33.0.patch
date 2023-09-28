@@ -1,0 +1,12 @@
+diff --git a/node_modules/monaco-editor/esm/vs/basic-languages/markdown/markdown.js b/node_modules/monaco-editor/esm/vs/basic-languages/markdown/markdown.js
+index a2f1bcb..e1c4b57 100644
+--- a/node_modules/monaco-editor/esm/vs/basic-languages/markdown/markdown.js
++++ b/node_modules/monaco-editor/esm/vs/basic-languages/markdown/markdown.js
+@@ -106,6 +106,7 @@ var language = {
+       [/@escapes/, "escape"],
+       [/\b__([^\\_]|@escapes|_(?!_))+__\b/, "strong"],
+       [/\*\*([^\\*]|@escapes|\*(?!\*))+\*\*/, "strong"],
++      [/(\[\[)(.*?)(\]\])/, ["comment", "string.link","comment"]],
+       [/\b_[^_]+_\b/, "emphasis"],
+       [/\*([^\\*]|@escapes)+\*/, "emphasis"],
+       [/`([^\\`]|@escapes)+`/, "variable"],

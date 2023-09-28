@@ -139,6 +139,7 @@ export default function Pen() {
         setTimeout(() => {
           editorRef.current.documents.html.getModel().setValue(res)
           editorRef.current.editor.revealLine(1)
+          inject({ scrollTop: true })
         }, 10)
       })
     }
