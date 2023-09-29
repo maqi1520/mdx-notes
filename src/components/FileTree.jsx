@@ -8,7 +8,7 @@ import React, {
   useRef,
 } from 'react'
 import { Tree, ConfigProvider } from 'antd'
-import { FileMarkdownOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, FolderAddOutlined } from '@ant-design/icons'
 import {
   getParentKey,
   isMdFile,
@@ -429,24 +429,6 @@ export const FileTree = forwardRef(
     if (!showFileTree) {
       return <div />
     }
-    if (!dirPath) {
-      return (
-        <div
-          data-tauri-drag-region
-          className="w-full flex flex-col justify-center items-center text-sm h-screen"
-        >
-          <button
-            className="rounded-md text-sm font-semibold leading-6 py-1.5 px-5  hover:bg-sky-400 bg-sky-500 text-white shadow-sm dark:shadow-highlight/20"
-            onClick={handleChooseDir}
-          >
-            {t('Open Folder')}
-          </button>
-          <p className="mt-4 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            {t('Has no open folder')}
-          </p>
-        </div>
-      )
-    }
 
     return (
       <div className="w-full overflow-auto h-screen">
@@ -493,7 +475,7 @@ export const FileTree = forwardRef(
             </div>
           ))}
         </div>
-        <div className="mx-3 overflow-x-hidden pb-10 pt-3">
+        <div className="mx-3 overflow-x-hidden pb-12 pt-3">
           <ConfigProvider
             theme={{
               components: {
@@ -522,6 +504,15 @@ export const FileTree = forwardRef(
               treeData={treeData}
             ></DirectoryTree>
           </ConfigProvider>
+        </div>
+        <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
+          <button
+            className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
+            onClick={handleChooseDir}
+          >
+            <FolderAddOutlined style={{ fontSize: 18 }} />
+            <span className="ml-1">{t('Open Folder')}</span>
+          </button>
         </div>
       </div>
     )
