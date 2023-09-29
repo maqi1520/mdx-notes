@@ -16,6 +16,11 @@
       "path": {
         "all": true
       },
+      "protocol": {
+        "all": true,
+        "assetScope": ["**"],
+        "asset": true
+      },
       "globalShortcut": {
         "all": true
       },

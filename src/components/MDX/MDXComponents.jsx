@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 
 import React from 'react'
+import { convertFileSrc } from '@tauri-apps/api/tauri'
 
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'
@@ -20,9 +21,16 @@ export const MDXComponents = {
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
+    const { src } = props
+    const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
+    const isRemote = /^https?:\/\/.+/.test(src)
+    const url = isRemote
+      ? src
+      : convertFileSrc(`${baseUrl}${/^\//.test(src) ? src : '/' + src}`)
+
     return (
       <figure>
-        <img {...props} />
+        <img {...props} src={url} />
         <figcaption>{props.alt}</figcaption>
       </figure>
     )
