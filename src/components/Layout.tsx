@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Select from './Select'
 import i18n, { t } from '@/utils/i18n'
 import Update from './Update'
+import useLocalStorage from 'react-use/lib/useLocalStorage'
 
 type Props = {
   children: React.ReactNode
@@ -13,8 +14,25 @@ const data = [
   { value: 'en', name: 'English' },
 ]
 
+const uploadOptions = [
+  { value: 'none', name: 'None' },
+  { value: 'PicGo', name: 'PicGo' },
+  { value: 'uPic', name: 'uPic(develop)' },
+  { value: 'Picsee', name: 'Picsee(develop)' },
+]
+
+interface Config {
+  upload: string
+  command: string
+}
+
 export default function Layout({ children }: Props) {
   let [language, setLanguage] = useState('en')
+  let [config, setConfig] = useLocalStorage<Config>('config', {
+    upload: 'none',
+    command: '',
+  })
+
   let [isOpen, setIsOpen] = useState(false)
 
   function handleSave() {
@@ -62,16 +80,64 @@ export default function Layout({ children }: Props) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white dark:bg-gray-900 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full h-[320px] max-w-md transform overflow-hidden rounded-xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 mb-4 pb-3 border-b border-gray-200 dark:border-gray-800"
                   >
                     {t('Setting')}
                   </Dialog.Title>
-                  <div className="mt-2">
+
+                  <div className="mt-4">
                     <div className="text-sm text-gray-500 dark:text-white flex items-center">
-                      <label className="flex-none px-2" htmlFor="language">
+                      <label
+                        className="flex-none px-2 w-28 text-right"
+                        htmlFor="upload"
+                      >
+                        {t('Upload Picture')}:
+                      </label>
+                      <Select
+                        data={uploadOptions}
+                        value={config?.upload!}
+                        onChange={(value) =>
+                          setConfig((prev: Config) => ({
+                            ...prev,
+                            upload: value,
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {config?.upload === 'custom' && (
+                    <div className="mt-4">
+                      <div className="text-sm text-gray-500 dark:text-white flex items-center">
+                        <label
+                          className="flex-none px-2 w-28 text-right"
+                          htmlFor="upload"
+                        >
+                          {t('Command')}:
+                        </label>
+                        <input
+                          className="w-full rounded py-2 pl-3 pr-10 text-left focus:outline-none border-gray-200 border dark:border-gray-700 text-gray-500 dark:text-white bg-transparent"
+                          value={config?.command}
+                          onChange={(e) =>
+                            setConfig((prev: Config) => ({
+                              ...prev,
+                              command: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-4">
+                    <div className="text-sm text-gray-500 dark:text-white flex items-center">
+                      <label
+                        className="flex-none px-2 w-28 text-right"
+                        htmlFor="language"
+                      >
                         {t('Language')}:
                       </label>
                       <Select
@@ -81,8 +147,7 @@ export default function Layout({ children }: Props) {
                       />
                     </div>
                   </div>
-
-                  <div className="mt-10">
+                  <div className="mt-10 text-center">
                     <button
                       type="button"
                       className="rounded-md text-sm font-semibold leading-6 py-1.5 px-5  hover:bg-sky-400 bg-sky-500 text-white shadow-sm dark:shadow-highlight/20"

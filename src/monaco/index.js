@@ -11,6 +11,7 @@ import { getTheme } from '../utils/theme'
 import colors from 'tailwindcss/colors'
 import dlv from 'dlv'
 import { t } from '@/utils/i18n'
+import { listenPaste } from './pasteImage'
 
 function toHex(d) {
   return Number(d).toString(16).padStart(2, '0')
@@ -200,6 +201,9 @@ export function createMonacoEditor({
     },
   })
   disposables.push(editor)
+
+  //粘贴上传图片
+  disposables.push(listenPaste(editor))
 
   editor.addAction({
     id: 'mdx-link',
