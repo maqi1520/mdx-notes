@@ -27,7 +27,7 @@ export const MDXComponents = {
   img: (props) => {
     const { src } = props
     const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
-    const isRemote = /^https?:\/\/.+/.test(src)
+    const isRemote = /^https?:\/\/|^data:image\//.test(src)
     const url = isRemote
       ? src
       : convertFileSrc(`${baseUrl}${/^\//.test(src) ? src : '/' + src}`)
