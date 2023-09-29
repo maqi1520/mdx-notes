@@ -81,8 +81,10 @@ export default function Preview({ md, js, css }) {
           }}
         >
           {slides.map((item, index) => {
-            const Slide =
-              layout[item.frontmatter.layout || 'default'] || layout['default']
+            const Slide = layout[item.frontmatter.layout]
+              ? layout[item.frontmatter.layout]
+              : layout['default']
+
             return <Slide js={js} item={item} key={index} />
           })}
         </div>

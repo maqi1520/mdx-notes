@@ -5,7 +5,7 @@ import cl from 'clsx'
 export default function ImageRight({ item, style, className }) {
   return (
     <section style={style} className={cl('slide-content flex', className)}>
-      <div className="slidev-layout cover flex-1">
+      <div className="slidev-layout flex-1">
         <SlideItem item={item} />
       </div>
       <div

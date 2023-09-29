@@ -31,7 +31,6 @@ export default forwardRef(function Preview(props, ref) {
     []
   )
   const { html: md, config: js, css } = state
-  console.log(state)
   const [parsed, setParsed] = useState({
     slides: [],
   })
@@ -52,8 +51,6 @@ export default forwardRef(function Preview(props, ref) {
     }
   }, [md])
 
-  console.log(slides)
-
   return (
     <Context.Provider value={{ js }}>
       <style
@@ -67,7 +64,9 @@ export default forwardRef(function Preview(props, ref) {
       ></style>
       <div className="flex-auto editable pt-4">
         {slides.map((item, index) => {
-          const Slide = layout[item.frontmatter.layout || 'default']
+          const Slide = layout[item.frontmatter.layout]
+            ? layout[item.frontmatter.layout]
+            : layout['default']
           return <Slide js={js} item={item} key={index} />
         })}
       </div>

@@ -20,18 +20,21 @@ import {
 
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { confirm, message, open } from '@tauri-apps/api/dialog'
-import { documentDir } from '@tauri-apps/api/path'
+import { documentDir, resolve } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
 import {
+  exists,
   createDir,
   readDir,
   removeFile,
   renameFile,
   writeTextFile,
   removeDir,
+  BaseDirectory,
 } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { tauri } from '@tauri-apps/api'
+import initial from '@/utils/initial/'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
@@ -67,6 +70,32 @@ export const FileTree = forwardRef(
           })
         }
       }
+    }, [])
+
+    useEffect(() => {
+      exists(dirPath).then(async (res) => {
+        if (!res) {
+          const documentDirPath = await documentDir()
+          const path = await resolve(documentDirPath, 'mdx-editor')
+
+          if (!(await exists(path))) {
+            await createDir('mdx-editor', {
+              dir: BaseDirectory.Document,
+              recursive: true,
+            })
+
+            for (const key in initial) {
+              const content = initial[key]
+              await writeTextFile(path + `/${key}.md`, content)
+            }
+
+            setDirPath(path)
+          }
+        }
+      })
+    }, [])
+
+    useEffect(() => {
       readDir(dirPath, { recursive: true }).then((entries) => {
         if (entries) {
           let list = []

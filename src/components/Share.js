@@ -24,9 +24,9 @@ export function Share({
 
   useEffect(() => {
     setState((current) =>
-      current.state === 'idle' || current.state === 'disabled'
+      (current.state === 'idle' || current.state === 'disabled') && initialPath
         ? { state: 'disabled', path: initialPath }
-        : current
+        : { state: 'idle' }
     )
   }, [initialPath])
 
@@ -127,12 +127,6 @@ export function Share({
       current = false
     }
   }, [state, path, editorRef, onShareStart, onShareComplete])
-
-  useEffect(() => {
-    if (dirty) {
-      setState({ state: 'idle' })
-    }
-  }, [dirty])
 
   return (
     <div className="flex items-center space-x-2 min-w-0">

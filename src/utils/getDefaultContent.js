@@ -2,14 +2,15 @@
 // import tailwindcss from 'tailwindcss'
 // import autoprefixer from 'autoprefixer'
 // import cssnano from 'cssnano'
-import defaultContent from 'raw-loader!./default.md'
-import defaultENContent from 'raw-loader!./default-en.md'
+// import defaultContent from 'raw-loader!./default.md'
+// import defaultENContent from 'raw-loader!./default-en.md'
 
-export async function getDefaultContent() {
-  const html =
-    localStorage.getItem('language') === 'zh-CN'
-      ? defaultContent
-      : defaultENContent
+export function getDefaultContent() {
+  const localString = localStorage.getItem('content')
+  if (localString) {
+    return JSON.parse(localString)
+  }
+  const html = ''
   const css = `.list-card {
   margin: 0 auto;
   margin-top: 30px;
@@ -139,7 +140,6 @@ export default {
   // })
 
   return {
-    _id: 'content',
     html,
     css,
     config,

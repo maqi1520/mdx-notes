@@ -2,7 +2,7 @@ import React from 'react'
 import SlideItem from '../SlideItem'
 import clsx from 'clsx'
 
-export default function DefaultSlideItem({ item, style, className }) {
+export default function DefaultSlideItem({ item, style }) {
   return (
     <section style={style} className="slide-content flex">
       <div
@@ -14,7 +14,7 @@ export default function DefaultSlideItem({ item, style, className }) {
             ? `linear-gradient(rgba(0, 0, 0, 0.333), rgba(0, 0, 0, 0.533)), url(${item.frontmatter.background})`
             : '',
         }}
-        className={clsx('slidev-layout', className, item.frontmatter.class)}
+        className={clsx('slidev-layout cover', item.frontmatter.class)}
       >
         <SlideItem item={item} />
       </div>

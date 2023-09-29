@@ -61,7 +61,7 @@ addEventListener('message', async (event) => {
               pretty += '---'
             }
             if (value) {
-              pretty += `\n${key}: "${value}"`
+              pretty += `\n${key}: ${value}`
             }
             if (value && index === length - 1) {
               pretty += '\n---\n\n'

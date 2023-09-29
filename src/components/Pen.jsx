@@ -25,20 +25,53 @@ import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
 import { listen } from '@tauri-apps/api/event'
 import { FileTree } from './FileTree'
 import { t } from '@/utils/i18n'
+import { getDefaultContent } from '../utils/getDefaultContent'
+import { get } from '../utils/database'
+import { sizeToObject } from '../utils/size'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
 const RESIZER_SIZE = 1
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
-export default function Pen({
-  initialContent,
-  initialPath,
-  initialLayout,
-  initialResponsiveSize,
-  initialActiveTab,
-}) {
+export default function Pen() {
   const router = useRouter()
+  const query = router.query
+  const [initialContent, setContent] = useState({})
+  useEffect(() => {
+    const getData = async () => {
+      let content
+      if (query.id) {
+        try {
+          content = await get(query.id)
+          setContent(content)
+          setFilePath('')
+          return
+        } catch (error) {
+          console.log(error)
+          content = getDefaultContent()
+        }
+      }
+
+      content = getDefaultContent()
+      if (filePath) {
+        content.html = await readTextFile(filePath)
+      }
+      setContent(content)
+    }
+    getData()
+  }, [query])
+
+  const initialLayout = ['vertical', 'horizontal', 'preview'].includes(
+    query.layout
+  )
+    ? query.layout
+    : 'vertical'
+  const initialResponsiveSize = sizeToObject(query.size)
+  const initialActiveTab = ['html', 'css', 'config'].includes(query.file)
+    ? query.file
+    : 'html'
+
   const htmlRef = useRef()
   const previewRef = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
@@ -65,7 +98,7 @@ export default function Pen({
     markdownTheme: 'default',
     codeTheme: 'default',
     isMac: true,
-    showSlide: true,
+    showSlide: false,
   })
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
@@ -86,6 +119,9 @@ export default function Pen({
   const refFileTree = useRef()
   const [filePath, setFilePath] = useLocalStorage('filePath')
   const readMarkdown = async (path) => {
+    if (query.id) {
+      router.replace('/')
+    }
     if (/\.mdx?$/.test(path)) {
       if (dirty) {
         const confirmed = await confirm(
@@ -104,7 +140,6 @@ export default function Pen({
           editorRef.current.documents.html.getModel().setValue(res)
           editorRef.current.editor.revealLine(1)
         }, 10)
-        //editorRef.current.editor.getModel().setValue(res)
       })
     }
   }
@@ -191,18 +226,13 @@ export default function Pen({
 
   useEffect(() => {
     setDirty(false)
-    if (initialContent._id) {
-      setFilePath('')
-    }
-    if (previewRef.current && previewRef.current.contentWindow) {
-      inject({ html: initialContent.html })
-      compileNow({
-        html: initialContent.html,
-        css: initialContent.css,
-        config: initialContent.config,
-      })
-    }
-  }, [initialContent._id])
+    inject({ html: initialContent.html })
+    compileNow({
+      html: initialContent.html,
+      css: initialContent.css,
+      config: initialContent.config,
+    })
+  }, [initialContent])
 
   const onChange = useCallback(
     (document, content) => {
@@ -440,7 +470,7 @@ export default function Pen({
             <Share
               editorRef={editorRef}
               dirty
-              initialPath={initialPath}
+              initialPath={query.id ? `/${query.id}` : undefined}
               layout={size.layout}
               responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
               activeTab={activeTab}
@@ -506,12 +536,7 @@ export default function Pen({
                 <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
                   {renderEditor && (
                     <Editor
-                      editorRef={(ref) => {
-                        editorRef.current = ref
-                        if (filePath) {
-                          readMarkdown(filePath)
-                        }
-                      }}
+                      editorRef={(ref) => (editorRef.current = ref)}
                       initialContent={initialContent}
                       onChange={onChange}
                       onScroll={(line) => {
@@ -541,7 +566,6 @@ export default function Pen({
                           css: initialContent.css,
                           config: initialContent.config,
                           html: initialContent.html,
-                          ID: initialContent._id,
                         })
                       }}
                     />

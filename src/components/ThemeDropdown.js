@@ -80,10 +80,8 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       value={value.codeTheme}
                     />
                   </div>
-                  <div className="flex items-center">
-                    <label className="flex-none pr-2 w-20">
-                      {t('Mac style')}
-                    </label>
+                  <div className="flex items-center justify-between">
+                    <label className="flex-none pr-2">{t('Mac style')}</label>
                     <Switch
                       checked={value.isMac}
                       onChange={(isMac) => onChange({ ...value, isMac })}
@@ -98,10 +96,8 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       />
                     </Switch>
                   </div>
-                  <div className="flex items-center">
-                    <label className="flex-none pr-2 w-20">
-                      {t('PPT Preview')}
-                    </label>
+                  <div className="flex items-center justify-between">
+                    <label className="flex-none pr-2">{t('PPT Preview')}</label>
                     <Switch
                       checked={value.showSlide}
                       onChange={(showSlide) =>
