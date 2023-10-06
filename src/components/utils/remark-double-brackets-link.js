@@ -10,7 +10,9 @@ export default function addDoubleBracketsLinks() {
       if (
         typeof value !== 'string' ||
         !parent ||
-        !Array.isArray(parent.children)
+        !Array.isArray(parent.children) ||
+        parent.type === 'link' ||
+        parent.type === 'linkReference'
       ) {
         return
       }
@@ -45,7 +47,6 @@ export default function addDoubleBracketsLinks() {
           return {
             type: 'link',
             url: child.id,
-            title2: `__roam_block_${child.id}`,
             children: [{ type: 'text', value: child.id }],
           }
         })
