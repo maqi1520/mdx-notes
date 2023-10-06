@@ -12,6 +12,7 @@ import colors from 'tailwindcss/colors'
 import dlv from 'dlv'
 import { t } from '@/utils/i18n'
 import { listenPaste } from './pasteImage'
+import { open } from '@tauri-apps/api/shell'
 
 function toHex(d) {
   return Number(d).toString(16).padStart(2, '0')
@@ -200,6 +201,9 @@ export function createMonacoEditor({
       ambiguousCharacters: false,
     },
   })
+  window.open = (url) => {
+    open(url)
+  }
   disposables.push(editor)
 
   //粘贴上传图片
