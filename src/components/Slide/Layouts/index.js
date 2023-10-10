@@ -1,11 +1,7 @@
 import Default from './Default'
-import ImageRight from './ImageRight'
+import { ImageRight, ImageLeft } from './ImageRight'
 import Center from './Center'
 import Cover from './Cover'
-
-function ImageLeft(props) {
-  return <ImageRight className="flex-row-reverse" {...props} />
-}
 
 function End(props) {
   return <Default className="grid content-end" {...props} />
