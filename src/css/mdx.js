@@ -14,6 +14,7 @@ import atomDark from '!!raw-loader!prism-themes/themes/prism-atom-dark.css'
 import a11yDark from '!!raw-loader!prism-themes/themes/prism-a11y-dark.css'
 import colDarkCold from '!!raw-loader!prism-themes/themes/prism-coldark-cold.css'
 import okaidia from '!!raw-loader!./prism-okaidia.css'
+import seti from '!!raw-loader!./prism-seti.css'
 
 export const baseCss = mdxcss + katex
 
@@ -57,6 +58,10 @@ export const codeThemes = {
   okaidia: {
     name: 'Okaidia',
     css: okaidia,
+  },
+  seti: {
+    name: 'seti',
+    css: seti,
   },
   atomDark: {
     name: 'Atom Dark',
