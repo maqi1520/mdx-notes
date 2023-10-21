@@ -122,40 +122,44 @@ export const FileTree = forwardRef(
     }, [])
 
     useEffect(() => {
-      readDir(dirPath, { recursive: true }).then((entries) => {
-        if (entries) {
-          let list = []
-          store.mdFiles = []
-          const generateList = (data) => {
-            for (let i = 0; i < data.length; i++) {
-              const node = data[i]
-              if (isMdFile(node.name)) {
-                store.mdFiles.push({
-                  name: node.name.split('.md')[0],
-                  path: node.path,
-                })
+      exists(dirPath).then(async (res) => {
+        if (res) {
+          readDir(dirPath, { recursive: true }).then((entries) => {
+            if (entries) {
+              let list = []
+              store.mdFiles = []
+              const generateList = (data) => {
+                for (let i = 0; i < data.length; i++) {
+                  const node = data[i]
+                  if (isMdFile(node.name)) {
+                    store.mdFiles.push({
+                      name: node.name.split('.md')[0],
+                      path: node.path,
+                    })
+                  }
+                  list.push({ name: node.name, path: node.path })
+                  if (node.children) {
+                    generateList(node.children)
+                  }
+                }
               }
-              list.push({ name: node.name, path: node.path })
-              if (node.children) {
-                generateList(node.children)
+
+              const lastData = [
+                {
+                  name: getCurrentFolderName(dirPath),
+                  path: dirPath,
+                  children: entries,
+                },
+              ]
+              generateList(lastData)
+
+              setDataList(list)
+              setData(lastData)
+              if (expandedKeys.length === 0) {
+                setExpandedKeys([dirPath])
               }
             }
-          }
-
-          const lastData = [
-            {
-              name: getCurrentFolderName(dirPath),
-              path: dirPath,
-              children: entries,
-            },
-          ]
-          generateList(lastData)
-
-          setDataList(list)
-          setData(lastData)
-          if (expandedKeys.length === 0) {
-            setExpandedKeys([dirPath])
-          }
+          })
         }
       })
     }, [dirPath, count])
