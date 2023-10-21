@@ -4,13 +4,19 @@ import { writeBinaryFile } from '@tauri-apps/api/fs'
 const codeToUpload = {
   none: async (blob) => {
     const contents = await blob.arrayBuffer()
-    const fileName = `/img/${new Date().valueOf()}.png`
+    const time = new Date().valueOf()
+    let fileName = `\\img\\${time}.png`
+
+    const dirPath = JSON.parse(localStorage.getItem('dir-path'))
+    if (dirPath.includes('/')) {
+      fileName = `/img/${time}.png`
+    }
     await writeBinaryFile({
       //当前工作目录
-      path: `${JSON.parse(localStorage.getItem('dir-path'))}${fileName}`,
+      path: `${dirPath}${fileName}`,
       contents,
     })
-    return fileName
+    return `/img/${time}.png`
   },
   PicGo: async () => {
     try {
