@@ -17,6 +17,8 @@ import {
   findPathInTree,
   sortFile,
   listenKeyDown,
+  renamePath,
+  getCurrentFolderName,
 } from './utils/file-tree-util'
 
 import useLocalStorage from 'react-use/lib/useLocalStorage'
@@ -94,7 +96,7 @@ export const FileTree = forwardRef(
           })
         }
       }
-    }, [])
+    }, [dirPath])
 
     useEffect(() => {
       exists(dirPath).then(async (res) => {
@@ -140,10 +142,9 @@ export const FileTree = forwardRef(
             }
           }
 
-          const payloadArr = dirPath.split('/')
           const lastData = [
             {
-              name: payloadArr[payloadArr.length - 1],
+              name: getCurrentFolderName(dirPath),
               path: dirPath,
               children: entries,
             },
@@ -210,9 +211,7 @@ export const FileTree = forwardRef(
       if (!isDir && !isMdFile(name)) {
         name = name + '.md'
       }
-      const payloadArr = path.split('/')
-      payloadArr[payloadArr.length - 1] = name
-      const newPath = payloadArr.join('/')
+      const newPath = renamePath(path, name)
       //  重命名文件名不变
       if (type === 'rename' && path === newPath) {
         setCount(count + 1)
