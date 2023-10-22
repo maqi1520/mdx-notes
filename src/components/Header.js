@@ -3,12 +3,25 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
 import { t } from '@/utils/i18n'
+import { type } from '@tauri-apps/api/os'
+import { useLayoutEffect, useState } from 'react'
 
 export default function Header({ children, logo, rightbtn }) {
+  const [isMac, setIsMac] = useState(false)
+  useLayoutEffect(() => {
+    async function init() {
+      const osType = await type()
+      setIsMac(osType === 'Darwin')
+    }
+    init()
+  }, [])
   return (
     <div
       data-tauri-drag-region
-      className="relative z-20 flex-none pt-6 pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center justify-between antialiased select-none"
+      className={clsx(
+        'relative z-20 flex-none pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center justify-between antialiased select-none',
+        isMac ? 'pt-6' : 'pt-3'
+      )}
       style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
     >
       <div className="flex items-center min-w-0 space-x-2">

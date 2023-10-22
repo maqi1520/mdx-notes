@@ -24,6 +24,9 @@
       "globalShortcut": {
         "all": true
       },
+      "os": {
+        "all": true
+      },
       "shell": {
         "all": true,
         "execute": true,
