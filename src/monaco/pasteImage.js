@@ -1,5 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { writeBinaryFile } from '@tauri-apps/api/fs'
+import { writeBinaryFile, createDir, exists } from '@tauri-apps/api/fs'
+import { resolve } from '@tauri-apps/api/path'
 
 const codeToUpload = {
   none: async (blob) => {
@@ -8,6 +9,10 @@ const codeToUpload = {
     let fileName = `\\img\\${time}.png`
 
     const dirPath = JSON.parse(localStorage.getItem('dir-path'))
+    const path = await resolve(dirPath, 'img')
+    if (!(await exists(path))) {
+      await createDir(path)
+    }
     if (dirPath.includes('/')) {
       fileName = `/img/${time}.png`
     }
