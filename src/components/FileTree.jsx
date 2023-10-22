@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
+  useLayoutEffect,
 } from 'react'
 import { Tree, ConfigProvider } from 'antd'
 import { FileMarkdownOutlined, FolderAddOutlined } from '@ant-design/icons'
@@ -25,6 +26,7 @@ import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { confirm, message, open } from '@tauri-apps/api/dialog'
 import { documentDir, resolve } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
+import { type } from '@tauri-apps/api/os'
 import {
   exists,
   createDir,
@@ -40,6 +42,7 @@ import { tauri } from '@tauri-apps/api'
 import initial from '@/utils/initial/'
 import { open as openLink } from '@tauri-apps/api/shell'
 import { store } from '../monaco/data'
+import clsx from 'clsx'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
@@ -49,6 +52,14 @@ const { DirectoryTree } = Tree
 
 export const FileTree = forwardRef(
   ({ onSelect, selectedPath, showFileTree, setShowPPT }, ref) => {
+    const [isMac, setIsMac] = useState(false)
+    useLayoutEffect(() => {
+      async function init() {
+        const osType = await type()
+        setIsMac(osType === 'Darwin')
+      }
+      init()
+    }, [])
     const [count, setCount] = useState(0)
     const [expandedKeys, setExpandedKeys] = useState([])
     const [searchValue, setSearchValue] = useState('')
@@ -267,7 +278,7 @@ export const FileTree = forwardRef(
               index > -1 ? (
                 <span className="select-none">
                   {beforeStr}
-                  <span className="text-pink-400">{searchValue}</span>
+                  <span className="text-pink-600">{searchValue}</span>
                   {afterStr}
                 </span>
               ) : (
@@ -497,7 +508,10 @@ export const FileTree = forwardRef(
       <div className="w-full overflow-auto h-screen">
         <div
           data-tauri-drag-region
-          className="px-4 pb-3 pt-7 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800"
+          className={clsx(
+            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800',
+            isMac ? 'pt-7' : 'pt-4'
+          )}
         >
           <div className="flex items-center w-full text-left space-x-3 px-4 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
             <svg
