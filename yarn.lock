@@ -3209,19 +3209,6 @@ has@^1.0.0, has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hast-to-hyperscript@^10.0.0:
-  version "10.0.1"
-  resolved "http://rnpm.uyundev.cn/hast-to-hyperscript/download/hast-to-hyperscript-10.0.1.tgz#3decd7cb4654bca8883f6fcbd4fb3695628c4296"
-  integrity sha1-PezXy0ZUvKiIP2/L1Ps2lWKMQpY=
-  dependencies:
-    "@types/unist" "^2.0.0"
-    comma-separated-tokens "^2.0.0"
-    property-information "^6.0.0"
-    space-separated-tokens "^2.0.0"
-    style-to-object "^0.3.0"
-    unist-util-is "^5.0.0"
-    web-namespaces "^2.0.0"
-
 hast-util-from-dom@^4.0.0:
   version "4.2.0"
   resolved "https://registry.npmmirror.com/hast-util-from-dom/-/hast-util-from-dom-4.2.0.tgz#25836ddecc3cc0849d32749c2a7aec03e94b59a7"
@@ -3282,8 +3269,8 @@ hast-util-parse-selector@^3.0.0:
 
 hast-util-raw@^7.0.0:
   version "7.2.3"
-  resolved "http://rnpm.uyundev.cn/hast-util-raw/download/hast-util-raw-7.2.3.tgz#dcb5b22a22073436dbdc4aa09660a644f4991d99"
-  integrity sha1-3LWyKiIHNDbb3EqglmCmRPSZHZk=
+  resolved "https://registry.npmmirror.com/hast-util-raw/-/hast-util-raw-7.2.3.tgz#dcb5b22a22073436dbdc4aa09660a644f4991d99"
+  integrity sha512-RujVQfVsOrxzPOPSzZFiwofMArbQke6DJjnFfceiEbFh7S05CbPt0cYN+A5YeD3pso0JQk6O1aHBnx9+Pm2uqg==
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/parse5" "^6.0.0"
@@ -3320,8 +3307,8 @@ hast-util-to-estree@^2.0.0:
 
 hast-util-to-html@^8.0.4:
   version "8.0.4"
-  resolved "http://rnpm.uyundev.cn/hast-util-to-html/download/hast-util-to-html-8.0.4.tgz#0269ef33fa3f6599b260a8dc94f733b8e39e41fc"
-  integrity sha1-AmnvM/o/ZZmyYKjclPczuOOeQfw=
+  resolved "https://registry.npmmirror.com/hast-util-to-html/-/hast-util-to-html-8.0.4.tgz#0269ef33fa3f6599b260a8dc94f733b8e39e41fc"
+  integrity sha512-4tpQTUOr9BMjtYyNlt0P50mH7xj0Ks2xpo8M943Vykljf99HW6EzulIoJP1N3eKOSScEHzyzi9dm7/cn0RfGwA==
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/unist" "^2.0.0"
@@ -3336,14 +3323,14 @@ hast-util-to-html@^8.0.4:
     zwitch "^2.0.4"
 
 hast-util-to-parse5@^7.0.0:
-  version "7.0.0"
-  resolved "http://rnpm.uyundev.cn/hast-util-to-parse5/download/hast-util-to-parse5-7.0.0.tgz#a39808e69005d10afeed1866029a1fb137df3f7c"
-  integrity sha1-o5gI5pAF0Qr+7RhmApofsTffP3w=
+  version "7.1.0"
+  resolved "https://registry.npmmirror.com/hast-util-to-parse5/-/hast-util-to-parse5-7.1.0.tgz#c49391bf8f151973e0c9adcd116b561e8daf29f3"
+  integrity sha512-YNRgAJkH2Jky5ySkIqFXTQiaqcAtJyVE+D5lkN6CdtOqrnkLfGYYrEcKuHOJZlp+MwjSwuD3fZuawI+sic/RBw==
   dependencies:
     "@types/hast" "^2.0.0"
-    "@types/parse5" "^6.0.0"
-    hast-to-hyperscript "^10.0.0"
+    comma-separated-tokens "^2.0.0"
     property-information "^6.0.0"
+    space-separated-tokens "^2.0.0"
     web-namespaces "^2.0.0"
     zwitch "^2.0.0"
 
@@ -3416,8 +3403,8 @@ hsla-regex@^1.0.0:
 
 html-void-elements@^2.0.0:
   version "2.0.1"
-  resolved "http://rnpm.uyundev.cn/html-void-elements/download/html-void-elements-2.0.1.tgz#29459b8b05c200b6c5ee98743c41b979d577549f"
-  integrity sha1-KUWbiwXCALbF7ph0PEG5edV3VJ8=
+  resolved "https://registry.npmmirror.com/html-void-elements/-/html-void-elements-2.0.1.tgz#29459b8b05c200b6c5ee98743c41b979d577549f"
+  integrity sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A==
 
 htmlparser2@^4.0.0:
   version "4.1.0"
@@ -7489,5 +7476,5 @@ zwitch@^2.0.0:
 
 zwitch@^2.0.4:
   version "2.0.4"
-  resolved "http://rnpm.uyundev.cn/zwitch/download/zwitch-2.0.4.tgz#c827d4b0acb76fc3e685a4c6ec2902d51070e9d7"
-  integrity sha1-yCfUsKy3b8PmhaTG7CkC1RBw6dc=
+  resolved "https://registry.npmmirror.com/zwitch/-/zwitch-2.0.4.tgz#c827d4b0acb76fc3e685a4c6ec2902d51070e9d7"
+  integrity sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==
