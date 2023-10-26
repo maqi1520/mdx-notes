@@ -1,19 +1,44 @@
-import { forwardRef, useEffect, useState, useRef } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useState,
+  useRef,
+  memo,
+  useImperativeHandle,
+} from 'react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import clsx from 'clsx'
 import { getPointerPosition } from '../utils/getPointerPosition'
 
-export const Preview = forwardRef(
+const Preview = forwardRef(
   (
     {
       responsiveDesignMode,
       responsiveSize,
       onChangeResponsiveSize,
-      onLoad,
       iframeClassName = '',
     },
     ref
   ) => {
+    const iframeRef = useRef()
+    const dataRef = useRef()
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        setState: (content) => {
+          //首次加载 postMessage 会失败，先存到 ref 中
+          dataRef.current = content
+          iframeRef.current.contentWindow.postMessage(content, '*')
+        },
+      }),
+      []
+    )
+    // 加载完成后再从 ref 中读取
+    const onLoad = () => {
+      iframeRef.current.contentWindow.postMessage(dataRef.current, '*')
+    }
+
     const containerRef = useRef()
     const [size, setSize] = useState({ width: 0, height: 0 })
     const [resizing, setResizing] = useState()
@@ -279,7 +304,7 @@ export const Preview = forwardRef(
             }
           >
             <iframe
-              ref={ref}
+              ref={iframeRef}
               title="Preview"
               style={
                 responsiveDesignMode
@@ -370,6 +395,7 @@ export const Preview = forwardRef(
                     <script>
                     var hasHtml = false
                     var hasCss = false
+                    console.log('12112111')
                     window.addEventListener('message', (e) => {
                       if (typeof e.data.line  !== 'undefined') {
                         var previewEl = document.documentElement
@@ -555,3 +581,5 @@ export const Preview = forwardRef(
     )
   }
 )
+
+export default memo(Preview)

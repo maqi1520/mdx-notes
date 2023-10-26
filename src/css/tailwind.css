@@ -43,3 +43,13 @@
 .file-tree-wrapper > .Pane {
   transition: width 150ms ease-in;
 }
+.mm-toolbar {
+  @apply flex;
+}
+.mm-toolbar-brand {
+  @apply hidden;
+}
+.markmap-foreign pre > code {
+  color: #f8f8f2;
+  background: #272822;
+}

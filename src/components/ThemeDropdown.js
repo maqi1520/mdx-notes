@@ -80,6 +80,59 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       value={value.codeTheme}
                     />
                   </div>
+
+                  <div className="mt-1">
+                    <div className="flex items-center justify-between">
+                      <span>
+                        <input
+                          type="radio"
+                          id="html"
+                          className="peer/html form-radio mr-2 mb-0.5 border-slate-300 text-sky-400 focus:ring-sky-300"
+                          checked={value.view === 'html'}
+                          onChange={(e) => onChange({ ...value, view: 'html' })}
+                        />
+                        <label
+                          htmlFor="html"
+                          className="peer-checked/html:text-sky-500"
+                        >
+                          HTML
+                        </label>
+                      </span>
+
+                      <span>
+                        <input
+                          type="radio"
+                          id="ppt"
+                          className="peer/draft form-radio mr-2 mb-0.5 border-slate-300 text-sky-400 focus:ring-sky-300"
+                          checked={value.view === 'ppt'}
+                          onChange={(e) => onChange({ ...value, view: 'ppt' })}
+                        />
+                        <label
+                          htmlFor="ppt"
+                          className="peer-checked/ppt:text-sky-500"
+                        >
+                          PPT
+                        </label>
+                      </span>
+                      <span>
+                        <input
+                          id="map"
+                          className="peer/map form-radio mr-2 mb-0.5 border-slate-300 text-sky-400 focus:ring-sky-300"
+                          type="radio"
+                          checked={value.view === 'MindMap'}
+                          onChange={(e) =>
+                            onChange({ ...value, view: 'MindMap' })
+                          }
+                        />
+                        <label
+                          htmlFor="map"
+                          className="peer-checked/map:text-sky-500"
+                        >
+                          MindMap
+                        </label>
+                      </span>
+                    </div>
+                  </div>
                   <div className="flex items-center justify-between">
                     <label className="flex-none pr-2">{t('Mac style')}</label>
                     <Switch
@@ -92,24 +145,6 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       <span
                         className={`${
                           value.isMac ? 'translate-x-6' : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                      />
-                    </Switch>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label className="flex-none pr-2">{t('PPT Preview')}</label>
-                    <Switch
-                      checked={value.showSlide}
-                      onChange={(showSlide) =>
-                        onChange({ ...value, showSlide })
-                      }
-                      className={`${
-                        value.isMac ? 'bg-sky-500' : 'bg-sky-500/40'
-                      }  inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                      <span
-                        className={`${
-                          value.showSlide ? 'translate-x-6' : 'translate-x-1'
                         } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                       />
                     </Switch>

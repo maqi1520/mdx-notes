@@ -8,8 +8,9 @@ import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
-import { Preview } from './Preview'
+import Preview from './Preview'
 import Slide from './Slide'
+import MarkMap from './MarkMap'
 import { ErrorOverlay } from './ErrorOverlay'
 import Header, { HeaderButton } from './Header'
 import { LogoHome } from './Logo'
@@ -23,7 +24,7 @@ import { baseCss, codeThemes } from '../css/mdx'
 import { confirm } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
 import { listen } from '@tauri-apps/api/event'
-import { FileTree } from './FileTree'
+import FileTree from './FileTree'
 import { t } from '@/utils/i18n'
 import { getDefaultContent } from '../utils/getDefaultContent'
 import { get } from '../utils/database'
@@ -98,7 +99,7 @@ export default function Pen() {
     markdownTheme: 'default',
     codeTheme: 'default',
     isMac: true,
-    showSlide: false,
+    view: 'html',
   })
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
@@ -119,9 +120,6 @@ export default function Pen() {
   const refFileTree = useRef()
   const [filePath, setFilePath] = useLocalStorage('filePath')
   const readMarkdown = async (path) => {
-    if (query.id) {
-      router.replace('/')
-    }
     if (/\.mdx?$/.test(path)) {
       if (dirty) {
         const confirmed = await confirm(
@@ -133,8 +131,12 @@ export default function Pen() {
         )
         if (!confirmed) return
       }
-
       setFilePath(path)
+      if (query.id) {
+        router.replace('/')
+        return
+      }
+
       readTextFile(path).then((res) => {
         setTimeout(() => {
           editorRef.current.documents.html.getModel().setValue(res)
@@ -169,11 +171,11 @@ export default function Pen() {
   }, [dirty])
 
   const inject = useCallback(async (content) => {
-    previewRef.current &&
-      previewRef.current.contentWindow.postMessage(content, '*')
+    previewRef.current && previewRef.current.setState(content)
   }, [])
 
   async function compileNow(content) {
+    localStorage.setItem('content', JSON.stringify(content))
     if (slideRef.current) {
       slideRef.current.setState(content)
       return
@@ -220,14 +222,12 @@ export default function Pen() {
       } else {
         setDirty(true)
       }
-      localStorage.setItem('content', JSON.stringify(content))
     }, 200),
     [theme, filePath]
   )
 
   useEffect(() => {
     setDirty(false)
-    inject({ html: initialContent.html })
     compileNow({
       html: initialContent.html,
       css: initialContent.css,
@@ -548,8 +548,10 @@ export default function Pen() {
                   )}
                 </div>
                 <div className="absolute inset-0 w-full md:h-full top-12 lg:top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-black">
-                  {theme.showSlide ? (
+                  {theme.view === 'ppt' ? (
                     <Slide ref={slideRef} />
+                  ) : theme.view === 'MindMap' ? (
+                    <MarkMap ref={slideRef} />
                   ) : (
                     <Preview
                       ref={previewRef}
@@ -559,16 +561,6 @@ export default function Pen() {
                       responsiveSize={responsiveSize}
                       onChangeResponsiveSize={setResponsiveSize}
                       iframeClassName={resizing ? 'pointer-events-none' : ''}
-                      onLoad={() => {
-                        inject({
-                          html: initialContent.html,
-                        })
-                        compileNow({
-                          css: initialContent.css,
-                          config: initialContent.config,
-                          html: initialContent.html,
-                        })
-                      }}
                     />
                   )}
                   <ErrorOverlay error={error} />

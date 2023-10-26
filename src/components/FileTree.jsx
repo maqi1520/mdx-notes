@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useRef,
   useLayoutEffect,
+  memo,
 } from 'react'
 import { Tree, ConfigProvider } from 'antd'
 import { FileMarkdownOutlined, FolderAddOutlined } from '@ant-design/icons'
@@ -50,7 +51,7 @@ async function show_in_folder(path) {
 
 const { DirectoryTree } = Tree
 
-export const FileTree = forwardRef(
+const FileTree = forwardRef(
   ({ onSelect, selectedPath, showFileTree, setShowPPT }, ref) => {
     const [isMac, setIsMac] = useState(false)
     useLayoutEffect(() => {
@@ -437,8 +438,7 @@ export const FileTree = forwardRef(
       if (!path || path === dirPath) {
         return
       }
-      const payloadArr = path.split('/')
-      const name = payloadArr[payloadArr.length - 1]
+      const name = getCurrentFolderName(path)
       const confirmed = await confirm(
         `${t('Are you sure you want to delete')}'${name}'?`,
         {
@@ -513,7 +513,7 @@ export const FileTree = forwardRef(
             isMac ? 'pt-7' : 'pt-4'
           )}
         >
-          <div className="flex items-center w-full text-left space-x-3 px-4 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
+          <div className="flex items-center w-full text-left px-3 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -530,7 +530,7 @@ export const FileTree = forwardRef(
             </svg>
 
             <input
-              className="flex-auto bg-transparent w-full outline-none"
+              className="flex-auto bg-transparent w-full focus:ring-0 outline-none h-full border-0"
               aria-label="search"
               onKeyDown={onChange}
             />
@@ -595,3 +595,5 @@ export const FileTree = forwardRef(
     )
   }
 )
+
+export default memo(FileTree)
