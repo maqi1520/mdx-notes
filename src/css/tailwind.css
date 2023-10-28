@@ -1,48 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.menu-active::before {
-  @apply !bg-sky-500;
-}
-
-.ant-tree-treenode {
-  @apply whitespace-nowrap;
-}
-
-.file-tree.ant-tree.ant-tree-directory
-  .ant-tree-treenode-selected:hover::before,
-.file-tree.ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
-  @apply bg-sky-500 bg-opacity-10 border border-sky-500;
-}
-
-.file-tree.ant-tree.ant-tree-directory .ant-tree-switcher {
-  display: none;
-}
-.file-tree.ant-tree.ant-tree-directory
-  .ant-tree-treenode
-  .ant-tree-node-content-wrapper.ant-tree-node-selected {
-  @apply text-black;
-}
-
-.dark
-  .file-tree.ant-tree.ant-tree-directory
-  .ant-tree-treenode-selected
-  .ant-tree-switcher,
-.dark
-  .file-tree.ant-tree.ant-tree-directory
-  .ant-tree-treenode
-  .ant-tree-node-content-wrapper.ant-tree-node-selected {
-  @apply text-white;
-}
-
-.menu-active .ant-tree-node-content-wrapper {
-  @apply !text-white;
-}
-
-.file-tree-wrapper > .Pane {
-  transition: width 150ms ease-in;
-}
 .mm-toolbar {
   @apply flex;
 }

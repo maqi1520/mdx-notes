@@ -9,8 +9,7 @@ import React, {
   useLayoutEffect,
   memo,
 } from 'react'
-import { Tree, ConfigProvider } from 'antd'
-import { FileMarkdownOutlined, FolderAddOutlined } from '@ant-design/icons'
+import FolderPlusIcon from './icons/FolderPlusIcon'
 import {
   getParentKey,
   isMdFile,
@@ -18,7 +17,6 @@ import {
   findPathTree,
   findPathInTree,
   sortFile,
-  listenKeyDown,
   renamePath,
   getCurrentFolderName,
 } from './utils/file-tree-util'
@@ -43,13 +41,12 @@ import { tauri } from '@tauri-apps/api'
 import initial from '@/utils/initial/'
 import { open as openLink } from '@tauri-apps/api/shell'
 import { store } from '../monaco/data'
+import Tree from './Tree'
 import clsx from 'clsx'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
 }
-
-const { DirectoryTree } = Tree
 
 const FileTree = forwardRef(
   ({ onSelect, selectedPath, showFileTree, setShowPPT }, ref) => {
@@ -64,7 +61,6 @@ const FileTree = forwardRef(
     const [count, setCount] = useState(0)
     const [expandedKeys, setExpandedKeys] = useState([])
     const [searchValue, setSearchValue] = useState('')
-    const [autoExpandParent, setAutoExpandParent] = useState(true)
 
     const refInput = useRef([])
     const [dataList, setDataList] = useState([])
@@ -156,17 +152,10 @@ const FileTree = forwardRef(
                 }
               }
 
-              const lastData = [
-                {
-                  name: getCurrentFolderName(dirPath),
-                  path: dirPath,
-                  children: entries,
-                },
-              ]
-              generateList(lastData)
+              generateList(entries)
 
               setDataList(list)
-              setData(lastData)
+              setData(entries)
               if (expandedKeys.length === 0) {
                 setExpandedKeys([dirPath])
               }
@@ -184,11 +173,6 @@ const FileTree = forwardRef(
       }),
       []
     )
-
-    const onExpand = (newExpandedKeys) => {
-      setExpandedKeys(newExpandedKeys)
-      setAutoExpandParent(false)
-    }
 
     const onChange = (e) => {
       if (e.keyCode !== 13) {
@@ -212,7 +196,6 @@ const FileTree = forwardRef(
         .filter((item, i, self) => item && self.indexOf(item) === i)
       setExpandedKeys(newExpandedKeys)
       setSearchValue(value)
-      setAutoExpandParent(true)
     }
     const onBlur = async (e) => {
       let name = e.target.value.trim()
@@ -291,7 +274,7 @@ const FileTree = forwardRef(
                   ref={refInput}
                   onBlur={onBlur}
                   onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
+                    if (e.keyCode === 13 || e.code === 'Escape') {
                       onBlur(e)
                     }
                   }}
@@ -317,8 +300,6 @@ const FileTree = forwardRef(
             }
             if (isMdFile(item.path)) {
               return {
-                icon: <FileMarkdownOutlined />,
-                className: selectedPath === item.path ? 'menu-active' : '',
                 isLeaf: true,
                 title,
                 key: item.path,
@@ -351,13 +332,15 @@ const FileTree = forwardRef(
       }
     }, [])
 
-    const onRightClick = (info) => {
+    const onRightClick = (event, key) => {
+      event.stopPropagation()
+      event.preventDefault()
       setMenuStyle({
         display: 'block',
-        top: info.event.clientY,
-        left: info.event.clientX,
+        top: event.clientY,
+        left: event.clientX,
       })
-      setSelectedKeys([info.node.key])
+      setSelectedKeys([key])
     }
     const handleCreateDir = () => {
       setMenuStyle({ display: 'none' })
@@ -464,21 +447,9 @@ const FileTree = forwardRef(
       await appWindow.setFullscreen(true)
     }
 
-    /**
-     * 键盘事件
-     */
-    useEffect(() => {
-      const removeListen = listenKeyDown({
-        handleDelete,
-        handleRename,
-        showFileTree,
-      })
-      return removeListen
-    }, [handleDelete, handleRename, showFileTree])
-
     let menu = [
-      { name: t('Rename'), event: handleRename, extra: 'Enter' },
-      { name: t('Delete'), event: handleDelete, extra: '⌘Backspace' },
+      { name: t('Rename'), event: handleRename },
+      { name: t('Delete'), event: handleDelete },
       { name: t('PPT View'), event: handlePPT },
       { name: t('Reveal in Finder'), event: handleOpenFinder },
     ]
@@ -513,7 +484,7 @@ const FileTree = forwardRef(
             isMac ? 'pt-7' : 'pt-4'
           )}
         >
-          <div className="flex items-center w-full text-left px-3 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
+          <div className="flex items-center w-full text-left px-2 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -530,7 +501,7 @@ const FileTree = forwardRef(
             </svg>
 
             <input
-              className="flex-auto bg-transparent w-full focus:ring-0 outline-none h-full border-0"
+              className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
               aria-label="search"
               onKeyDown={onChange}
             />
@@ -552,42 +523,28 @@ const FileTree = forwardRef(
             </div>
           ))}
         </div>
-        <div className="mx-3 overflow-x-hidden pb-12 pt-3">
-          <ConfigProvider
-            theme={{
-              components: {
-                Tree: {
-                  colorBgContainer: 'transparent',
-                  colorText: 'inherit',
-                  controlItemBgHover: 'rgba(0,0,0,.2)',
-                  controlHeightSM: 30,
-                },
-              },
+        <div className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3">
+          <div className="text-sm font-semibold ml-8 mb-2">
+            {getCurrentFolderName(dirPath)}
+          </div>
+          <Tree
+            onRightClick={onRightClick}
+            onSelect={(key) => {
+              if (isMdFile(key)) {
+                console.log(key)
+                onSelect(key)
+              }
             }}
-          >
-            <DirectoryTree
-              className="file-tree"
-              onRightClick={onRightClick}
-              selectedKeys={selectedKeys}
-              onSelect={(keys) => {
-                setSelectedKeys(keys)
-                if (isMdFile(keys[0])) {
-                  onSelect(keys[0])
-                }
-              }}
-              onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
-              treeData={treeData}
-            ></DirectoryTree>
-          </ConfigProvider>
+            selectedPath={selectedPath}
+            treeData={treeData}
+          />
         </div>
         <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
           <button
             className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
             onClick={handleChooseDir}
           >
-            <FolderAddOutlined style={{ fontSize: 18 }} />
+            <FolderPlusIcon className="w-4 h-4" />
             <span className="ml-1">{t('Open Folder')}</span>
           </button>
         </div>
