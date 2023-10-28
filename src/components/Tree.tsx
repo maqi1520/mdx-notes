@@ -13,6 +13,8 @@ interface TreeItem {
 interface Props {
   treeData: TreeItem[]
   selectedPath: string
+  expandedKeys: string[]
+  setExpandedKeys: (keys: string[]) => void
   onSelect: (key: string) => void
   onRightClick: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -23,6 +25,8 @@ interface Props {
 interface TreeNodeProps {
   item: TreeItem
   selectedPath: string
+  expandedKeys: string[]
+  setExpandedKeys: (keys: string[]) => void
   onSelect: (key: string) => void
   onRightClick: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -33,14 +37,19 @@ interface TreeNodeProps {
 const TreeNode = ({
   item,
   selectedPath,
+  expandedKeys,
+  setExpandedKeys,
   onSelect,
   onRightClick,
 }: TreeNodeProps) => {
   const { title, children, isLeaf } = item
-  const [isExpanded, setIsExpanded] = useState(true)
-
+  const isExpanded = expandedKeys.includes(item.key)
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded)
+    if (isExpanded) {
+      setExpandedKeys(expandedKeys.filter((key) => key !== item.key))
+    } else {
+      setExpandedKeys([...expandedKeys, item.key])
+    }
   }
 
   return (
@@ -71,6 +80,8 @@ const TreeNode = ({
                   <TreeNode
                     onRightClick={onRightClick}
                     onSelect={onSelect}
+                    expandedKeys={expandedKeys}
+                    setExpandedKeys={setExpandedKeys}
                     selectedPath={selectedPath}
                     key={index}
                     item={child}
@@ -98,7 +109,14 @@ const TreeNode = ({
   )
 }
 
-const Tree = ({ treeData, selectedPath, onSelect, onRightClick }: Props) => {
+const Tree = ({
+  treeData,
+  selectedPath,
+  expandedKeys,
+  setExpandedKeys,
+  onSelect,
+  onRightClick,
+}: Props) => {
   return (
     <div className="text-sm">
       <ul className="space-y-2">
@@ -106,6 +124,8 @@ const Tree = ({ treeData, selectedPath, onSelect, onRightClick }: Props) => {
           <TreeNode
             onRightClick={onRightClick}
             onSelect={onSelect}
+            expandedKeys={expandedKeys}
+            setExpandedKeys={setExpandedKeys}
             selectedPath={selectedPath}
             key={index}
             item={item}

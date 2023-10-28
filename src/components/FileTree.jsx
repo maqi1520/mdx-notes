@@ -10,6 +10,8 @@ import React, {
   memo,
 } from 'react'
 import FolderPlusIcon from './icons/FolderPlusIcon'
+import HomeIcon from './icons/HomeIcon'
+import SearchIcon from './icons/SearchIcon'
 import {
   getParentKey,
   isMdFile,
@@ -59,12 +61,12 @@ const FileTree = forwardRef(
       init()
     }, [])
     const [count, setCount] = useState(0)
-    const [expandedKeys, setExpandedKeys] = useState([])
     const [searchValue, setSearchValue] = useState('')
 
     const refInput = useRef([])
     const [dataList, setDataList] = useState([])
     const [data, setData] = useState([])
+    const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
 
     useEffect(() => {
@@ -156,9 +158,6 @@ const FileTree = forwardRef(
 
               setDataList(list)
               setData(entries)
-              if (expandedKeys.length === 0) {
-                setExpandedKeys([dirPath])
-              }
             }
           })
         }
@@ -168,7 +167,10 @@ const FileTree = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
-        setDirPath,
+        setDirPath: (path) => {
+          setDirPath(path)
+          setExpandedKeys([])
+        },
         reload: () => setCount((p) => p + 1),
       }),
       []
@@ -470,6 +472,7 @@ const FileTree = forwardRef(
         defaultPath: await documentDir(),
       })
       setDirPath(selected)
+      setExpandedKeys([])
     }
     if (!showFileTree) {
       return <div />
@@ -485,21 +488,7 @@ const FileTree = forwardRef(
           )}
         >
           <div className="flex items-center w-full text-left px-2 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-4 h-4 flex-none text-slate-300 dark:text-slate-400"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-              />
-            </svg>
-
+            <SearchIcon className="w-4 h-4 flex-none text-slate-300 dark:text-slate-400" />
             <input
               className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
               aria-label="search"
@@ -524,11 +513,14 @@ const FileTree = forwardRef(
           ))}
         </div>
         <div className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3">
-          <div className="text-sm font-semibold ml-8 mb-2">
-            {getCurrentFolderName(dirPath)}
+          <div className="text-sm font-semibold flex ml-3 mb-2">
+            <HomeIcon className="w-4 h-4 mr-1 flex-none" />
+            <span className="flex-auto">{getCurrentFolderName(dirPath)}</span>
           </div>
           <Tree
             onRightClick={onRightClick}
+            expandedKeys={expandedKeys}
+            setExpandedKeys={setExpandedKeys}
             onSelect={(key) => {
               if (isMdFile(key)) {
                 console.log(key)
