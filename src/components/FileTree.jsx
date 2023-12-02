@@ -83,6 +83,11 @@ const FileTree = forwardRef(
               setSelectedKeys([path])
             } else {
               // create file
+              const fileName = decodeURIComponent(href) + '.md'
+              await writeTextFile(dirPath + '/' + fileName, '')
+              setSelectedKeys([dirPath + '/' + fileName])
+              setCount((p) => p + 1)
+              onSelect(dirPath + '/' + fileName)
             }
           }
         }
