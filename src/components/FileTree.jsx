@@ -445,8 +445,10 @@ const FileTree = forwardRef(
         directory: true,
         defaultPath: await documentDir(),
       })
-      setDirPath(selected)
-      setExpandedKeys([])
+      if (selected) {
+        setDirPath(selected)
+        setExpandedKeys([])
+      }
     }
     if (!showFileTree) {
       return <div />

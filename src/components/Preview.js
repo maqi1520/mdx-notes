@@ -395,7 +395,6 @@ const Preview = forwardRef(
                     <script>
                     var hasHtml = false
                     var hasCss = false
-                    console.log('12112111')
                     window.addEventListener('message', (e) => {
                       if (typeof e.data.line  !== 'undefined') {
                         var previewEl = document.documentElement

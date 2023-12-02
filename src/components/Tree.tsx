@@ -58,10 +58,10 @@ const TreeNode = ({
         <div className="pl-3">
           <div
             onContextMenu={(e) => onRightClick(e, item.key)}
-            className="flex items-center mb-2"
+            onClick={toggleExpand}
+            className="flex items-center mb-2 cursor-pointer"
           >
             <ArrowIcon
-              onClick={toggleExpand}
               className={clsx(
                 'mr-1 h-4 w-4 flex-none transition-transform text-slate-400',
                 {
