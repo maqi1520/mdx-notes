@@ -13,7 +13,6 @@ import FolderPlusIcon from './icons/FolderPlusIcon'
 import HomeIcon from './icons/HomeIcon'
 import SearchIcon from './icons/SearchIcon'
 import {
-  getParentKey,
   isMdFile,
   mapTree,
   findPathTree,
@@ -23,6 +22,7 @@ import {
   getCurrentFolderName,
 } from './utils/file-tree-util'
 
+import { searchResponse } from './utils/search'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { confirm, message, open } from '@tauri-apps/api/dialog'
 import { documentDir, resolve } from '@tauri-apps/api/path'
@@ -44,6 +44,7 @@ import initial from '@/utils/initial/'
 import { open as openLink } from '@tauri-apps/api/shell'
 import { store } from '../monaco/data'
 import Tree from './Tree'
+import SearchList from './SearchList'
 import clsx from 'clsx'
 
 async function show_in_folder(path) {
@@ -64,7 +65,7 @@ const FileTree = forwardRef(
     const [searchValue, setSearchValue] = useState('')
 
     const refInput = useRef([])
-    const [dataList, setDataList] = useState([])
+    const [searchList, setSearchList] = useState([])
     const [data, setData] = useState([])
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
@@ -136,7 +137,6 @@ const FileTree = forwardRef(
         if (res) {
           readDir(dirPath, { recursive: true }).then((entries) => {
             if (entries) {
-              let list = []
               store.mdFiles = []
               const generateList = (data) => {
                 for (let i = 0; i < data.length; i++) {
@@ -147,7 +147,6 @@ const FileTree = forwardRef(
                       path: node.path,
                     })
                   }
-                  list.push({ name: node.name, path: node.path })
                   if (node.children) {
                     generateList(node.children)
                   }
@@ -156,7 +155,6 @@ const FileTree = forwardRef(
 
               generateList(entries)
 
-              setDataList(list)
               setData(entries)
             }
           })
@@ -176,27 +174,21 @@ const FileTree = forwardRef(
       []
     )
 
-    const onChange = (e) => {
+    const onChange = async (e) => {
+      const { value } = e.target
+      if (value.trim() === '') {
+        setSearchList([])
+        setSearchValue(value)
+        return
+      }
       if (e.keyCode !== 13) {
         return
       }
-      const { value } = e.target
-      const newExpandedKeys = dataList
-        .map((item) => {
-          const name = item.name
-          if (
-            name
-              .trim()
-              .replace(/\.mdx?$/, '')
-              .toLowerCase()
-              .indexOf(value.toLowerCase()) > -1
-          ) {
-            return getParentKey(item.path, data)
-          }
-          return null
-        })
-        .filter((item, i, self) => item && self.indexOf(item) === i)
-      setExpandedKeys(newExpandedKeys)
+      const result = await searchResponse({
+        keywords: value.trim(),
+        mdFiles: store.mdFiles,
+      })
+      setSearchList(result)
       setSearchValue(value)
     }
     const onBlur = async (e) => {
@@ -253,23 +245,8 @@ const FileTree = forwardRef(
               ? item.name
               : t('Untitled.md')
 
-            const index = strTitle
-              .trim()
-              .replace(/\.mdx?$/, '')
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase())
-            const beforeStr = strTitle.substring(0, index)
-            const afterStr = strTitle.slice(index + searchValue.length)
-            let title =
-              index > -1 ? (
-                <span className="select-none">
-                  {beforeStr}
-                  <span className="text-pink-600">{searchValue}</span>
-                  {afterStr}
-                </span>
-              ) : (
-                <span className="select-none">{strTitle}</span>
-              )
+            let title = <span className="select-none">{strTitle}</span>
+
             if (item.input) {
               title = (
                 <input
@@ -296,9 +273,6 @@ const FileTree = forwardRef(
                 key: item.path,
                 children: loop(item.children),
               }
-            }
-            if (index === -1) {
-              return false
             }
             if (isMdFile(item.path)) {
               return {
@@ -496,50 +470,55 @@ const FileTree = forwardRef(
             />
           </div>
         </div>
-        <div
-          ref={menuRef}
-          style={menuStyle}
-          className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-50 w-36"
+        <SearchList
+          value={searchList}
+          onSelect={onSelect}
+          searchValue={searchValue}
         >
-          {menu.map((item) => (
-            <div
-              key={item.name}
-              onClick={item.event}
-              className="py-[2px] px-2  cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
-            >
-              <span>{item.name}</span>
-              <span className="opacity-50">{item.extra}</span>
-            </div>
-          ))}
-        </div>
-        <div className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3">
-          <div className="text-sm font-semibold flex ml-3 mb-2">
-            <HomeIcon className="w-4 h-4 mr-1 flex-none" />
-            <span className="flex-auto">{getCurrentFolderName(dirPath)}</span>
-          </div>
-          <Tree
-            onRightClick={onRightClick}
-            expandedKeys={expandedKeys}
-            setExpandedKeys={setExpandedKeys}
-            onSelect={(key) => {
-              if (isMdFile(key)) {
-                console.log(key)
-                onSelect(key)
-              }
-            }}
-            selectedPath={selectedPath}
-            treeData={treeData}
-          />
-        </div>
-        <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
-          <button
-            className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
-            onClick={handleChooseDir}
+          <div
+            ref={menuRef}
+            style={menuStyle}
+            className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-50 w-36"
           >
-            <FolderPlusIcon className="w-4 h-4" />
-            <span className="ml-1">{t('Open Folder')}</span>
-          </button>
-        </div>
+            {menu.map((item) => (
+              <div
+                key={item.name}
+                onClick={item.event}
+                className="py-[2px] px-2  cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
+              >
+                <span>{item.name}</span>
+                <span className="opacity-50">{item.extra}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3">
+            <div className="text-sm font-semibold flex ml-3 mb-2">
+              <HomeIcon className="w-4 h-4 mr-1 flex-none" />
+              <span className="flex-auto">{getCurrentFolderName(dirPath)}</span>
+            </div>
+            <Tree
+              onRightClick={onRightClick}
+              expandedKeys={expandedKeys}
+              setExpandedKeys={setExpandedKeys}
+              onSelect={(key) => {
+                if (isMdFile(key)) {
+                  onSelect(key)
+                }
+              }}
+              selectedPath={selectedPath}
+              treeData={treeData}
+            />
+          </div>
+          <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
+            <button
+              className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
+              onClick={handleChooseDir}
+            >
+              <FolderPlusIcon className="w-4 h-4" />
+              <span className="ml-1">{t('Open Folder')}</span>
+            </button>
+          </div>
+        </SearchList>
       </div>
     )
   }
