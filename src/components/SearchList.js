@@ -1,42 +1,38 @@
 import React from 'react'
 
-function HeightLightTitle({ text = '', searchValue = '' }) {
-  const index = text.trim().toLowerCase().indexOf(searchValue.toLowerCase())
-  const beforeStr = text.substring(0, index)
-  const afterStr = text.slice(index + searchValue.length)
-  let title =
-    index > -1 ? (
-      <span>
-        {beforeStr}
-        <span className="text-red-500">{searchValue}</span>
-        {afterStr}
-      </span>
-    ) : (
-      <span>{text}</span>
-    )
-  return title
-}
+const HighlightedText = ({ text, searchValue, maxLength = 30 }) => {
+  const highlightKeyword = (text, keyword, maxLength) => {
+    const caseInsensitiveRegex = new RegExp(keyword, 'gi')
+    const match = caseInsensitiveRegex.exec(text)
 
-function HeightLight({ text = '', searchValue = '' }) {
-  const index = text.trim().toLowerCase().indexOf(searchValue.toLowerCase())
-  const beforeStr = text.substring(0, index).slice(-12)
-  const afterStr = text.slice(
-    index + searchValue.length,
-    index + searchValue.length + 12
-  )
-  let title =
-    index > -1 ? (
-      <span>
-        {text.substring(0, index).length > 12 && '...'}
-        {beforeStr}
-        <span className="text-red-500">{searchValue}</span>
-        {afterStr}
-        {text.slice(index + searchValue.length).length > 12 && '...'}
-      </span>
-    ) : (
-      <span>{text}</span>
-    )
-  return title
+    if (text.length <= maxLength || !match) {
+      return text.replace(
+        caseInsensitiveRegex,
+        '<span style="background-color: rgb(249 115 22 / 0.4)">$&</span>'
+      )
+    } else {
+      const startIndex = match.index
+      let truncatedText = text
+
+      if (startIndex > maxLength / 2) {
+        truncatedText =
+          '...' +
+          text.slice(startIndex - maxLength / 2, startIndex + maxLength / 2) +
+          '...'
+      } else {
+        truncatedText = text.slice(0, maxLength) + '...'
+      }
+
+      return truncatedText.replace(
+        caseInsensitiveRegex,
+        '<span style="background-color: rgb(249 115 22 / 0.4)">$&</span>'
+      )
+    }
+  }
+
+  const highlightedResult = highlightKeyword(text, searchValue, maxLength)
+
+  return <div dangerouslySetInnerHTML={{ __html: highlightedResult }} />
 }
 
 export default function SearchList({
@@ -57,11 +53,11 @@ export default function SearchList({
           key={item.path}
         >
           <div className="font-medium text-xs text-slate-900 dark:text-slate-200">
-            <HeightLightTitle text={item.name} searchValue={searchValue} />
+            <HighlightedText text={item.name} searchValue={searchValue} />
           </div>
           {item.content.slice(0, 3).map((text) => (
             <div className="text-xs text-slate-400">
-              <HeightLight text={text} searchValue={searchValue} />
+              <HighlightedText text={text} searchValue={searchValue} />
             </div>
           ))}
         </div>
