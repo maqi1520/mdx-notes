@@ -135,12 +135,12 @@ export function renamePath(filePath, newName) {
 
   if (match) {
     // 获取文件名及文件路径
-    const separator = match[1] // 获取路径分隔符
+    //const separator = match[1] // 获取路径分隔符
     const fileName = match[2]
     const filePathWithoutFileName = filePath.replace(fileName, '')
 
     // 创建新路径
-    const newFilePath = filePathWithoutFileName + separator + newName
+    const newFilePath = filePathWithoutFileName + newName
 
     return newFilePath
   } else {

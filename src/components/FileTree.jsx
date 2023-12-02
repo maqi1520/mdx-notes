@@ -81,6 +81,8 @@ const FileTree = forwardRef(
             if (path) {
               onSelect(path)
               setSelectedKeys([path])
+            } else {
+              // create file
             }
           }
         }
@@ -232,6 +234,7 @@ const FileTree = forwardRef(
           await createDir(newPath, { recursive: true })
         } else {
           await writeTextFile(newPath, '')
+          onSelect(newPath)
         }
       }
       setCount(count + 1)
@@ -321,15 +324,23 @@ const FileTree = forwardRef(
     const handleCreateDir = () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
-      const newData = mapTree(path, data, (node) => {
-        return {
-          ...node,
-          children: [
-            { name: '', path: `${path}/.md`, input: true, children: [] },
-            ...node.children,
-          ],
-        }
-      })
+      let newData
+      if (path === dirPath) {
+        newData = [
+          ...data,
+          { name: '', path: `${path}/.md`, input: true, children: [] },
+        ]
+      } else {
+        newData = mapTree(path, data, (node) => {
+          return {
+            ...node,
+            children: [
+              { name: '', path: `${path}/.md`, input: true, children: [] },
+              ...node.children,
+            ],
+          }
+        })
+      }
 
       setData(newData)
       setExpandedKeys((prev) => [...prev, `${path}/.md`])
@@ -342,15 +353,20 @@ const FileTree = forwardRef(
     const handleCreate = () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
-      const newData = mapTree(path, data, (node) => {
-        return {
-          ...node,
-          children: [
-            { name: '', path: `${path}/.md`, input: true },
-            ...node.children,
-          ],
-        }
-      })
+      let newData
+      if (path === dirPath) {
+        newData = [...data, { name: '', path: `${path}/.md`, input: true }]
+      } else {
+        newData = mapTree(path, data, (node) => {
+          return {
+            ...node,
+            children: [
+              { name: '', path: `${path}/.md`, input: true },
+              ...node.children,
+            ],
+          }
+        })
+      }
       setExpandedKeys((prev) => [...prev, `${path}`])
       setData(newData)
       setTimeout(() => {
@@ -486,18 +502,25 @@ const FileTree = forwardRef(
               <div
                 key={item.name}
                 onClick={item.event}
-                className="py-[2px] px-2  cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
+                className="py-[2px] px-2 cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
               >
                 <span>{item.name}</span>
                 <span className="opacity-50">{item.extra}</span>
               </div>
             ))}
           </div>
-          <div className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3">
-            <div className="text-sm font-semibold flex ml-3 mb-2">
-              <HomeIcon className="w-4 h-4 mr-1 flex-none" />
-              <span className="flex-auto">{getCurrentFolderName(dirPath)}</span>
-            </div>
+          <div
+            onContextMenu={(e) => onRightClick(e, dirPath)}
+            className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3 min-h-full"
+          >
+            {dirPath && (
+              <div className="text-sm font-semibold flex ml-3 mb-2 select-none">
+                <HomeIcon className="w-4 h-4 mr-1 flex-none" />
+                <span className="flex-auto">
+                  {getCurrentFolderName(dirPath)}
+                </span>
+              </div>
+            )}
             <Tree
               onRightClick={onRightClick}
               expandedKeys={expandedKeys}

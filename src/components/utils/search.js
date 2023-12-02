@@ -21,9 +21,12 @@ export async function searchResponse({ keywords, mdFiles }) {
 
   const result = list.filter((item) => {
     item.content = item.content.filter((text) =>
-      text.match(new RegExp(keywords))
+      text.toLowerCase().match(new RegExp(keywords))
     )
-    if (item.name.match(new RegExp(keywords)) || item.content.length > 0) {
+    if (
+      item.name.toLowerCase().match(new RegExp(keywords)) ||
+      item.content.length > 0
+    ) {
       return true
     }
     return false
