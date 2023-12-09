@@ -493,15 +493,15 @@ const FileTree = forwardRef(
     }
 
     return (
-      <div className="w-full overflow-auto h-screen">
+      <div className="w-full overflow-auto h-screen flex flex-col">
         <div
           data-tauri-drag-region
           className={clsx(
-            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800 flex items-center',
+            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800 flex items-center flex-none',
             isMac ? 'pt-7' : 'pt-4'
           )}
         >
-          <div className="flex items-center w-full text-left px-2 h-8 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
+          <div className="flex items-center w-full text-left px-2 h-8 mt-[2px] bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
             <SearchIcon className="w-4 h-4 flex-none text-slate-300 dark:text-slate-400" />
             <input
               className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
@@ -545,7 +545,7 @@ const FileTree = forwardRef(
             </div>
             <div
               onContextMenu={(e) => onRightClick(e, dirPath)}
-              className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3 min-h-full"
+              className="pr-3 pl-1 overflow-x-hidden pb-12 pt-3 flex-auto"
             >
               {dirPath && (
                 <div className="text-sm font-semibold flex items-center ml-3 mb-2 select-none text-slate-900 dark:text-slate-200">

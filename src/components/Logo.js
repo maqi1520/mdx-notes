@@ -21,7 +21,7 @@ export function Logo({ className }) {
 
 export function LogoHome({ isActive, onClick }) {
   return (
-    <Button size="icon" variant="outline" onClick={onClick} isActive={isActive}>
+    <Button size="icon" variant="outline" onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"

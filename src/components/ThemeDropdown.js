@@ -24,7 +24,7 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
   const [open, onOpenChange] = useState(false)
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button size="icon" variant="outline">
           <SettingsIcon
             className={clsx('w-5 h-5', {

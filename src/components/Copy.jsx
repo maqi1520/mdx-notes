@@ -6,7 +6,7 @@ import { save } from '@tauri-apps/api/dialog'
 import { writeTextFile } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/button'
-import { CopyIcon } from 'lucide-react'
+import { CopyIcon, Loader2 } from 'lucide-react'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -79,7 +79,7 @@ export const CopyBtn = ({
     setState({ state: 'copied' })
     setTimeout(() => {
       setState({ state: 'idle' })
-    }, 1000)
+    }, 3000)
   }
   const handleExportHtml = async () => {
     const css = baseCss + editorRef.current.getValue('css')
@@ -150,13 +150,16 @@ export const CopyBtn = ({
       <Button
         size="sm"
         variant="outline"
-        loading={state === 'loading'}
         onClick={handleClick}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
-        <CopyIcon className="w-4 h-4 mr-1" />
+        {state === 'loading' ? (
+          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+        ) : (
+          <CopyIcon className="w-4 h-4 mr-1" />
+        )}
         {state === 'copied' ? t('Copy Success') : t('Copy')}
       </Button>
       <Button
