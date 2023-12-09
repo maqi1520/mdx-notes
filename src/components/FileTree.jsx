@@ -42,15 +42,22 @@ import { open as openLink } from '@tauri-apps/api/shell'
 import { store } from '../monaco/data'
 import Tree from './Tree'
 import SearchList from './SearchList'
+import TocList from './TocList'
 import clsx from 'clsx'
-import { FolderRoot, SearchIcon, FolderPlusIcon } from 'lucide-react'
+import {
+  FolderRoot,
+  SearchIcon,
+  FolderPlusIcon,
+  ListTreeIcon,
+  ListIcon,
+} from 'lucide-react'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
 }
 
 const FileTree = forwardRef(
-  ({ onSelect, selectedPath, showFileTree, setShowPPT }, ref) => {
+  ({ onSelect, selectedPath, showFileTree, setShowPPT, onScroll }, ref) => {
     const [isMac, setIsMac] = useState(false)
     useLayoutEffect(() => {
       async function init() {
@@ -59,6 +66,9 @@ const FileTree = forwardRef(
       }
       init()
     }, [])
+    const [scrollLine, setScrollLine] = useState(1)
+    const [toc, setToc] = useState([])
+    const [showToc, setShowToc] = useState(false)
     const [count, setCount] = useState(0)
     const [searchValue, setSearchValue] = useState('')
 
@@ -174,6 +184,8 @@ const FileTree = forwardRef(
           setDirPath(path)
           setExpandedKeys([])
         },
+        setToc,
+        setScrollLine,
         reload: () => setCount((p) => p + 1),
       }),
       []
@@ -478,7 +490,7 @@ const FileTree = forwardRef(
         <div
           data-tauri-drag-region
           className={clsx(
-            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800',
+            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800 flex items-center',
             isMac ? 'pt-7' : 'pt-4'
           )}
         >
@@ -490,62 +502,75 @@ const FileTree = forwardRef(
               onKeyDown={onChange}
             />
           </div>
+          <span
+            onClick={() => setShowToc(!showToc)}
+            className="pl-2 cursor-pointer text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
+          >
+            {showToc ? <ListIcon /> : <ListTreeIcon />}
+          </span>
         </div>
         <SearchList
           value={searchList}
           onSelect={onSelect}
           searchValue={searchValue}
         >
-          <div
-            ref={menuRef}
-            style={menuStyle}
-            className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-50 w-36"
+          <TocList
+            scrollLine={scrollLine}
+            onScroll={onScroll}
+            toc={toc}
+            showToc={showToc}
           >
-            {menu.map((item) => (
-              <div
-                key={item.name}
-                onClick={item.event}
-                className="py-[2px] px-2 cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
-              >
-                <span>{item.name}</span>
-                <span className="opacity-50">{item.extra}</span>
-              </div>
-            ))}
-          </div>
-          <div
-            onContextMenu={(e) => onRightClick(e, dirPath)}
-            className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3 min-h-full"
-          >
-            {dirPath && (
-              <div className="text-sm font-semibold flex items-center ml-3 mb-2 select-none text-slate-900 dark:text-slate-200">
-                <FolderRoot className="w-4 h-4 mr-1 flex-none" />
-                <span className="flex-auto">
-                  {getCurrentFolderName(dirPath)}
-                </span>
-              </div>
-            )}
-            <Tree
-              onRightClick={onRightClick}
-              expandedKeys={expandedKeys}
-              setExpandedKeys={setExpandedKeys}
-              onSelect={(key) => {
-                if (isMdFile(key)) {
-                  onSelect(key)
-                }
-              }}
-              selectedPath={selectedPath}
-              treeData={treeData}
-            />
-          </div>
-          <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
-            <button
-              className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
-              onClick={handleChooseDir}
+            <div
+              ref={menuRef}
+              style={menuStyle}
+              className="fixed rounded-md bg-[#E6DFE7] shadow-sm border p-1 text-[12px] font-sans z-50 w-36"
             >
-              <FolderPlusIcon className="w-4 h-4" />
-              <span className="ml-1">{t('Open Folder')}</span>
-            </button>
-          </div>
+              {menu.map((item) => (
+                <div
+                  key={item.name}
+                  onClick={item.event}
+                  className="py-[2px] px-2 cursor-pointer text-black hover:text-white hover:bg-blue-500 rounded flex justify-between"
+                >
+                  <span>{item.name}</span>
+                  <span className="opacity-50">{item.extra}</span>
+                </div>
+              ))}
+            </div>
+            <div
+              onContextMenu={(e) => onRightClick(e, dirPath)}
+              className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3 min-h-full"
+            >
+              {dirPath && (
+                <div className="text-sm font-semibold flex items-center ml-3 mb-2 select-none text-slate-900 dark:text-slate-200">
+                  <FolderRoot className="w-4 h-4 mr-1 flex-none" />
+                  <span className="flex-auto">
+                    {getCurrentFolderName(dirPath)}
+                  </span>
+                </div>
+              )}
+              <Tree
+                onRightClick={onRightClick}
+                expandedKeys={expandedKeys}
+                setExpandedKeys={setExpandedKeys}
+                onSelect={(key) => {
+                  if (isMdFile(key)) {
+                    onSelect(key)
+                  }
+                }}
+                selectedPath={selectedPath}
+                treeData={treeData}
+              />
+            </div>
+            <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
+              <button
+                className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
+                onClick={handleChooseDir}
+              >
+                <FolderPlusIcon className="w-4 h-4" />
+                <span className="ml-1">{t('Open Folder')}</span>
+              </button>
+            </div>
+          </TocList>
         </SearchList>
       </div>
     )

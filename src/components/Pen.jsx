@@ -147,6 +147,9 @@ export default function Pen() {
       })
     }
   }
+  const handleScroll = (line) => {
+    editorRef.current.editor.revealLine(line)
+  }
   const handleDrop = useCallback(async () => {
     listen('tauri://file-drop', async (event) => {
       refFileTree.current.setDirPath(event.payload[0])
@@ -190,8 +193,8 @@ export default function Pen() {
         } else {
           setErrorImmediate()
         }
-        if (res.html) {
-          const { html } = res
+        const { html, toc } = res
+        if (html) {
           const { css } = content
           if (css || html) {
             //编译后的html保存到ref 中
@@ -207,6 +210,7 @@ export default function Pen() {
             })
           }
         }
+        refFileTree.current.setToc(toc)
         setWordCount(Count(content.html || ''))
         setIsLoading(false)
       }
@@ -388,6 +392,7 @@ export default function Pen() {
       onChange={setFileTreeSize}
     >
       <FileTree
+        onScroll={handleScroll}
         showFileTree={showFileTree}
         selectedPath={filePath}
         onSelect={readMarkdown}
@@ -543,6 +548,7 @@ export default function Pen() {
                       onChange={onChange}
                       onScroll={(line) => {
                         inject({ line })
+                        refFileTree.current.setScrollLine(line)
                       }}
                       activeTab={activeTab}
                     />
