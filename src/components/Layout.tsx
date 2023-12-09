@@ -39,6 +39,7 @@ const uploadOptions = [
 ]
 
 interface Config {
+  journalDir: string
   upload: string
   command: string
 }
@@ -46,6 +47,7 @@ interface Config {
 export default function Layout({ children }: Props) {
   let [language, setLanguage] = useState('en')
   let [config, setConfig] = useLocalStorage<Config>('config', {
+    journalDir: '',
     upload: 'none',
     command: '',
   })
@@ -77,6 +79,25 @@ export default function Layout({ children }: Props) {
             <div className="text-sm text-gray-500 dark:text-white flex items-center">
               <label
                 className="flex-none px-2 w-28 text-right"
+                htmlFor="journal"
+              >
+                {t('journal directory')}:
+              </label>
+              <Input
+                value={config?.journalDir!}
+                onChange={(e) =>
+                  setConfig((prev: Config) => ({
+                    ...prev,
+                    journalDir: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-sm text-gray-500 dark:text-white flex items-center">
+              <label
+                className="flex-none px-2 w-28 text-right"
                 htmlFor="upload"
               >
                 {t('Upload Picture')}:
@@ -91,7 +112,7 @@ export default function Layout({ children }: Props) {
                 }
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="请选择图床" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -138,7 +159,7 @@ export default function Layout({ children }: Props) {
               </label>
               <Select value={language} onValueChange={setLanguage}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="请选择语言" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

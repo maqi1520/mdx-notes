@@ -13,7 +13,7 @@ import Slide from './Slide'
 import MarkMap from './MarkMap'
 import { ErrorOverlay } from './ErrorOverlay'
 import Header from './Header'
-import { HeaderButton, Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { LogoHome } from './Logo'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
@@ -38,6 +38,7 @@ import {
   Square,
 } from 'lucide-react'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -379,6 +380,15 @@ export default function Pen() {
     router.push('/slide')
   }, [])
 
+  const createOrOpenDailyNote = () => {
+    const fileName = dayjs().format('YYYY-MM-DD')
+    const config = JSON.parse(localStorage.getItem('config'))
+    const fullPath = config.journalDir
+      ? config.journalDir + '/' + fileName
+      : fileName
+    refFileTree.current.openMd(fullPath, '')
+  }
+
   // useEffect(() => {
   //   const handleMessage = (e) => {
   //     if (e.data.event === 'preview-scroll') {
@@ -513,9 +523,9 @@ export default function Pen() {
                 refFileTree.current.reload()
               }}
             />
-            <Button size="sm">
+            <Button onClick={createOrOpenDailyNote} size="sm">
               <Pencil className="w-4 h-4 mr-1" />
-              日记
+              {t('journal')}
             </Button>
           </div>
         </Header>

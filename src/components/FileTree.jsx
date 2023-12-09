@@ -78,6 +78,23 @@ const FileTree = forwardRef(
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
 
+    const openMd = async (file, content = '') => {
+      const filePath = await resolve(dirPath, file.trim() + '.md')
+      if (!(await exists(filePath))) {
+        if (file.includes('/')) {
+          const [dirName] = file.split('/')
+          const path = await resolve(dirPath, dirName)
+          if (!(await exists(path))) {
+            await createDir(path)
+          }
+        }
+        await writeTextFile(filePath, content)
+        setCount((p) => p + 1)
+      }
+      onSelect(filePath)
+      setSelectedKeys([filePath])
+    }
+
     useEffect(() => {
       const handleMessage = async (e) => {
         if (e.data.event === 'open') {
@@ -85,18 +102,7 @@ const FileTree = forwardRef(
           if (/^https?:\/\//.test(href)) {
             await openLink(href)
           } else {
-            const path = findPathInTree(decodeURIComponent(href), store.mdFiles)
-            if (path) {
-              onSelect(path)
-              setSelectedKeys([path])
-            } else {
-              // create file
-              const fileName = decodeURIComponent(href) + '.md'
-              await writeTextFile(dirPath + '/' + fileName, '')
-              setSelectedKeys([dirPath + '/' + fileName])
-              setCount((p) => p + 1)
-              onSelect(dirPath + '/' + fileName)
-            }
+            openMd(decodeURIComponent(href), '')
           }
         }
       }
@@ -186,6 +192,7 @@ const FileTree = forwardRef(
         },
         setToc,
         setScrollLine,
+        openMd,
         reload: () => setCount((p) => p + 1),
       }),
       []
