@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { writeText } from '@tauri-apps/api/clipboard'
 import { t } from '@/utils/i18n'
+import { Button } from '@/components/ui/Button'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
@@ -130,35 +131,18 @@ export function Share({
 
   return (
     <div className="flex items-center space-x-2 min-w-0">
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3',
-          {
-            'bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40':
-              state === 'disabled',
-            'cursor-auto':
-              state === 'disabled' || state === 'copied' || state === 'loading',
-            'hover:bg-sky-400':
-              state !== 'disabled' && state !== 'copied' && state !== 'loading',
-            'bg-sky-500 text-white': state === 'idle' || state === 'loading',
-            'text-sky-500 shadow-copied dark:bg-sky-500/10': state === 'copied',
-            'shadow-sm': state !== 'copied',
-            'dark:shadow-none': state === 'disabled',
-            'dark:shadow-highlight/20':
-              state !== 'copied' && state !== 'disabled',
-          }
-        )}
+      <Button
         onClick={() => {
           setState({ state: 'loading' })
         }}
+        loading={state === 'loading'}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
         <span
-          className={clsx('absolute inset-0 flex items-center justify-center', {
-            invisible: state === 'copied' || state === 'loading',
+          className={clsx({
+            hidden: state === 'copied' || state === 'loading',
           })}
           aria-hidden={
             state === 'copied' || state === 'loading' ? 'true' : 'false'
@@ -167,8 +151,8 @@ export function Share({
           {t('Share')}
         </span>
         <span
-          className={clsx('absolute inset-0 flex items-center justify-center', {
-            invisible: state !== 'loading',
+          className={clsx({
+            hidden: state !== 'loading',
           })}
           aria-hidden={state !== 'loading' ? 'true' : 'false'}
         >
@@ -190,12 +174,12 @@ export function Share({
           </svg>
         </span>
         <span
-          className={clsx({ invisible: state !== 'copied' })}
+          className={clsx({ hidden: state !== 'copied' })}
           aria-hidden={state === 'copied' ? 'false' : 'true'}
         >
           Copied!
         </span>
-      </button>
+      </Button>
       {state === 'error' && (
         <p
           className="text-sm leading-5 font-medium text-gray-500 dark:text-gray-400 truncate"

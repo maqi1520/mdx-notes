@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
-const Pen = dynamic(() => import('../components/Pen'), {
+const Main = dynamic(() => import('../components/Main'), {
   ssr: false,
 })
 
-export default Pen
+export default Main

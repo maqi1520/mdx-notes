@@ -1,5 +1,6 @@
 import '../css/main.css'
 import 'prismjs/themes/prism-okaidia.css'
+import '../css/tiptap.css'
 import Head from 'next/head'
 
 import dynamic from 'next/dynamic'

@@ -1,0 +1,17 @@
+.tiptap {
+  @apply outline-none;
+}
+.tiptap ul[data-type='taskList'] li {
+  @apply flex items-center;
+}
+
+.tiptap ul[data-type='taskList'] li label {
+  @apply flex-none mr-1;
+}
+.tiptap ul[data-type='taskList'] li > div {
+  @apply flex-auto;
+}
+.tiptap ul[data-type='taskList'] li p,
+.tiptap td p {
+  @apply m-0;
+}

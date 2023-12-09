@@ -6,6 +6,7 @@ import { copyHtml, makeDoc } from './utils/index'
 import { save } from '@tauri-apps/api/dialog'
 import { writeTextFile } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
+import { Button } from '@/components/ui/button'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -146,51 +147,20 @@ export const CopyBtn = ({
   }
   return (
     <>
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 min-w-[76px]',
-          {
-            'bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40':
-              state === 'disabled',
-            'cursor-auto':
-              state === 'disabled' || state === 'copied' || state === 'loading',
-            'hover:bg-sky-400':
-              state !== 'disabled' && state !== 'copied' && state !== 'loading',
-            'bg-sky-500 text-white': state === 'idle' || state === 'loading',
-            'text-sky-500 shadow-copied dark:bg-sky-500/10': state === 'copied',
-            'shadow-sm': state !== 'copied',
-            'dark:shadow-none': state === 'disabled',
-            'dark:shadow-highlight/20':
-              state !== 'copied' && state !== 'disabled',
-          }
-        )}
+      <Button
+        loading={state === 'loading'}
         onClick={handleClick}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
         {state === 'copied' ? t('Copy Success') : t('Copy')}
-      </button>
+      </Button>
 
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white min-w-[76px]'
-        )}
-        onClick={handleExport}
-      >
-        {t('Save As')}
-      </button>
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white hidden'
-        )}
-        onClick={handleExportPDF}
-      >
+      <Button onClick={handleExport}>{t('Save As')}</Button>
+      <Button type="button" className="hidden" onClick={handleExportPDF}>
         导出 PDF
-      </button>
+      </Button>
     </>
   )
 }

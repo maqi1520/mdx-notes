@@ -293,3 +293,14 @@ body.cursor-nwse-resize * {
 .dark .index_beams {
   background-image: url(/img/hero-dark.jpg);
 }
+
+.mm-toolbar {
+  @apply flex;
+}
+.mm-toolbar-brand {
+  @apply hidden;
+}
+.markmap-foreign pre > code {
+  color: #f8f8f2;
+  background: #272822;
+}
