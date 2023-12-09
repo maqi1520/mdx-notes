@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { writeText } from '@tauri-apps/api/clipboard'
 import { t } from '@/utils/i18n'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ShareIcon, LinkIcon } from 'lucide-react'
 
 const HOSTNAME = 'https://editor.runjs.cool'
