@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import clsx from 'clsx'
 import juice from 'juice/client'
 import cheerio from 'cheerio'
 import { copyHtml, makeDoc } from './utils/index'
@@ -150,6 +149,7 @@ export const CopyBtn = ({
     <>
       <Button
         size="sm"
+        variant="outline"
         loading={state === 'loading'}
         onClick={handleClick}
         disabled={
@@ -159,8 +159,12 @@ export const CopyBtn = ({
         <CopyIcon className="w-4 h-4 mr-1" />
         {state === 'copied' ? t('Copy Success') : t('Copy')}
       </Button>
-
-      <Button size="sm" className="hidden" onClick={handleExport}>
+      <Button
+        size="sm"
+        variant="outline"
+        className="hidden"
+        onClick={handleExport}
+      >
         {t('Save As')}
       </Button>
       <Button

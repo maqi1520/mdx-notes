@@ -4,7 +4,7 @@ import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { writeText } from '@tauri-apps/api/clipboard'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/Button'
-import { ShareIcon } from 'lucide-react'
+import { ShareIcon, LinkIcon } from 'lucide-react'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
@@ -123,7 +123,7 @@ export function Share({
         //     : { state, path: currentPath }
         // )
         setState({ state: 'idle' })
-      }, 1500)
+      }, 3000)
     }
     return () => {
       current = false
@@ -134,9 +134,8 @@ export function Share({
     <div className="flex items-center space-x-2 min-w-0">
       <Button
         size="sm"
-        onClick={() => {
-          setState({ state: 'loading' })
-        }}
+        variant="outline"
+        onClick={() => setState({ state: 'loading' })}
         loading={state === 'loading'}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
@@ -206,20 +205,7 @@ export function Share({
             })
           }}
         >
-          <svg
-            width="26"
-            height="22"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="flex-none text-gray-300 dark:text-gray-500"
-            aria-hidden="true"
-          >
-            <path d="M14.652 12c1.885-1.844 1.75-4.548-.136-6.392l-1.275-1.225c-1.885-1.844-4.942-1.844-6.827 0a4.647 4.647 0 0 0 0 6.676l.29.274" />
-            <path d="M11.348 10c-1.885 1.844-1.75 4.549.136 6.392l1.275 1.225c1.885 1.844 4.942 1.844 6.827 0a4.647 4.647 0 0 0 0-6.676l-.29-.274" />
-          </svg>
+          <LinkIcon className="flex-none w-5 h-5" />
           <span className="truncate">...{path}</span>
         </button>
       )}

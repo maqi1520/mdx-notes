@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { HeaderButton } from '@/components/ui/button'
-import { t } from '@/utils/i18n'
+import { Button } from '@/components/ui/button'
+import clsx from 'clsx'
 
 export function Logo({ className }) {
   return (
@@ -21,23 +21,29 @@ export function Logo({ className }) {
 
 export function LogoHome({ isActive, onClick }) {
   return (
-    <HeaderButton
-      className="block ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4"
-      naturalWidth={24}
-      naturalHeight={24}
-      width={36}
-      height={36}
-      onClick={onClick}
-      isActive={isActive}
-      label={t('Display the folder')}
-    >
-      <g>
-        <rect x="2" y="5" width="20" height="14" rx="2" fill="none" />
-        <path d="M8 5V18" />
-        <path strokeWidth="1" d="M4 8H6" />
-        <path strokeWidth="1" d="M4 10H6" />
-        <path strokeWidth="1" d="M4 12H6" />
-      </g>
-    </HeaderButton>
+    <Button size="icon" variant="outline" onClick={onClick} isActive={isActive}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={clsx('w-5 h-5', {
+          'stroke-primary fill-sky-100 dark:fill-sky-400/50': isActive,
+        })}
+      >
+        <g>
+          <rect x="2" y="5" width="20" height="16" rx="2" fill="none" />
+          <path d="M8 5V20" />
+          <path strokeWidth="1" d="M4 8H6" />
+          <path strokeWidth="1" d="M4 10H6" />
+          <path strokeWidth="1" d="M4 12H6" />
+        </g>
+      </svg>
+    </Button>
   )
 }

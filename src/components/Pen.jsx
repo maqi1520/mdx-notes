@@ -13,7 +13,7 @@ import Slide from './Slide'
 import MarkMap from './MarkMap'
 import { ErrorOverlay } from './ErrorOverlay'
 import Header from './Header'
-import { HeaderButton } from '@/components/ui/button'
+import { HeaderButton, Button } from '@/components/ui/button'
 import { LogoHome } from './Logo'
 import { Share } from './Share'
 import { CopyBtn } from './Copy'
@@ -30,6 +30,14 @@ import { t } from '@/utils/i18n'
 import { getDefaultContent } from '../utils/getDefaultContent'
 import { get } from '../utils/database'
 import { sizeToObject } from '../utils/size'
+import {
+  PenSquare,
+  Pencil,
+  Columns,
+  MonitorSmartphone,
+  Square,
+} from 'lucide-react'
+import clsx from 'clsx'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -416,23 +424,26 @@ export default function Pen() {
                 codeThemes={codeThemes}
               />
 
-              <div className="hidden lg:flex items-center ml-2 rounded-md ring-1 ring-gray-900/5 shadow-sm dark:ring-0 dark:bg-gray-800 dark:shadow-highlight/4">
-                <HeaderButton
-                  isActive={size.layout === 'vertical'}
-                  label="Switch to vertical split layout"
+              <div className="hidden lg:flex items-center ml-2 rounded-md shadow-sm border dark:bg-gray-800 dark:shadow-highlight/4">
+                <Button
+                  className="border-0 rounded-none"
+                  size="icon"
+                  variant="outline"
                   onClick={() =>
                     setSize((size) => ({ ...size, layout: 'vertical' }))
                   }
                 >
-                  <path
-                    d="M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9"
-                    fill="none"
+                  <Columns
+                    className={clsx('w-5 h-5', {
+                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                        size.layout === 'vertical',
+                    })}
                   />
-                  <path d="M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z" />
-                </HeaderButton>
-                <HeaderButton
-                  isActive={size.layout === 'editor'}
-                  label="Switch to preview-only layout"
+                </Button>
+                <Button
+                  className="border-0 rounded-none"
+                  size="icon"
+                  variant="outline"
                   onClick={() =>
                     setSize((size) => ({
                       ...size,
@@ -440,35 +451,41 @@ export default function Pen() {
                     }))
                   }
                 >
-                  <path
-                    fill="none"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  <PenSquare
+                    className={clsx('w-5 h-5', {
+                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                        size.layout === 'editor',
+                    })}
                   />
-                </HeaderButton>
-                <HeaderButton
-                  isActive={size.layout === 'preview'}
-                  label="Switch to preview-only layout"
+                </Button>
+                <Button
+                  className="border-0 rounded-none"
+                  size="icon"
+                  variant="outline"
                   onClick={() =>
                     setSize((size) => ({ ...size, layout: 'preview' }))
                   }
                 >
-                  <path
-                    d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
-                    fill="none"
+                  <Square
+                    className={clsx('w-5 h-5', {
+                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                        size.layout === 'preview',
+                    })}
                   />
-                </HeaderButton>
-                <HeaderButton
-                  isActive={responsiveDesignMode}
-                  label="Toggle responsive design mode"
+                </Button>
+                <Button
+                  className="border-0 rounded-none"
+                  size="icon"
+                  variant="outline"
                   onClick={() => setResponsiveDesignMode(!responsiveDesignMode)}
-                  className="hidden md:block"
                 >
-                  <path
-                    d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"
-                    fill="none"
+                  <MonitorSmartphone
+                    className={clsx('w-5 h-5', {
+                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                        responsiveDesignMode,
+                    })}
                   />
-                  <path d="M12 17V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2Z" />
-                </HeaderButton>
+                </Button>
               </div>
             </>
           }
@@ -496,6 +513,10 @@ export default function Pen() {
                 refFileTree.current.reload()
               }}
             />
+            <Button size="sm">
+              <Pencil className="w-4 h-4 mr-1" />
+              日记
+            </Button>
           </div>
         </Header>
         <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">

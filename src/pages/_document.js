@@ -24,7 +24,7 @@ export default class Document extends NextDocument {
             }}
           />
         </Head>
-        <body className="w-full min-h-screen flex text-gray-900 dark:text-white bg-white dark:bg-gray-900">
+        <body className="w-full min-h-screen flex bg-white dark:bg-gray-900">
           <Main />
           <NextScript />
         </body>

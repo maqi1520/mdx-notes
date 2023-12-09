@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -23,25 +24,14 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
   const [open, onOpenChange] = useState(false)
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger
-        className={clsx(
-          'block ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4',
-          'group focus:outline-none focus-visible:ring-2 rounded w-9 h-9 flex justify-center items-center',
-
-          open
-            ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
-            : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500'
-        )}
-      >
-        <span className="sr-only">设置</span>
-        <SettingsIcon
-          className={clsx(
-            'w-5 h-5',
-            open
-              ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
-              : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400'
-          )}
-        />
+      <PopoverTrigger>
+        <Button size="icon" variant="outline">
+          <SettingsIcon
+            className={clsx('w-5 h-5', {
+              'stroke-primary fill-sky-100 dark:fill-sky-400/50': open,
+            })}
+          />
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="space-y-2">
         <div>
