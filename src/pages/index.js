@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-const Main = dynamic(() => import('../components/Main'), {
+const Main = dynamic(() => import('../components/Pen'), {
   ssr: false,
 })
 

@@ -4,6 +4,7 @@ import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { writeText } from '@tauri-apps/api/clipboard'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/Button'
+import { ShareIcon } from 'lucide-react'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
@@ -132,6 +133,7 @@ export function Share({
   return (
     <div className="flex items-center space-x-2 min-w-0">
       <Button
+        size="sm"
         onClick={() => {
           setState({ state: 'loading' })
         }}
@@ -141,13 +143,14 @@ export function Share({
         }
       >
         <span
-          className={clsx({
+          className={clsx('flex items-center', {
             hidden: state === 'copied' || state === 'loading',
           })}
           aria-hidden={
             state === 'copied' || state === 'loading' ? 'true' : 'false'
           }
         >
+          <ShareIcon className="w-4 h-4 mr-1" />
           {t('Share')}
         </span>
         <span

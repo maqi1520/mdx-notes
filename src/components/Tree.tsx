@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import clsx from 'clsx'
-import FileIcon from './icons/FileIcon'
-import ArrowIcon from './icons/ArrowIcon'
+
+import { FileText, ChevronRight } from 'lucide-react'
 
 interface TreeItem {
   title: string
@@ -61,7 +61,7 @@ const TreeNode = ({
             onClick={toggleExpand}
             className="flex items-center mb-2 cursor-pointer"
           >
-            <ArrowIcon
+            <ChevronRight
               className={clsx(
                 'mr-1 h-4 w-4 flex-none transition-transform text-slate-400',
                 {
@@ -69,7 +69,7 @@ const TreeNode = ({
                 }
               )}
             />
-            <div className="whitespace-nowrap flex-auto text-slate-900 dark:text-slate-200">
+            <div className="whitespace-nowrap flex-auto text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300">
               {title}
             </div>
           </div>
@@ -101,7 +101,7 @@ const TreeNode = ({
           onContextMenu={(e) => onRightClick(e, item.key)}
           onClick={() => onSelect(item.key)}
         >
-          <FileIcon className="mr-1 h-4 w-4 flex-none" />
+          <FileText className="mr-1 h-4 w-4 flex-none" />
           <div className="whitespace-nowrap flex-auto">{title}</div>
         </div>
       )}

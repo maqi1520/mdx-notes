@@ -1,6 +1,5 @@
 import Link from 'next/link'
-
-import { HeaderButton } from './Header'
+import { HeaderButton } from '@/components/ui/button'
 import { t } from '@/utils/i18n'
 
 export function Logo({ className }) {

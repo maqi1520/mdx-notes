@@ -9,9 +9,6 @@ import React, {
   useLayoutEffect,
   memo,
 } from 'react'
-import FolderPlusIcon from './icons/FolderPlusIcon'
-import HomeIcon from './icons/HomeIcon'
-import SearchIcon from './icons/SearchIcon'
 import {
   isMdFile,
   mapTree,
@@ -46,6 +43,7 @@ import { store } from '../monaco/data'
 import Tree from './Tree'
 import SearchList from './SearchList'
 import clsx from 'clsx'
+import { FolderRoot, SearchIcon, FolderPlusIcon } from 'lucide-react'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
@@ -519,8 +517,8 @@ const FileTree = forwardRef(
             className="mr-3 ml-1 overflow-x-hidden pb-12 pt-3 min-h-full"
           >
             {dirPath && (
-              <div className="text-sm font-semibold flex ml-3 mb-2 select-none">
-                <HomeIcon className="w-4 h-4 mr-1 flex-none" />
+              <div className="text-sm font-semibold flex items-center ml-3 mb-2 select-none text-slate-900 dark:text-slate-200">
+                <FolderRoot className="w-4 h-4 mr-1 flex-none" />
                 <span className="flex-auto">
                   {getCurrentFolderName(dirPath)}
                 </span>

@@ -4,7 +4,8 @@ import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
 import { t } from '@/utils/i18n'
 import { type } from '@tauri-apps/api/os'
-import { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
+import { HeaderButton } from '@/components/ui/button'
 
 export default function Header({ children, logo, rightbtn }) {
   const [isMac, setIsMac] = useState(false)
@@ -76,11 +77,9 @@ export default function Header({ children, logo, rightbtn }) {
           ringClassName="focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400"
         >
           <g className="dark:opacity-0">
-            <path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            <path
-              d="M12 4v.01M17.66 6.345l-.007.007M20.005 12.005h-.01M17.66 17.665l-.007-.007M12 20.01V20M6.34 17.665l.007-.007M3.995 12.005h.01M6.34 6.344l.007.007"
-              fill="none"
-            />
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            <path d="M19 3v4" />
+            <path d="M21 5h-4" />
           </g>
           <g className="opacity-0 dark:opacity-100">
             <path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
@@ -92,54 +91,5 @@ export default function Header({ children, logo, rightbtn }) {
         </HeaderButton>
       </div>
     </div>
-  )
-}
-
-export function HeaderButton({
-  isActive = false,
-  label,
-  onClick,
-  width = 42,
-  height = 36,
-  naturalWidth = 26,
-  naturalHeight = 22,
-  className,
-  children,
-  iconClassName,
-  ringClassName,
-}) {
-  return (
-    <button
-      type="button"
-      className={clsx(
-        className,
-        'group focus:outline-none focus-visible:ring-2 rounded-md',
-        ringClassName ||
-          (isActive
-            ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
-            : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500')
-      )}
-      onClick={onClick}
-    >
-      <span className="sr-only">{label}</span>
-      <svg
-        width={width}
-        height={height}
-        viewBox={`${(width - naturalWidth) / -2} ${
-          (height - naturalHeight) / -2
-        } ${width} ${height}`}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={
-          iconClassName ||
-          (isActive
-            ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
-            : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400')
-        }
-      >
-        {children}
-      </svg>
-    </button>
   )
 }

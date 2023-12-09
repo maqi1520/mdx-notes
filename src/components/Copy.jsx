@@ -7,6 +7,7 @@ import { save } from '@tauri-apps/api/dialog'
 import { writeTextFile } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/button'
+import { CopyIcon } from 'lucide-react'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -148,17 +149,26 @@ export const CopyBtn = ({
   return (
     <>
       <Button
+        size="sm"
         loading={state === 'loading'}
         onClick={handleClick}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
+        <CopyIcon className="w-4 h-4 mr-1" />
         {state === 'copied' ? t('Copy Success') : t('Copy')}
       </Button>
 
-      <Button onClick={handleExport}>{t('Save As')}</Button>
-      <Button type="button" className="hidden" onClick={handleExportPDF}>
+      <Button size="sm" className="hidden" onClick={handleExport}>
+        {t('Save As')}
+      </Button>
+      <Button
+        size="sm"
+        type="button"
+        className="hidden"
+        onClick={handleExportPDF}
+      >
         导出 PDF
       </Button>
     </>
