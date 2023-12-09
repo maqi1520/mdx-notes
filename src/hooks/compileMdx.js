@@ -94,7 +94,7 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
       //recmaPlugins: [capture('esast')],
       useMDXComponents,
     })
-    html = ReactDOMServer.renderToString(
+    html = ReactDOMServer.renderToStaticMarkup(
       <Context.Provider value={{ isMac, codeTheme }}>
         <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
           <section
