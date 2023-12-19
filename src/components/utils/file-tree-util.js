@@ -81,16 +81,11 @@ export function sortFile(array) {
       }
     } else {
       // 两个元素都是文件，排除掉后缀部分后按字母顺序排序
-      const baseNameA = nameA.substring(0, nameA.lastIndexOf('.'))
-      const baseNameB = nameB.substring(0, nameB.lastIndexOf('.'))
-
-      if (baseNameA < baseNameB) {
-        return -1
-      }
-
-      if (baseNameA > baseNameB) {
-        return 1
-      }
+      return nameA.localeCompare(
+        nameB,
+        navigator.languages[0] || navigator.language,
+        { numeric: true, ignorePunctuation: true }
+      )
     }
 
     return 0

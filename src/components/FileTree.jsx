@@ -13,10 +13,10 @@ import {
   isMdFile,
   mapTree,
   findPathTree,
-  findPathInTree,
   sortFile,
   renamePath,
   getCurrentFolderName,
+  findPathInTree,
 } from './utils/file-tree-util'
 
 import { searchResponse } from './utils/search'
@@ -79,6 +79,12 @@ const FileTree = forwardRef(
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
 
     const openMd = async (file, content = '') => {
+      const path = findPathInTree(file.trim(), store.mdFiles)
+      if (path) {
+        onSelect(path)
+        setSelectedKeys([path])
+        return
+      }
       const filePath = await resolve(dirPath, file.trim() + '.md')
       if (!(await exists(filePath))) {
         if (file.includes('/')) {
@@ -266,6 +272,9 @@ const FileTree = forwardRef(
       const loop = (data) => {
         return sortFile(data)
           .map((item) => {
+            if (item.name.startsWith('.')) {
+              return false
+            }
             const strTitle = !/^Untitled_\d{13}\.md$/.test(item.name)
               ? item.name
               : t('Untitled.md')
