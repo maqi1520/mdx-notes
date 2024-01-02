@@ -1,20 +1,20 @@
 import React from 'react'
 import * as runtime from 'react/jsx-runtime'
 import * as Babel from '@babel/standalone'
-import { evaluate } from '@mdx-js/mdx'
-import { MDXProvider, useMDXComponents } from '@mdx-js/react'
+import { compile, nodeTypes, run } from '@mdx-js/mdx'
+import { VFile } from 'vfile'
+import { VFileMessage } from 'vfile-message'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeMermaid from 'rehype-mermaidjs'
 import remarkToc from 'remark-toc'
 import ReactDOMServer from 'react-dom/server'
 import { validateReactComponent } from '../utils/validateJavaScript'
 import { MDXComponents } from '../components/MDX/MDXComponents'
-import { VFile } from 'vfile'
-import { VFileMessage } from 'vfile-message'
 import rehypeDivToSection, {
   rehypeAddLineNumbers,
 } from '../components/utils/rehype-div'
@@ -23,7 +23,13 @@ import reHypeLinkFoot from '../components/utils/rehype-link-foot'
 
 export const Context = React.createContext({ isMac: true })
 
-export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
+export const compileMdx = async (
+  jsx,
+  mdx,
+  isMac,
+  codeTheme = '',
+  formatMarkdown = false
+) => {
   let err = null
   let html = null
   let RootComponents = {}
@@ -54,8 +60,6 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
     }
   }
 
-  const file = new VFile({ basename: 'index.mdx', value: mdx })
-
   // const capture = (name) => (opt) => (tree) => {
   //   file.data[name] = tree;
   // };
@@ -75,13 +79,17 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
 
   //remarkPlugins.push(capture('mdast'))
 
+  const file = new VFile({
+    basename: formatMarkdown ? 'example.md' : 'example.mdx',
+    value: mdx,
+  })
   try {
-    const { default: Content } = await evaluate(mdx, {
-      ...runtime,
-      format: 'mdx',
-      useDynamicImport: true,
+    await compile(file, {
+      development: false,
+      outputFormat: 'function-body',
       remarkPlugins,
       rehypePlugins: [
+        [rehypeRaw, { passThrough: nodeTypes }],
         rehypeAddLineNumbers,
         rehypeDivToSection,
         reHypeLinkFoot,
@@ -90,20 +98,20 @@ export const compileMdx = async (jsx, mdx, isMac, codeTheme = '') => {
         [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
         [rehypeCodeTitle, { isMac }],
       ],
-      //recmaPlugins: [capture('esast')],
-      useMDXComponents,
+    })
+    const { default: Content } = await run(String(file), {
+      ...runtime,
+      baseUrl: window.location.href,
     })
     html = ReactDOMServer.renderToString(
       <Context.Provider value={{ isMac, codeTheme }}>
-        <MDXProvider components={{ ...MDXComponents, ...RootComponents }}>
-          <section
-            data-tool="mdx editor"
-            data-website="https://editor.runjs.cool/"
-            className={codeTheme}
-          >
-            <Content />
-          </section>
-        </MDXProvider>
+        <section
+          data-tool="mdx editor"
+          data-website="https://editor.runjs.cool/"
+          className={codeTheme}
+        >
+          <Content components={{ ...MDXComponents, ...RootComponents }} />
+        </section>
       </Context.Provider>
     )
   } catch (error) {

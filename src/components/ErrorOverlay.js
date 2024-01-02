@@ -1,4 +1,6 @@
-export function ErrorOverlay({ error }) {
+import { Switch } from '@headlessui/react'
+
+export function ErrorOverlay({ error, value, onChange }) {
   if (!error) {
     return null
   }
@@ -16,6 +18,22 @@ export function ErrorOverlay({ error }) {
         ) : null}
       </h2>
       <p className="font-mono text-sm leading-5">{error.message}</p>
+      <div className="flex items-center mt-4">
+        <label className="flex-none">You can try using format Markdown：</label>
+        <Switch
+          checked={value.formatMarkdown}
+          onChange={(formatMarkdown) => onChange({ ...value, formatMarkdown })}
+          className={`${
+            value.formatMarkdown ? 'bg-sky-500' : 'bg-sky-500/40'
+          }  inline-flex h-6 w-11 items-center rounded-full`}
+        >
+          <span
+            className={`${
+              value.formatMarkdown ? 'translate-x-6' : 'translate-x-1'
+            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+          />
+        </Switch>
+      </div>
     </div>
   )
 }

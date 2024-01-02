@@ -16,14 +16,12 @@ export default function Templates({ data }) {
               key={item._id}
               className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
             >
-              <Link href={'/' + item.docId}>
-                <a className="block">
-                  <img
-                    alt={item.name}
-                    className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
-                    src={item.img}
-                  />
-                </a>
+              <Link className="block" href={'/' + item.docId}>
+                <img
+                  alt={item.name}
+                  className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
+                  src={item.img}
+                />
               </Link>
               {item.tags &&
                 item.tags.map((tag, index) => (

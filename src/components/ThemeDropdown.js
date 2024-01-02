@@ -95,6 +95,26 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
                       />
                     </Switch>
                   </div>
+                  <div className="flex items-center">
+                    <label className="flex-none">formatMarkdown：</label>
+                    <Switch
+                      checked={value.formatMarkdown}
+                      onChange={(formatMarkdown) =>
+                        onChange({ ...value, formatMarkdown })
+                      }
+                      className={`${
+                        value.formatMarkdown ? 'bg-sky-500' : 'bg-sky-500/40'
+                      }  inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                      <span
+                        className={`${
+                          value.formatMarkdown
+                            ? 'translate-x-6'
+                            : 'translate-x-1'
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                      />
+                    </Switch>
+                  </div>
                 </div>
               </Popover.Panel>
             </Transition>

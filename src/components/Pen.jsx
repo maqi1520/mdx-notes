@@ -117,34 +117,38 @@ export default function Pen({
       JSON.stringify(content)
     )
     setIsLoading(true)
-    compileMdx(content.config, content.html, theme.isMac, theme.codeTheme).then(
-      (res) => {
-        if (res.err) {
-          setError(res.err)
-        } else {
-          setErrorImmediate()
-        }
-        if (res.html) {
-          const { html } = res
-          const { css } = content
-          if (css || html) {
-            //编译后的html保存到ref 中
-            htmlRef.current = html
-            inject({
-              css:
-                baseCss +
-                themes[theme.markdownTheme].css +
-                codeThemes[theme.codeTheme].css +
-                css,
-              html,
-              codeTheme: theme.codeTheme,
-            })
-          }
-        }
-        setWordCount(Count(content.html || ''))
-        setIsLoading(false)
+    compileMdx(
+      content.config,
+      content.html,
+      theme.isMac,
+      theme.codeTheme,
+      theme.formatMarkdown
+    ).then((res) => {
+      if (res.err) {
+        setError(res.err)
+      } else {
+        setErrorImmediate()
       }
-    )
+      if (res.html) {
+        const { html } = res
+        const { css } = content
+        if (css || html) {
+          //编译后的html保存到ref 中
+          htmlRef.current = html
+          inject({
+            css:
+              baseCss +
+              themes[theme.markdownTheme].css +
+              codeThemes[theme.codeTheme].css +
+              css,
+            html,
+            codeTheme: theme.codeTheme,
+          })
+        }
+      }
+      setWordCount(Count(content.html || ''))
+      setIsLoading(false)
+    })
   }
 
   const compile = useCallback(debounce(compileNow, 200), [theme])
@@ -462,7 +466,7 @@ export default function Pen({
                     })
                   }}
                 />
-                <ErrorOverlay error={error} />
+                <ErrorOverlay value={theme} onChange={setTheme} error={error} />
               </div>
             </SplitPane>
           </>
