@@ -1,4 +1,6 @@
-export function ErrorOverlay({ error }) {
+import { Checkbox } from '@/components/ui/checkbox'
+
+export function ErrorOverlay({ error, value, onChange }) {
   if (!error) {
     return null
   }
@@ -16,6 +18,16 @@ export function ErrorOverlay({ error }) {
         ) : null}
       </h2>
       <p className="font-mono text-sm leading-5">{error.message}</p>
+      <div className="flex items-center mt-4 space-x-2">
+        <Checkbox
+          className="!bg-white"
+          checked={value.formatMarkdown}
+          onCheckedChange={(formatMarkdown) =>
+            onChange({ ...value, formatMarkdown })
+          }
+        />
+        <label className="flex-none">You can try using format markdown</label>
+      </div>
     </div>
   )
 }

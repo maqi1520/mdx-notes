@@ -52,5 +52,6 @@
   "Upload Picture": "图床设置",
   "journal": "日记",
   "journal directory": "日记目录",
-  "Command": "命令"
+  "Command": "命令",
+  "Format markdown": "markdown 模式"
 }

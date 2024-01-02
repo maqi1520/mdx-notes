@@ -195,35 +195,39 @@ export default function Pen() {
     }
     cancelSetError()
     setIsLoading(true)
-    compileMdx(content.config, content.html, theme.isMac, 'markdown-body').then(
-      (res) => {
-        if (res.err) {
-          setError(res.err)
-        } else {
-          setErrorImmediate()
-        }
-        const { html, toc } = res
-        if (html) {
-          const { css } = content
-          if (css || html) {
-            //编译后的html保存到ref 中
-            htmlRef.current = html
-            inject({
-              css:
-                baseCss +
-                themes[theme.markdownTheme].css +
-                codeThemes[theme.codeTheme].css +
-                css,
-              html,
-              codeTheme: theme.codeTheme,
-            })
-          }
-        }
-        refFileTree.current.setToc(toc)
-        setWordCount(Count(content.html || ''))
-        setIsLoading(false)
+    compileMdx(
+      content.config,
+      content.html,
+      theme.isMac,
+      'markdown-body',
+      theme.formatMarkdown
+    ).then((res) => {
+      if (res.err) {
+        setError(res.err)
+      } else {
+        setErrorImmediate()
       }
-    )
+      const { html, toc } = res
+      if (html) {
+        const { css } = content
+        if (css || html) {
+          //编译后的html保存到ref 中
+          htmlRef.current = html
+          inject({
+            css:
+              baseCss +
+              themes[theme.markdownTheme].css +
+              codeThemes[theme.codeTheme].css +
+              css,
+            html,
+            codeTheme: theme.codeTheme,
+          })
+        }
+      }
+      refFileTree.current.setToc(toc)
+      setWordCount(Count(content.html || ''))
+      setIsLoading(false)
+    })
   }
 
   const compile = useCallback(
@@ -601,7 +605,11 @@ export default function Pen() {
                       iframeClassName={resizing ? 'pointer-events-none' : ''}
                     />
                   )}
-                  <ErrorOverlay error={error} />
+                  <ErrorOverlay
+                    value={theme}
+                    onChange={setTheme}
+                    error={error}
+                  />
                 </div>
               </SplitPane>
             </>

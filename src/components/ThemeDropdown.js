@@ -105,6 +105,16 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
             onCheckedChange={(isMac) => onChange({ ...value, isMac })}
           />
         </div>
+
+        <div className="flex items-center justify-between">
+          <Label className="flex-none pr-2">{t('Format markdown')}</Label>
+          <Switch
+            checked={value.formatMarkdown}
+            onCheckedChange={(formatMarkdown) =>
+              onChange({ ...value, formatMarkdown })
+            }
+          />
+        </div>
       </PopoverContent>
     </Popover>
   )
