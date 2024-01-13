@@ -1,5 +1,4 @@
-//https://3d3b5a2e-dbe3-47da-ae60-53126d4e78d2.bspapp.com/api/templates
-
+import Image from 'next/image'
 import React from 'react'
 import { getTemplates } from '../utils/database'
 import Link from 'next/link'
@@ -17,9 +16,11 @@ export default function Templates({ data }) {
               className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
             >
               <Link className="block" href={'/' + item.docId}>
-                <img
-                  alt={item.name}
-                  className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
+                <Image
+                  width={711}
+                  height={500}
+                  alt=""
+                  className="transition-transform hover:scale-110"
                   src={item.img}
                 />
               </Link>

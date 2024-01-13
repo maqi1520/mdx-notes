@@ -9,6 +9,16 @@ const headers = [
 ]
 
 module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.maqib.cn',
+        port: '',
+        pathname: '/img/**',
+      },
+    ],
+  },
   async headers() {
     return [
       {

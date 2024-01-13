@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
+import { t } from '@/utils/i18n'
+import { Button } from '@/components/ui/button'
+import { ShareIcon, LinkIcon, Loader2 } from 'lucide-react'
 
 export function Share({
   initialPath,
@@ -121,75 +124,37 @@ export function Share({
       setState({ state: 'idle' })
     }
   }, [dirty])
+  const HOSTNAME = window.location.origin
 
   return (
     <div className="flex items-center space-x-2 min-w-0">
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3',
-          {
-            'bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40':
-              state === 'disabled',
-            'cursor-auto':
-              state === 'disabled' || state === 'copied' || state === 'loading',
-            'hover:bg-sky-400':
-              state !== 'disabled' && state !== 'copied' && state !== 'loading',
-            'bg-sky-500 text-white': state === 'idle' || state === 'loading',
-            'text-sky-500 shadow-copied dark:bg-sky-500/10': state === 'copied',
-            'shadow-sm': state !== 'copied',
-            'dark:shadow-none': state === 'disabled',
-            'dark:shadow-highlight/20':
-              state !== 'copied' && state !== 'disabled',
-          }
-        )}
-        onClick={() => {
-          setState({ state: 'loading' })
-        }}
+      <Button
+        size="sm"
+        onClick={() => setState({ state: 'loading' })}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
+        {state !== 'loading' ? (
+          <ShareIcon className="w-4 h-4 mr-1" />
+        ) : (
+          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+        )}
         <span
-          className={clsx('absolute inset-0 flex items-center justify-center', {
-            invisible: state === 'copied' || state === 'loading',
+          className={clsx({
+            hidden: state === 'copied',
           })}
-          aria-hidden={
-            state === 'copied' || state === 'loading' ? 'true' : 'false'
-          }
         >
-          分享
+          {t('Share')}
         </span>
+
         <span
-          className={clsx('absolute inset-0 flex items-center justify-center', {
-            invisible: state !== 'loading',
-          })}
-          aria-hidden={state !== 'loading' ? 'true' : 'false'}
-        >
-          <span className="sr-only">Loading</span>
-          <svg fill="none" viewBox="0 0 24 24" className="w-4 h-4 animate-spin">
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
-        </span>
-        <span
-          className={clsx({ invisible: state !== 'copied' })}
+          className={clsx({ hidden: state !== 'copied' })}
           aria-hidden={state === 'copied' ? 'false' : 'true'}
         >
           Copied!
         </span>
-      </button>
+      </Button>
       {state === 'error' && (
         <p
           className="text-sm leading-5 font-medium text-gray-500 dark:text-gray-400 truncate"
@@ -202,33 +167,18 @@ export function Share({
       {(state === 'copied' || state === 'disabled') && path && (
         <button
           type="button"
-          className="flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-          title={`${window.location.origin}${path}`}
+          className="max-w-[270px] flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+          title={`${HOSTNAME}${path}`}
           onClick={() => {
-            navigator.clipboard
-              .writeText(window.location.origin + path)
-              .then(() => {
-                setState((currentState) => ({
-                  ...currentState,
-                  state: 'copied',
-                }))
-              })
+            writeText(HOSTNAME + path).then(() => {
+              setState((currentState) => ({
+                ...currentState,
+                state: 'copied',
+              }))
+            })
           }}
         >
-          <svg
-            width="26"
-            height="22"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="flex-none text-gray-300 dark:text-gray-500"
-            aria-hidden="true"
-          >
-            <path d="M14.652 12c1.885-1.844 1.75-4.548-.136-6.392l-1.275-1.225c-1.885-1.844-4.942-1.844-6.827 0a4.647 4.647 0 0 0 0 6.676l.29.274" />
-            <path d="M11.348 10c-1.885 1.844-1.75 4.549.136 6.392l1.275 1.225c1.885 1.844 4.942 1.844 6.827 0a4.647 4.647 0 0 0 0-6.676l-.29-.274" />
-          </svg>
+          <LinkIcon className="flex-none w-5 h-5" />
           <span className="truncate">...{path}</span>
         </button>
       )}

@@ -14,17 +14,17 @@ const Pen = dynamic(() => import('../components/Pen'), {
 
 export default function App({ errorCode, ...props }) {
   const [initialContent, setContent] = useState(props.initialContent)
+  const id = props.initialContent?.ID || 'content'
+
   useEffect(() => {
     try {
-      const data = JSON.parse(
-        localStorage.getItem(initialContent.ID || 'content')
-      )
+      const data = JSON.parse(localStorage.getItem(id))
 
       if (data) {
-        setContent({ ID: initialContent.ID || 'content', ...data })
+        setContent(data)
       }
     } catch (error) {}
-  }, [])
+  }, [id])
   if (errorCode) {
     return <Error statusCode={errorCode} />
   }

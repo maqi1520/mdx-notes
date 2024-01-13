@@ -1,4 +1,4 @@
-import { Switch } from '@headlessui/react'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export function ErrorOverlay({ error, value, onChange }) {
   if (!error) {
@@ -18,21 +18,15 @@ export function ErrorOverlay({ error, value, onChange }) {
         ) : null}
       </h2>
       <p className="font-mono text-sm leading-5">{error.message}</p>
-      <div className="flex items-center mt-4">
-        <label className="flex-none">You can try using format Markdown：</label>
-        <Switch
+      <div className="flex items-center mt-4 space-x-2">
+        <Checkbox
+          className="!bg-white"
           checked={value.formatMarkdown}
-          onChange={(formatMarkdown) => onChange({ ...value, formatMarkdown })}
-          className={`${
-            value.formatMarkdown ? 'bg-sky-500' : 'bg-sky-500/40'
-          }  inline-flex h-6 w-11 items-center rounded-full`}
-        >
-          <span
-            className={`${
-              value.formatMarkdown ? 'translate-x-6' : 'translate-x-1'
-            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-          />
-        </Switch>
+          onCheckedChange={(formatMarkdown) =>
+            onChange({ ...value, formatMarkdown })
+          }
+        />
+        <label className="flex-none">You can try using format markdown</label>
       </div>
     </div>
   )

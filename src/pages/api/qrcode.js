@@ -4,7 +4,7 @@ import QRCode from 'qrcode'
 /**
  * Main
  */
-export default async (request, response) => {
+const handle = async (request, response) => {
   const {
     text = '长按识别二维码查看原文',
     url = 'https://www.baidu.com',
@@ -25,6 +25,8 @@ export default async (request, response) => {
     response.status(200).send(error.message)
   }
 }
+
+export default handle
 
 /**
  * Generate the QRCode with str

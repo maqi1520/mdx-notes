@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import clsx from 'clsx'
 import juice from 'juice/client'
 import cheerio from 'cheerio'
 import { copyHtml, download } from './utils/index'
+import { t } from '@/utils/i18n'
+import { Button } from '@/components/ui/button'
+import { CopyIcon, Loader2, PrinterIcon, SaveIcon } from 'lucide-react'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -92,51 +94,32 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
   }
   return (
     <>
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3',
-          {
-            'bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40':
-              state === 'disabled',
-            'cursor-auto':
-              state === 'disabled' || state === 'copied' || state === 'loading',
-            'hover:bg-sky-400':
-              state !== 'disabled' && state !== 'copied' && state !== 'loading',
-            'bg-sky-500 text-white': state === 'idle' || state === 'loading',
-            'text-sky-500 shadow-copied dark:bg-sky-500/10': state === 'copied',
-            'shadow-sm': state !== 'copied',
-            'dark:shadow-none': state === 'disabled',
-            'dark:shadow-highlight/20':
-              state !== 'copied' && state !== 'disabled',
-          }
-        )}
+      <Button
+        size="sm"
         onClick={handleClick}
         disabled={
           state === 'copied' || state === 'disabled' || state === 'loading'
         }
       >
-        {state === 'copied' ? '复制成功' : '复制'}
-      </button>
+        {state === 'loading' ? (
+          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+        ) : (
+          <CopyIcon className="w-4 h-4 mr-1" />
+        )}
+        {state === 'copied' ? t('Copy Success') : t('Copy')}
+      </Button>
 
-      <button
+      <Button variant="secondary" size="sm" onClick={handleExport}>
+        <SaveIcon className="w-4 h-4 mr-1" /> {t('Save As')}
+      </Button>
+      <Button
+        variant="secondary"
+        size="sm"
         type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white '
-        )}
-        onClick={handleExport}
-      >
-        导出 Markdown
-      </button>
-      <button
-        type="button"
-        className={clsx(
-          'relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 bg-sky-500 text-white'
-        )}
         onClick={handleExportPDF}
       >
-        导出 PDF
-      </button>
+        <PrinterIcon className="w-4 h-4 mr-1" /> {t('Export PDF')}
+      </Button>
     </>
   )
 }
