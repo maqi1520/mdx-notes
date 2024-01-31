@@ -4,7 +4,7 @@ import { buttonVariants } from '@/components/ui/button'
 
 import { Header as SiteHeader } from '@/components/Header'
 import { SiteFooter } from '@/components/site-footer'
-import { getTemplates } from '@/utils/database'
+import { getTemplates } from '@/lib/database'
 import {
   BookOpenCheckIcon,
   BrushIcon,

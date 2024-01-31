@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { getTemplates } from '@/utils/database'
+import { getTemplates } from '@/lib/database'
 import Link from 'next/link'
 import { Result } from '@/types/template'
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
-import { createMonacoEditor } from '../monaco'
+import { createMonacoEditor } from './monaco'
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { onDidChangeTheme } from '../utils/theme'

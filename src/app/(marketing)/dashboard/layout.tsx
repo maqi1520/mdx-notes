@@ -1,4 +1,4 @@
-import { getUserDetails } from '@/utils/database'
+import { getUserDetails } from '@/lib/database'
 import React from 'react'
 
 type Props = {

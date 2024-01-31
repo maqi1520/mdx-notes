@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Error from 'next/error'
 import { sizeToObject } from '@/utils/size'
 import { getLayoutQueryString } from '@/utils/getLayoutQueryString'
-import { get } from '@/utils/database'
+import { get } from '@/lib/database'
 import { getDefaultContent } from '@/utils/getDefaultContent'
 
 import dynamic from 'next/dynamic'
