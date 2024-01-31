@@ -40,7 +40,7 @@ export async function PATCH(request: Request) {
   const supabase = createServerSupabaseClient()
   const data = await request.json()
   const { searchParams } = new URL(request.url)
-  const id = searchParams.get('id')
+  const id = searchParams.get('id')!
 
   const response = await supabase
     .from('posts')

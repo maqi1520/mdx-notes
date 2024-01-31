@@ -21,9 +21,8 @@ import {
 import { SettingsIcon } from 'lucide-react'
 
 export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
-  const [open, onOpenChange] = useState(false)
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
+    <Popover>
       <PopoverTrigger asChild>
         <Button size="icon" variant="secondary">
           <SettingsIcon
@@ -33,8 +32,8 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="space-y-4">
-        <div>
+      <PopoverContent align="start" className="space-y-4">
+        <div className="space-y-2">
           <Label>{t('Themes')}</Label>
           <Select
             onValueChange={(markdownTheme) =>
@@ -57,7 +56,7 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
           </Select>
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label>{t('Code Themes')}</Label>
           <Select
             onValueChange={(codeTheme) => onChange({ ...value, codeTheme })}

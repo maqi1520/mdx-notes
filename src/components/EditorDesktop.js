@@ -8,6 +8,7 @@ import { onDidChangeTheme } from '../utils/theme'
 
 export default function Editor({
   initialContent = {},
+  readOnly = false,
   onChange,
   onScroll,
   worker,
@@ -34,6 +35,9 @@ export default function Editor({
       editorRef.current.dispose()
     }
   }, [])
+  useEffect(() => {
+    editorRef.current.editor.updateOptions({ readOnly })
+  }, [readOnly])
 
   useEffect(() => {
     editorRef.current.setOnChange(onChange)

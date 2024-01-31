@@ -13,16 +13,22 @@ import { ErrorOverlay } from './ErrorOverlay'
 import { useRouter } from 'next/navigation'
 import { Header } from './Header'
 import { Button } from '@/components/ui/button'
-import { Share } from './Share'
 import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
-import { PenSquare, Columns, MonitorSmartphone, Square } from 'lucide-react'
+import {
+  PenSquare,
+  Columns,
+  MonitorSmartphone,
+  Square,
+  GitForkIcon,
+} from 'lucide-react'
 
 import clsx from 'clsx'
+import { useGlobalValue } from '@/hooks/useGlobalValue'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -30,12 +36,15 @@ const RESIZER_SIZE = 1
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen({
+  id,
   initialContent,
   initialPath,
+  author_id,
   initialLayout,
   initialResponsiveSize,
   initialActiveTab,
 }) {
+  const [globalValue] = useGlobalValue()
   const router = useRouter()
   const htmlRef = useRef()
   const previewRef = useRef()
@@ -66,16 +75,6 @@ export default function Pen({
   )
 
   useEffect(() => {
-    setDirty(true)
-  }, [
-    activeTab,
-    size.layout,
-    responsiveSize.width,
-    responsiveSize.height,
-    responsiveDesignMode,
-  ])
-
-  useEffect(() => {
     if (dirty) {
       function handleUnload(e) {
         e.preventDefault()
@@ -89,7 +88,6 @@ export default function Pen({
   }, [dirty])
 
   useEffect(() => {
-    setDirty(false)
     compileNow({
       html: initialContent.html,
       css: initialContent.css,
@@ -102,12 +100,7 @@ export default function Pen({
   }, [])
 
   async function compileNow(content) {
-    console.log('initialContent._id', initialContent._id)
     cancelSetError()
-    localStorage.setItem(
-      initialContent._id || 'content',
-      JSON.stringify(content)
-    )
     setIsLoading(true)
     compileMdx(
       content.config,
@@ -143,18 +136,57 @@ export default function Pen({
     })
   }
 
+  async function handleFork() {
+    const title = initialContent.html
+      .split('\n')[0]
+      .replace('# ', '')
+      .slice(0, 50)
+    const res = await fetch(`/api/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        content: initialContent,
+      }),
+    })
+    const data = await res.json()
+    router.push(`/post/${data.data.id}`)
+  }
+
+  async function updatePost(content) {
+    const title = content.html.split('\n')[0].replace('# ', '').slice(0, 50)
+    const res = await fetch(`/api/posts/?id=${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+        content,
+      }),
+    })
+    setDirty(false)
+    console.log(res)
+  }
+
   const compile = useCallback(debounce(compileNow, 200), [theme])
+  const handleUpdate = useCallback(debounce(updatePost, 500), [])
 
   const onChange = useCallback(
     (document, content) => {
       setDirty(true)
+      if (id) {
+        handleUpdate(content)
+      }
       compile({
         html: content.html,
         css: content.css,
         config: content.config,
       })
     },
-    [compile]
+    [compile, id, handleUpdate]
   )
 
   useIsomorphicLayoutEffect(() => {
@@ -245,17 +277,6 @@ export default function Pen({
     })
   }, [])
 
-  const onShareStart = useCallback(() => {
-    setDirty(false)
-  }, [])
-
-  const onShareComplete = useCallback(
-    (path) => {
-      router.push(path)
-    },
-    [router]
-  )
-
   useEffect(() => {
     if (editorRef.current) {
       compileNow({
@@ -291,7 +312,7 @@ export default function Pen({
   return (
     <div className="flex h-screen flex-col">
       <Header
-        rightbtn={
+        rightBtn={
           <>
             <ThemeDropdown
               value={theme}
@@ -367,16 +388,12 @@ export default function Pen({
         }
       >
         <div className="hidden sm:flex space-x-2">
-          <Share
-            editorRef={editorRef}
-            onShareStart={onShareStart}
-            onShareComplete={onShareComplete}
-            dirty={dirty}
-            initialPath={initialPath}
-            layout={size.layout}
-            responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
-            activeTab={activeTab}
-          />
+          {globalValue.user && author_id !== globalValue.user.id && (
+            <Button size="sm" onClick={handleFork}>
+              <GitForkIcon className="w-4 h-4 mr-1" />
+              Fork
+            </Button>
+          )}
           <CopyBtn
             htmlRef={htmlRef}
             baseCss={
@@ -433,6 +450,7 @@ export default function Pen({
               <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
                 {renderEditor && (
                   <Editor
+                    readOnly={author_id !== globalValue.user?.id}
                     editorRef={(ref) => (editorRef.current = ref)}
                     initialContent={initialContent}
                     onChange={onChange}

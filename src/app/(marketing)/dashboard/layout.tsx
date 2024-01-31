@@ -1,11 +1,4 @@
-import { Metadata } from 'next'
-
 import { SidebarNav } from '@/components/sidebar-nav'
-
-export const metadata: Metadata = {
-  title: 'Forms',
-  description: 'Advanced form example using react-hook-form and Zod.',
-}
 
 const sidebarNavItems = [
   {
@@ -28,7 +21,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
       <aside className="lg:w-1/5">
         <SidebarNav items={sidebarNavItems} />
       </aside>
-      <div className="flex-1 lg:max-w-2xl">{children}</div>
+      <div className="flex-1">{children}</div>
     </div>
   )
 }

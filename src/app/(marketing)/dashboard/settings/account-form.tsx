@@ -91,47 +91,49 @@ export default function AccountForm({ user }: { user: User }) {
         </h1>
         <p className="mt-2 text-muted-foreground">更新您的个人信息</p>
       </div>
-      <div className="space-y-2">
-        <label htmlFor="email">Email</label>
-        <Input id="email" type="text" value={user?.email} disabled />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="fullName">Full Name</label>
-        <Input
-          id="fullName"
-          type="text"
-          value={full_name || ''}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="username">Username</label>
-        <Input
-          id="username"
-          type="text"
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="website">Website</label>
-        <Input
-          id="website"
-          type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
+      <div className="border rounded p-8 space-y-8">
+        <div className="space-y-2">
+          <label htmlFor="email">Email</label>
+          <Input id="email" type="text" value={user?.email} disabled />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="fullName">Full Name</label>
+          <Input
+            id="fullName"
+            type="text"
+            value={full_name || ''}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="username">Username</label>
+          <Input
+            id="username"
+            type="text"
+            value={username || ''}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="website">Website</label>
+          <Input
+            id="website"
+            type="url"
+            value={website || ''}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
 
-      <div>
-        <Button
-          onClick={() =>
-            updateProfile({ full_name, username, website, avatar_url })
-          }
-          disabled={loading}
-        >
-          {loading ? 'Loading ...' : 'Update'}
-        </Button>
+        <div>
+          <Button
+            onClick={() =>
+              updateProfile({ full_name, username, website, avatar_url })
+            }
+            disabled={loading}
+          >
+            {loading ? 'Loading ...' : 'Update'}
+          </Button>
+        </div>
       </div>
     </div>
   )

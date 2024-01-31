@@ -8,7 +8,6 @@ const supabase = createClient(
 export async function get<T>(id: string) {
   try {
     const { data } = await supabase.from('posts').select().eq('id', id).single()
-    console.log(data)
 
     return data as T
   } catch (error) {

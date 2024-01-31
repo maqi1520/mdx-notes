@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-toast": "^1.1.5",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
     "@supabase/auth-ui-react": "^0.4.2",

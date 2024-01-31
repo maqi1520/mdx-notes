@@ -21,7 +21,6 @@ export default function Hero({ children }) {
     1000
   )
 
-  const instanceRef = useRef()
   const previewRef = useRef()
   const paused = useRef(false) //暂停
   function pause() {

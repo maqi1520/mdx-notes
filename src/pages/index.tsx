@@ -88,33 +88,36 @@ export default function Page({ data }) {
       </div>
       <SiteHeader />
       <div className="container mx-auto p-5">
-        <Hero>
-          <div className="mt-12 text-center">
-            <div className="mt-12 text-3xl sm:text-5xl">
-              一个微信排版编辑器，使用 MDX
+        <div className="min-h-[712px]">
+          <Hero>
+            <div className="mt-12 text-center">
+              <div className="mt-12 text-3xl sm:text-5xl">
+                一个微信排版编辑器，使用 MDX
+              </div>
+              <div className="mt-12 flex justify-center space-x-4">
+                <Link
+                  className={buttonVariants({
+                    variant: 'outline',
+                    size: 'lg',
+                  })}
+                  href="/post/demo"
+                >
+                  Web 版
+                </Link>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://github.com/maqi1520/mdx-editor/releases"
+                  className={buttonVariants({ size: 'lg' })}
+                >
+                  <DownloadIcon className="w-5 h-5" />
+                  <span>下载桌面版</span>
+                </a>
+              </div>
             </div>
-            <div className="mt-12 flex justify-center space-x-4">
-              <Link
-                className={buttonVariants({
-                  variant: 'outline',
-                  size: 'lg',
-                })}
-                href="/post/create"
-              >
-                Web 版
-              </Link>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://github.com/maqi1520/mdx-editor/releases"
-                className={buttonVariants({ size: 'lg' })}
-              >
-                <DownloadIcon className="w-5 h-5" />
-                <span>下载桌面版</span>
-              </a>
-            </div>
-          </div>
-        </Hero>
+          </Hero>
+        </div>
+
         <div className="relative">
           <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">
@@ -176,7 +179,7 @@ export default function Page({ data }) {
               {data.map((item) => (
                 <div key={item.doc_id}>
                   <div className="overflow-hidden rounded">
-                    <Link href={'/' + item.doc_id}>
+                    <Link href={'/post/' + item.doc_id}>
                       <Image
                         width={711}
                         height={500}

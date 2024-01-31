@@ -3,15 +3,7 @@ import React from 'react'
 
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { MoreVerticalIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { PostOperations } from './post-operations'
 
 type Props = {
   item: any
@@ -34,20 +26,7 @@ export function PostItem({ item }: Props) {
           </p>
         </div>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <MoreVerticalIcon className="w-5 h-5" />
-            <span className="sr-only">Open</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem asChild>
-            <Link href={`/post/${item.id}`}>编辑</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>删除</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <PostOperations post={item} />
     </div>
   )
 }

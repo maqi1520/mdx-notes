@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import Error from 'next/error'
 import { sizeToObject } from '@/utils/size'
 import { getLayoutQueryString } from '@/utils/getLayoutQueryString'
@@ -14,24 +13,24 @@ type Result = {
   title: string
   content: { html: string; css: string; config: string }
   id: string
+  author_id: string
 }
 
-export default function App({ errorCode, id, ...props }) {
-  const [initialContent, setContent] = useState(props.initialContent)
-
-  useEffect(() => {
-    try {
-      const data = JSON.parse(localStorage.getItem(id)!)
-
-      if (data) {
-        setContent(data)
-      }
-    } catch (error) {}
-  }, [id])
+interface Props {
+  errorCode?: number
+  initialContent: { html: string; css: string; config: string }
+  id: string
+  author_id: string
+  initialLayout: string
+  initialPath: string
+  initialResponsiveSize: { width: number; height: number }
+  initialActiveTab: string
+}
+export default function App({ errorCode, ...props }: Props) {
   if (errorCode) {
     return <Error statusCode={errorCode} />
   }
-  return <Pen {...props} initialContent={initialContent} />
+  return <Pen {...props} />
 }
 
 export async function getServerSideProps({ params, res, query }) {
@@ -45,10 +44,9 @@ export async function getServerSideProps({ params, res, query }) {
       : 'html',
   }
 
-  if (params.slug === 'create') {
+  if (params.slug === 'demo') {
     return {
       props: {
-        id: 'content',
         initialContent: await getDefaultContent(),
         ...layoutProps,
       },
@@ -64,6 +62,7 @@ export async function getServerSideProps({ params, res, query }) {
         props: {
           id,
           initialContent: res.content,
+          author_id: res.author_id,
           initialPath: `/${res.id}${getLayoutQueryString({
             layout: query.layout,
             responsiveSize: query.size,

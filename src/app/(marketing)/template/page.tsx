@@ -34,7 +34,7 @@ export default async function Page() {
                 </div>
               ))}
             <h2 className="text-lg font-bold sm:text-xl md:text-2xl">
-              <Link href={'/' + item.doc_id}>{item.name}</Link>
+              <Link href={'/post/' + item.doc_id}>{item.name}</Link>
             </h2>
             <p className="text-sm text-gray-500">{item.desc}</p>
             <p className="pt-2 text-xs font-medium">
