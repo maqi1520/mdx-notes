@@ -2,6 +2,7 @@ import '../css/main.css'
 import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/react'
 
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps }) {
         <link rel="shortcut icon" href="/favicons/favicon.ico" />
         <meta name="apple-mobile-web-app-title" content="MDX Editor" />
         <meta name="application-name" content="MDX Editor" />
+        <meta name="theme-color" content="#f8fafc" />
         <meta name="msapplication-TileColor" content="#38bdf8" />
         <meta
           name="msapplication-config"
@@ -57,6 +59,7 @@ export default function App({ Component, pageProps }) {
 
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Component {...pageProps} />
+        <Toaster />
       </ThemeProvider>
       <Analytics />
     </>

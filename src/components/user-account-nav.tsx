@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { LoginModal } from './login-modal'
 
@@ -13,28 +13,15 @@ import {
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-import { User } from '@supabase/auth-helpers-nextjs'
-import { useSupabase } from '@/app/supabase-provider'
-
-export function UserAccountNav() {
+export function UserAccountNav({ user }) {
   const router = useRouter()
-  const [user, setUser] = React.useState<User | null>(null)
-  const { supabase } = useSupabase()
-  useEffect(() => {
-    supabase.auth.getUser().then((res) => {
-      if (res.data?.user) {
-        setUser(res.data.user)
-      }
-    })
-  }, [])
-
-  const handleLogout = async () => {
-    const res = await fetch('/auth/logout', {
+  const logout = async () => {
+    fetch('/auth/logout', {
       method: 'POST',
-    }).then((res) => res.json())
-    router.replace('/')
+    }).then((res) => {
+      router.replace('/')
+    })
   }
-
   if (!user || !user?.id) {
     return <LoginModal />
   } else {
@@ -46,7 +33,7 @@ export function UserAccountNav() {
             <AvatarFallback>{user.name}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-32">
+        <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem asChild>
             <Link href="/dashboard/settings">
               <UserIcon className="mr-2 h-4 w-4" />
@@ -60,7 +47,7 @@ export function UserAccountNav() {
             </Link>
           </DropdownMenuItem>
 
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem onClick={logout}>
             <LogOutIcon className="mr-2 h-4 w-4" />
             <span>登出</span>
           </DropdownMenuItem>

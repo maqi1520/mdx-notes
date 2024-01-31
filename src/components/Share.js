@@ -33,10 +33,16 @@ export function Share({
     let current = true
     if (state === 'loading') {
       if (onShareStart) onShareStart()
+      let md = editorRef.current.getValue('html')
+      let title = ''
+      if (md) {
+        title = md.split('\n')[0].replace('# ', '').slice(0, 50)
+      }
+
       const data = {
-        title: '12121212',
+        title,
         content: {
-          html: editorRef.current.getValue('html'),
+          html: md,
           css: editorRef.current.getValue('css'),
           config: editorRef.current.getValue('config'),
         },
@@ -51,9 +57,8 @@ export function Share({
         })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res)
           if (current) {
-            const newPath = `/${res.data.id}${getLayoutQueryString({
+            const newPath = `/post/${res.data.id}${getLayoutQueryString({
               layout,
               responsiveSize,
               file: activeTab,

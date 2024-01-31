@@ -6,14 +6,15 @@ import { GithubIcon } from '@/components/icons'
 import { TwitterIcon } from 'lucide-react'
 import { MainNav } from '@/components/main-nav'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { UserAccountNav } from '@/components/user-account-nav'
 
-export async function SiteHeader() {
+export async function SiteHeader({ user }) {
   return (
-    <header className="relative px-4 sm:px-6 md:px-8">
+    <header className="relative px-4 sm:px-6 md:px-8 border-b">
       <div className="flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <nav className="flex items-center space-x-1">
+          <nav className="flex items-center space-x-2">
             <Link
               href={siteConfig.links.github}
               target="_blank"
@@ -44,7 +45,8 @@ export async function SiteHeader() {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            <ThemeToggle />
+            <ThemeToggle variant="ghost" />
+            <UserAccountNav user={user} />
           </nav>
         </div>
       </div>

@@ -607,6 +607,25 @@
     "@radix-ui/react-use-previous" "1.0.1"
     "@radix-ui/react-use-size" "1.0.1"
 
+"@radix-ui/react-toast@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.npmmirror.com/@radix-ui/react-toast/-/react-toast-1.1.5.tgz#f5788761c0142a5ae9eb97f0051fd3c48106d9e6"
+  integrity sha512-fRLn227WHIBRSzuRzGJ8W+5YALxofH23y0MlPLddaIpLpCDqdE0NZlS2NRQDRiptfxDeeCjgFIpexB1/zkxDlw==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.1"
+    "@radix-ui/react-collection" "1.0.3"
+    "@radix-ui/react-compose-refs" "1.0.1"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-dismissable-layer" "1.0.5"
+    "@radix-ui/react-portal" "1.0.4"
+    "@radix-ui/react-presence" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-use-callback-ref" "1.0.1"
+    "@radix-ui/react-use-controllable-state" "1.0.1"
+    "@radix-ui/react-use-layout-effect" "1.0.1"
+    "@radix-ui/react-visually-hidden" "1.0.3"
+
 "@radix-ui/react-toggle-group@^1.0.4":
   version "1.0.4"
   resolved "https://registry.npmmirror.com/@radix-ui/react-toggle-group/-/react-toggle-group-1.0.4.tgz#f5b5c8c477831b013bec3580c55e20a68179d6ec"
@@ -704,6 +723,11 @@
   resolved "https://registry.npmmirror.com/@rushstack/eslint-patch/-/eslint-patch-1.6.1.tgz#9ab8f811930d7af3e3d549183a50884f9eb83f36"
   integrity sha512-UY+FGM/2jjMkzQLn8pxcHGMaVLh9aEitG3zY2CiY7XHdLiz3bZOwa6oDxNqEMv7zZkV+cj5DOdz0cQ1BP5Hjgw==
 
+"@stitches/core@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.npmmirror.com/@stitches/core/-/core-1.2.8.tgz#dce3b8fdc764fbc6dbea30c83b73bfb52cf96173"
+  integrity sha512-Gfkvwk9o9kE9r9XNBmJRfV8zONvXThnm1tcuojL04Uy5uRyqg93DC83lDebl0rocZCfKSjUv+fWYtMQmEDJldg==
+
 "@supabase/auth-helpers-nextjs@^0.8.7":
   version "0.8.7"
   resolved "https://registry.npmmirror.com/@supabase/auth-helpers-nextjs/-/auth-helpers-nextjs-0.8.7.tgz#7d1454b4c211c2b8c18cc0c386ef469627dd3594"
@@ -718,6 +742,22 @@
   integrity sha512-xYQRLFeFkL4ZfwC7p9VKcarshj3FB2QJMgJPydvOY7J5czJe6xSG5/wM1z63RmAzGbCkKg+dzpq61oeSyWiGBQ==
   dependencies:
     jose "^4.14.4"
+
+"@supabase/auth-ui-react@^0.4.2":
+  version "0.4.7"
+  resolved "https://registry.npmmirror.com/@supabase/auth-ui-react/-/auth-ui-react-0.4.7.tgz#6e3f941fc82a9798ba2033fab865a9f5fdfa0d32"
+  integrity sha512-Lp4FQGFh7BMX1Y/BFaUKidbryL7eskj1fl6Lby7BeHrTctbdvDbCMjVKS8wZ2rxuI8FtPS2iU900fSb70FHknQ==
+  dependencies:
+    "@stitches/core" "^1.2.8"
+    "@supabase/auth-ui-shared" "0.1.8"
+    prop-types "^15.7.2"
+    react "^18.2.0"
+    react-dom "^18.2.0"
+
+"@supabase/auth-ui-shared@0.1.8", "@supabase/auth-ui-shared@^0.1.6":
+  version "0.1.8"
+  resolved "https://registry.npmmirror.com/@supabase/auth-ui-shared/-/auth-ui-shared-0.1.8.tgz#1ce63c4ac58f29d7c76436b774b0e8809dd08617"
+  integrity sha512-ouQ0DjKcEFg+0gZigFIEgu01V3e6riGZPzgVD0MJsCBNsMsiDT74+GgCEIElMUpTGkwSja3xLwdFRFgMNFKcjg==
 
 "@supabase/functions-js@^2.1.5":
   version "2.1.5"
@@ -1965,7 +2005,7 @@ data-uri-to-buffer@^4.0.0:
   resolved "https://registry.npmmirror.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz#b5db46aea50f6176428ac05b73be39a57701a64b"
   integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
 
-dayjs@^1.11.7:
+dayjs@1.11.9, dayjs@^1.11.7:
   version "1.11.9"
   resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==

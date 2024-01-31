@@ -99,7 +99,7 @@ export default function Page({ data }) {
                   variant: 'outline',
                   size: 'lg',
                 })}
-                href="/create"
+                href="/post/create"
               >
                 Web 版
               </Link>

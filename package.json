@@ -7,12 +7,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@radix-ui/react-toast": "^1.1.5",
     "@supabase/auth-helpers-nextjs": "^0.8.7",
+    "@supabase/auth-ui-react": "^0.4.2",
+    "@supabase/auth-ui-shared": "^0.1.6",
     "@supabase/supabase-js": "^2.39.3",
     "@vercel/analytics": "^1.0.0",
     "ai": "^2.2.31",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.1.1",
+    "dayjs": "1.11.9",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "next": "14.1.0",
     "next-themes": "^0.2.1",

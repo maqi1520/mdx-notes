@@ -1,5 +1,6 @@
 import Link from 'next/link'
-export function Logo({ className }) {
+
+export function Logo({ className = '' }) {
   return (
     <Link className="flex items-center" href="/">
       <svg

@@ -45,10 +45,7 @@ export async function getServerSideProps({ params, res, query }) {
       : 'html',
   }
 
-  if (
-    !params.slug ||
-    (params.slug.length === 1 && params.slug[0] === 'create')
-  ) {
+  if (params.slug === 'create') {
     return {
       props: {
         id: 'content',
@@ -58,16 +55,8 @@ export async function getServerSideProps({ params, res, query }) {
     }
   }
 
-  if (params.slug.length !== 1) {
-    return {
-      props: {
-        errorCode: 404,
-      },
-    }
-  }
-
   try {
-    const id = params.slug[0]
+    const id = params.slug
     const res = await get<Result>(id)
 
     if (res) {

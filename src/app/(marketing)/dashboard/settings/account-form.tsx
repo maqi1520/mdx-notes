@@ -1,15 +1,19 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import { Database } from '@/types/database.type'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 import {
   User,
   createClientComponentClient,
 } from '@supabase/auth-helpers-nextjs'
 
 export default function AccountForm({ user }: { user: User }) {
+  const { toast } = useToast()
   const supabase = createClientComponentClient<Database>()
   const [loading, setLoading] = useState(true)
-  const [fullname, setFullname] = useState<string | null>(null)
+  const [full_name, setFullName] = useState<string | null>(null)
   const [username, setUsername] = useState<string | null>(null)
   const [website, setWebsite] = useState<string | null>(null)
   const [avatar_url, setAvatarUrl] = useState<string | null>(null)
@@ -29,7 +33,7 @@ export default function AccountForm({ user }: { user: User }) {
       }
 
       if (data) {
-        setFullname(data.full_name)
+        setFullName(data.full_name)
         setUsername(data.username)
         setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
@@ -48,10 +52,11 @@ export default function AccountForm({ user }: { user: User }) {
   async function updateProfile({
     username,
     website,
+    full_name,
     avatar_url,
   }: {
     username: string | null
-    fullname: string | null
+    full_name: string | null
     website: string | null
     avatar_url: string | null
   }) {
@@ -60,14 +65,17 @@ export default function AccountForm({ user }: { user: User }) {
 
       const { error } = await supabase.from('profiles').upsert({
         id: user?.id as string,
-        full_name: fullname,
+        full_name,
         username,
         website,
         avatar_url,
         updated_at: new Date().toISOString(),
       })
       if (error) throw error
-      alert('Profile updated!')
+      toast({
+        title: 'Success!',
+        description: 'Your profile has been updated.',
+      })
     } catch (error) {
       alert('Error updating the data!')
     } finally {
@@ -76,32 +84,38 @@ export default function AccountForm({ user }: { user: User }) {
   }
 
   return (
-    <div className="form-widget">
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={user?.email} disabled />
+    <div className="space-y-8">
+      <div className="max-w-3xl">
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          个人信息
+        </h1>
+        <p className="mt-2 text-muted-foreground">更新您的个人信息</p>
       </div>
-      <div>
+      <div className="space-y-2">
+        <label htmlFor="email">Email</label>
+        <Input id="email" type="text" value={user?.email} disabled />
+      </div>
+      <div className="space-y-2">
         <label htmlFor="fullName">Full Name</label>
-        <input
+        <Input
           id="fullName"
           type="text"
-          value={fullname || ''}
-          onChange={(e) => setFullname(e.target.value)}
+          value={full_name || ''}
+          onChange={(e) => setFullName(e.target.value)}
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <label htmlFor="username">Username</label>
-        <input
+        <Input
           id="username"
           type="text"
           value={username || ''}
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <label htmlFor="website">Website</label>
-        <input
+        <Input
           id="website"
           type="url"
           value={website || ''}
@@ -110,23 +124,14 @@ export default function AccountForm({ user }: { user: User }) {
       </div>
 
       <div>
-        <button
-          className="button primary block"
+        <Button
           onClick={() =>
-            updateProfile({ fullname, username, website, avatar_url })
+            updateProfile({ full_name, username, website, avatar_url })
           }
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
-        </button>
-      </div>
-
-      <div>
-        <form action="/auth/signout" method="post">
-          <button className="button block" type="submit">
-            Sign out
-          </button>
-        </form>
+        </Button>
       </div>
     </div>
   )

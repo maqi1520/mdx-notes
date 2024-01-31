@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { ThemeToggle } from '@/components/theme-toggle'
 import { LayoutTemplate } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 
 export function Header({ children, rightbtn }) {
   return (
@@ -26,7 +26,13 @@ export function Header({ children, rightbtn }) {
             <LayoutTemplate className="w-5 h-5" />
           </Button>
         </Link>
-        <ThemeToggle />
+        <ThemeToggle variant="secondary" />
+        <Link
+          className={buttonVariants({ variant: 'secondary' })}
+          href="/signin"
+        >
+          登录
+        </Link>
       </div>
     </header>
   )
