@@ -6,8 +6,9 @@ import { GithubIcon } from '@/components/icons'
 import { TwitterIcon } from 'lucide-react'
 import { MainNav } from '@/components/main-nav'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { UserAccountNav } from '@/components/user-account-nav'
 
-export function SiteHeader() {
+export async function SiteHeader() {
   return (
     <header className="relative px-4 sm:px-6 md:px-8">
       <div className="flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -45,6 +46,7 @@ export function SiteHeader() {
               </div>
             </Link>
             <ThemeToggle />
+            <UserAccountNav />
           </nav>
         </div>
       </div>

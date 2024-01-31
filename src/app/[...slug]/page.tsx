@@ -11,10 +11,9 @@ type Props = {
   searchParams: { [key: string]: string | undefined }
 }
 type Result = {
-  html: string
-  css: string
-  config: string
-  _id: string
+  title: string
+  content: { html: string; css: string; config: string }
+  id: string
 }
 
 export default async function Page({ params, searchParams: query }: Props) {
@@ -40,14 +39,16 @@ export default async function Page({ params, searchParams: query }: Props) {
 
   if (!params.slug || (params.slug.length === 1 && id === 'create')) {
     initialContent = await getDefaultContent()
-  } else if (id.length === 24) {
+  } else if (id.length === 36) {
     const res = await get<Result>(params.slug[0])
-    initialContent = res
-    initialPath = `/${res._id}${getLayoutQueryString({
-      layout: query.layout,
-      responsiveSize: query.size,
-      file: query.file,
-    })}`
+    if (res) {
+      initialContent = res.content
+      initialPath = `/${res.id}${getLayoutQueryString({
+        layout: query.layout,
+        responsiveSize: query.size,
+        file: query.file,
+      })}`
+    }
   }
 
   return (

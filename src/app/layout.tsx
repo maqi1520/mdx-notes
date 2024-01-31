@@ -7,6 +7,7 @@ import { fontSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
+import SupabaseProvider from '@/app/supabase-provider'
 
 export const metadata: Metadata = {
   title: {
@@ -41,7 +42,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <SupabaseProvider>{children}</SupabaseProvider>
             <TailwindIndicator />
           </ThemeProvider>
         </body>

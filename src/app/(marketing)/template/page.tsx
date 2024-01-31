@@ -5,19 +5,17 @@ import Link from 'next/link'
 import { Result } from '@/types/template'
 
 export default async function Page() {
-  const { data } = await getTemplates<Result>({
-    action: 'template',
-    search: '',
-  })
+  const data = (await getTemplates<Result>()) ?? []
+
   return (
     <section className="w-full px-5 py-6 mx-auto space-y-5 sm:py-8 md:py-12 sm:space-y-8 md:space-y-16 max-w-7xl">
       <div className="grid grid-cols-12 pb-10 sm:px-5 gap-x-8 gap-y-16">
         {data.map((item) => (
           <div
-            key={item._id}
+            key={item.id}
             className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
           >
-            <Link className="block" href={'/' + item.docId}>
+            <Link className="block" href={'/' + item.doc_id}>
               <Image
                 width={711}
                 height={500}
@@ -36,20 +34,13 @@ export default async function Page() {
                 </div>
               ))}
             <h2 className="text-lg font-bold sm:text-xl md:text-2xl">
-              <Link href={'/' + item.docId}>{item.name}</Link>
+              <Link href={'/' + item.doc_id}>{item.name}</Link>
             </h2>
             <p className="text-sm text-gray-500">{item.desc}</p>
             <p className="pt-2 text-xs font-medium">
-              <Link className="mr-1 underline" href={'/' + item.docId}>
+              <Link className="mr-1 underline" href={'/' + item.doc_id}>
                 {item.creator}
               </Link>
-              <span className="mx-1">
-                {new Date(item.createTime).toLocaleDateString('zh-CN', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
-              </span>
             </p>
           </div>
         ))}

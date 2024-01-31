@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
 import { LayoutTemplate, Sun, MoonStar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { User } from './User'
+import { UserAccountNav } from './user-account-nav'
 
 export function Header({ children, rightbtn }) {
   return (
@@ -30,7 +30,7 @@ export function Header({ children, rightbtn }) {
           <Sun className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 hidden dark:block" />
           <MoonStar className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 dark:hidden" />
         </Button>
-        <User />
+        <UserAccountNav />
       </div>
     </header>
   )

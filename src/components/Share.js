@@ -33,26 +33,27 @@ export function Share({
     let current = true
     if (state === 'loading') {
       if (onShareStart) onShareStart()
+      const data = {
+        title: '12121212',
+        content: {
+          html: editorRef.current.getValue('html'),
+          css: editorRef.current.getValue('css'),
+          config: editorRef.current.getValue('config'),
+        },
+      }
       window
-        .fetch('/api/share', {
+        .fetch('/api/posts', {
           method: 'POST',
           headers: {
             'content-type': 'application/json',
           },
-          body: JSON.stringify({
-            html: editorRef.current.getValue('html'),
-            css: editorRef.current.getValue('css'),
-            config: editorRef.current.getValue('config'),
-          }),
-        })
-        .then((res) => {
-          if (!res.ok) throw res
-          return res
+          body: JSON.stringify(data),
         })
         .then((res) => res.json())
         .then((res) => {
+          console.log(res)
           if (current) {
-            const newPath = `/${res.id}${getLayoutQueryString({
+            const newPath = `/${res.data.id}${getLayoutQueryString({
               layout,
               responsiveSize,
               file: activeTab,
@@ -73,37 +74,15 @@ export function Share({
           }
         })
         .catch((error) => {
+          console.log(error)
           if (!current) return
 
           const defaultErrorText = 'Whoops! Something went wrong.'
 
-          if (error instanceof window.Response) {
-            error.json().then((response) => {
-              if (!current) return
-              if (
-                typeof response.errors === 'object' &&
-                response.errors !== null &&
-                !Array.isArray(response.errors)
-              ) {
-                setState({
-                  state: 'error',
-                  errorText:
-                    response.errors[Object.keys(response.errors)[0]][0] ||
-                    defaultErrorText,
-                })
-              } else {
-                setState({
-                  state: 'error',
-                  errorText: defaultErrorText,
-                })
-              }
-            })
-          } else {
-            setState({
-              state: 'error',
-              errorText: defaultErrorText,
-            })
-          }
+          setState({
+            state: 'error',
+            errorText: defaultErrorText,
+          })
         })
     } else if (state === 'copied') {
       window.setTimeout(() => {

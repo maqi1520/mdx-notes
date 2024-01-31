@@ -1,15 +1,11 @@
-export interface Result {
-  data: Daum[]
-  hasmore: boolean
-}
+export type Result = Daum[]
 
 export interface Daum {
-  _id: string
+  id: string
   img: string
   name: string
   status: number
-  docId: string
-  createTime: number
+  doc_id: string
   creator: string
   tags: string[]
   desc: string

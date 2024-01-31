@@ -1,6 +1,6 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { useAsyncRetry } from 'react-use'
 import { LoginModal } from './login-modal'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -11,32 +11,39 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
-type Props = {}
+import { User } from '@supabase/auth-helpers-nextjs'
+import { useSupabase } from '@/app/supabase-provider'
 
-export function User({}: Props) {
-  const { value, retry } = useAsyncRetry(async () => {
-    return fetch('/user/get').then((res) => res.json())
+export function UserAccountNav() {
+  const router = useRouter()
+  const [user, setUser] = React.useState<User | null>(null)
+  const { supabase } = useSupabase()
+  useEffect(() => {
+    supabase.auth.getUser().then((res) => {
+      if (res.data?.user) {
+        setUser(res.data.user)
+      }
+    })
   }, [])
 
   const handleLogout = async () => {
     const res = await fetch('/auth/logout', {
       method: 'POST',
     }).then((res) => res.json())
-    if (res.success) {
-      retry()
-    }
+    router.replace('/')
   }
 
-  if (!value || !value?._id) {
-    return <LoginModal reload={retry} />
+  if (!user || !user?.id) {
+    return <LoginModal />
   } else {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar>
-            <AvatarImage src={value.avatar_url} alt={value.name} />
-            <AvatarFallback>{value.name}</AvatarFallback>
+            <AvatarImage src={user.avatar_url} alt={user.name} />
+            <AvatarFallback>{user.name}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32">

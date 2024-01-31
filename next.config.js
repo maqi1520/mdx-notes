@@ -9,9 +9,6 @@ const headers = [
 ]
 /** @type {import('next').NextConfig} */
 module.exports = {
-  experimental: {
-    serverComponentsExternalPackages: ['mermaid-isomorphic'],
-  },
   images: {
     remotePatterns: [
       {
@@ -27,22 +24,6 @@ module.exports = {
       {
         source: '/fonts/(.*)',
         headers,
-      },
-    ]
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
-      },
-      {
-        source: '/user/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/user/:path*`,
-      },
-      {
-        source: '/auth/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/auth/:path*`,
       },
     ]
   },

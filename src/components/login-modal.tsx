@@ -1,10 +1,12 @@
+'use client'
+
+import { useSupabase } from '@/app/supabase-provider'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,12 +15,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { GithubIcon, Loader2Icon } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
-interface Props {
-  reload: () => void
-}
-
-export function LoginModal({ reload }: Props) {
+export function LoginModal() {
+  const router = useRouter()
+  const { supabase } = useSupabase()
   const [open, onOpenChange] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -26,23 +27,18 @@ export function LoginModal({ reload }: Props) {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
     const formProps = Object.fromEntries(formData)
-    console.log(formProps)
 
     setIsLoading(true)
-    try {
-      const res = await fetch('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(formProps),
-      }).then((res) => res.json())
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formProps.email as string,
+      password: formProps.password as string,
+    })
 
-      console.log(res)
-      if (res.token) {
-        reload()
-        onOpenChange(false)
-      }
-      setIsLoading(false)
-    } catch (error) {
-      setIsLoading(false)
+    setIsLoading(false)
+
+    if (!error) {
+      onOpenChange(false)
+      router.push('/dashboard')
     }
   }
   return (

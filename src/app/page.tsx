@@ -77,11 +77,7 @@ const features = [
 const users = ['JS酷', 'web技术学院', '前端充电宝', '云谦和他的朋友们']
 
 export default async function Page() {
-  const { data } = await getTemplates<Result>({
-    action: 'template',
-    search: '',
-    pageSize: 6,
-  })
+  const data = (await getTemplates<Result>(6)) ?? []
   return (
     <div className="relative min-h-full">
       <div className="absolute inset-0 h-[860px] bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
@@ -175,9 +171,9 @@ export default async function Page() {
             </p>
             <div className="mt-10 grid grid-cols-2 gap-10">
               {data.map((item) => (
-                <div key={item.docId}>
+                <div key={item.doc_id}>
                   <div className="overflow-hidden rounded">
-                    <Link href={'/' + item.docId}>
+                    <Link href={'/' + item.doc_id}>
                       <Image
                         width={711}
                         height={500}
@@ -188,7 +184,7 @@ export default async function Page() {
                     </Link>
                   </div>
                   <div className="mt-4">
-                    <Link href={'/' + item.docId} className="underline">
+                    <Link href={'/' + item.doc_id} className="underline">
                       {item.name}
                     </Link>
                   </div>
