@@ -9,6 +9,7 @@ import { buttonVariants } from '@/components/ui/button'
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string
+    icon: React.ReactNode
     title: string
   }[]
 }
@@ -33,10 +34,11 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
             pathname === item.href
               ? 'bg-muted hover:bg-muted'
               : 'hover:bg-transparent hover:underline',
-            'justify-start'
+            'justify-start space-x-2 items-center'
           )}
         >
-          {item.title}
+          {item.icon}
+          <span>{item.title}</span>
         </Link>
       ))}
     </nav>

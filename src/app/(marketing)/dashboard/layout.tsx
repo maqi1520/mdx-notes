@@ -1,11 +1,14 @@
 import { SidebarNav } from '@/components/sidebar-nav'
+import { FileIcon, UserIcon } from 'lucide-react'
 
 const sidebarNavItems = [
   {
+    icon: <UserIcon className="w-4 h-4" />,
     title: '个人信息',
     href: '/dashboard/settings',
   },
   {
+    icon: <FileIcon className="w-4 h-4" />,
     title: '我的文章',
     href: '/dashboard/posts',
   },

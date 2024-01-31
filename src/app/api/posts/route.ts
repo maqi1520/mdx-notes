@@ -44,7 +44,10 @@ export async function PATCH(request: Request) {
 
   const response = await supabase
     .from('posts')
-    .update(data)
+    .update({
+      ...data,
+      updated_at: new Date(),
+    })
     .eq('id', id)
     .select()
     .single()

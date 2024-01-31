@@ -18,7 +18,11 @@ export async function get<T>(id: string) {
 
 export async function getTemplates<T>(limit = 20): Promise<T | null> {
   try {
-    const { data } = await supabase.from('templates').select('*').limit(limit)
+    const { data } = await supabase
+      .from('templates')
+      .select('*')
+      .limit(limit)
+      .order('sort', { ascending: true })
 
     return data as T
   } catch (error) {

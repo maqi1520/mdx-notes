@@ -15,7 +15,7 @@ export default async function Page() {
             key={item.id}
             className="flex flex-col items-start col-span-12 space-y-3 sm:col-span-6 xl:col-span-4"
           >
-            <Link className="block" href={'/' + item.doc_id}>
+            <Link className="block" href={'/post/' + item.doc_id}>
               <Image
                 width={711}
                 height={500}
@@ -38,7 +38,7 @@ export default async function Page() {
             </h2>
             <p className="text-sm text-gray-500">{item.desc}</p>
             <p className="pt-2 text-xs font-medium">
-              <Link className="mr-1 underline" href={'/' + item.doc_id}>
+              <Link className="mr-1 underline" href={'/post/' + item.doc_id}>
                 {item.creator}
               </Link>
             </p>
