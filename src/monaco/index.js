@@ -42,48 +42,21 @@ export function createMonacoEditor({
   const disposables = []
   let shouldTriggerOnChange = true
 
-  window.MonacoEnvironment = {
-    getWorkerUrl: (_moduleId, label) => {
-      const v = `?v=${
-        require('monaco-editor/package.json?fields=version').version
-      }`
-      if (label === 'css' || label === 'tailwindcss')
-        return `_next/static/chunks/css.worker.js${v}`
-      if (label === 'html') return `_next/static/chunks/html.worker.js${v}`
-      if (label === 'typescript' || label === 'javascript')
-        return `_next/static/chunks/ts.worker.js${v}`
-      return `_next/static/chunks/editor.worker.js${v}`
-    },
-  }
+  // window.MonacoEnvironment = {
+  //   getWorkerUrl: (_moduleId, label) => {
+  //     const v = `?v=${
+  //       require('monaco-editor/package.json?fields=version').version
+  //     }`
+  //     if (label === 'css' || label === 'tailwindcss')
+  //       return `_next/static/chunks/css.worker.js${v}`
+  //     if (label === 'html') return `_next/static/chunks/html.worker.js${v}`
+  //     if (label === 'typescript' || label === 'javascript')
+  //       return `_next/static/chunks/ts.worker.js${v}`
+  //     return `_next/static/chunks/editor.worker.js${v}`
+  //   },
+  // }
 
   disposables.push(registerDocumentFormattingEditProviders())
-
-  const html = setupMarkdownMode(
-    initialContent.html,
-    (newContent) => {
-      triggerOnChange('html', newContent)
-    },
-    () => editor
-  )
-  disposables.push(html)
-
-  const css = setupCssMode(
-    initialContent.css,
-    () => {
-      triggerOnChange('css')
-    },
-    () => editor
-  )
-  disposables.push(css)
-
-  const config = setupJavaScriptMode(
-    initialContent.config,
-    () => {
-      triggerOnChange('config')
-    },
-    () => editor
-  )
-  disposables.push(config)
 
   monaco.editor.defineTheme('tw-light', {
     base: 'vs',
@@ -373,6 +346,33 @@ export function createMonacoEditor({
       onScroll(line)
     }
   })
+
+  const html = setupMarkdownMode(
+    initialContent.html,
+    (newContent) => {
+      triggerOnChange('html', newContent)
+    },
+    () => editor
+  )
+  disposables.push(html)
+
+  const css = setupCssMode(
+    initialContent.css,
+    () => {
+      triggerOnChange('css')
+    },
+    () => editor
+  )
+  disposables.push(css)
+
+  const config = setupJavaScriptMode(
+    initialContent.config,
+    () => {
+      triggerOnChange('config')
+    },
+    () => editor
+  )
+  disposables.push(config)
 
   const documents = { html, css, config }
 

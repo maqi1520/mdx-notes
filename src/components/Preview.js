@@ -1,4 +1,11 @@
-import { forwardRef, useEffect, useState, useRef } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useState,
+  useRef,
+  memo,
+  useImperativeHandle,
+} from 'react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import clsx from 'clsx'
 import { getPointerPosition } from '../utils/getPointerPosition'
@@ -8,11 +15,29 @@ export const Preview = forwardRef(function Page(
     responsiveDesignMode,
     responsiveSize,
     onChangeResponsiveSize,
-    onLoad,
     iframeClassName = '',
   },
   ref
 ) {
+  const iframeRef = useRef()
+  const dataRef = useRef()
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setState: (content) => {
+        //首次加载 postMessage 会失败，先存到 ref 中
+        dataRef.current = content
+        iframeRef.current.contentWindow.postMessage(content, '*')
+      },
+    }),
+    []
+  )
+  // 加载完成后再从 ref 中读取
+  const onLoad = () => {
+    iframeRef.current.contentWindow.postMessage(dataRef.current, '*')
+  }
+
   const containerRef = useRef()
   const [size, setSize] = useState({ width: 0, height: 0 })
   const [resizing, setResizing] = useState()
@@ -278,7 +303,7 @@ export const Preview = forwardRef(function Page(
           }
         >
           <iframe
-            ref={ref}
+            ref={iframeRef}
             title="Preview"
             style={
               responsiveDesignMode
@@ -381,6 +406,14 @@ export const Preview = forwardRef(function Page(
                         }
                         return
                       }
+                      if (typeof e.data.scrollTop  !== 'undefined') {
+                        console.log(e.data.scrollTop)
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                        });
+                        return
+                      }
                       if (typeof e.data.print  !== 'undefined') {
                         window.print();
                         return
@@ -454,13 +487,12 @@ export const Preview = forwardRef(function Page(
 
                     // ensure target is a link
                     let el = event.target;
-                    while (el && el.nodeName !== 'A') el = el.parentNode;
-                    if (!el || el.nodeName !== 'A') return;
+                    if (!el || el.nodeName !== 'SPAN' || !el.getAttribute('data-href')) return;
 
                     if (el.hasAttribute('download') || el.getAttribute('rel') === 'external' || el.target) return;
 
                     event.preventDefault();
-                    window.open(el.href, '_blank');
+                    window.open(el.getAttribute('data-href'), '_blank');
                   });
                   </script>
 

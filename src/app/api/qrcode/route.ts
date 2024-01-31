@@ -1,39 +1,45 @@
 // from https://github.com/turkyden/wechat-link/blob/main/api/index.ts
 import QRCode from 'qrcode'
 
-/**
- * Main
- */
-const handle = async (request, response) => {
-  const {
-    text = '长按识别二维码查看原文',
-    url = 'https://www.baidu.com',
-    type,
-  } = request.query
+export async function GET(request: Request, response: Response) {
+  const { searchParams } = new URL(request.url)
+  const text = searchParams.get('text') || '长按识别二维码查看原文'
+  const url = searchParams.get('url') || 'https://www.baidu.com'
+  const type = searchParams.get('type')
 
   try {
     if (type === 'image') {
       const svg = await generateSVG1({ text, url })
-      response.setHeader('Content-Type', 'image/svg+xml;charset=UTF-8')
-      response.status(200).send(svg)
-      return
+      return new Response(svg, {
+        status: 200,
+        headers: {
+          'Content-Type': 'image/svg+xml;charset=UTF-8',
+        },
+      })
     }
     const svg = await generateSVG({ text, url })
-    response.setHeader('Content-Type', 'image/svg+xml;charset=UTF-8')
-    response.status(200).send(svg)
+    return new Response(svg, {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/svg+xml;charset=UTF-8',
+      },
+    })
   } catch (error) {
-    response.status(200).send(error.message)
+    return new Response(error.message, {
+      status: 400,
+      headers: {
+        'Content-Type': 'image/svg+xml;charset=UTF-8',
+      },
+    })
   }
 }
-
-export default handle
 
 /**
  * Generate the QRCode with str
  * @param str
  * @returns
  */
-export const generateQR = async (str) => {
+const generateQR = async (str) => {
   try {
     return await QRCode.toDataURL(str)
   } catch (err) {
@@ -47,7 +53,7 @@ export const generateQR = async (str) => {
  * @param num
  * @returns
  */
-export const limitStr = (str, num) => {
+const limitStr = (str, num) => {
   return str.slice(0, num) + (str.length > num ? '...' : '')
 }
 
@@ -56,7 +62,7 @@ export const limitStr = (str, num) => {
  * @param param0
  * @returns
  */
-export const generateSVG = async ({ text, url }) => {
+const generateSVG = async ({ text, url }) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="100" viewBox="0 0 320 100" >
     <g  transform="translate(0, 0)">
     <rect x="0" y="0" height="100" stroke="#E5E7EB" width="320" fill="#fffefe"  />
@@ -83,7 +89,7 @@ export const generateSVG = async ({ text, url }) => {
   </svg>`
 }
 
-export const generateSVG1 = async ({ url }) => {
+const generateSVG1 = async ({ text, url }) => {
   return `
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="148" height="148">
         <image width="148" height="148" href="${await generateQR(url)}"></image>

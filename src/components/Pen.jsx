@@ -1,7 +1,8 @@
+'use client'
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
-import { Editor } from './Editor'
+import Editor from './EditorDesktop'
 import SplitPane from 'react-split-pane'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
@@ -29,7 +30,6 @@ const RESIZER_SIZE = 1
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen({
-  initialTheme,
   initialContent,
   initialPath,
   initialLayout,
@@ -53,7 +53,6 @@ export default function Pen({
   const [responsiveDesignMode, setResponsiveDesignMode] = useState(
     initialResponsiveSize ? true : false
   )
-  const [shouldClearOnUpdate, setShouldClearOnUpdate] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
   const [theme, setTheme] = useLocalStorage('editor-theme', {
@@ -90,34 +89,22 @@ export default function Pen({
 
   useEffect(() => {
     setDirty(false)
-    if (
-      shouldClearOnUpdate &&
-      previewRef.current &&
-      previewRef.current.contentWindow
-    ) {
-      previewRef.current.contentWindow.postMessage(
-        {
-          clear: true,
-        },
-        '*'
-      )
-      inject({ html: initialContent.html })
-      compileNow({
-        html: initialContent.html,
-        css: initialContent.css,
-        config: initialContent.config,
-      })
-    }
-  }, [initialContent.ID])
+    compileNow({
+      html: initialContent.html,
+      css: initialContent.css,
+      config: initialContent.config,
+    })
+  }, [initialContent])
 
   const inject = useCallback(async (content) => {
-    previewRef.current.contentWindow.postMessage(content, '*')
+    previewRef.current && previewRef.current.setState(content)
   }, [])
 
   async function compileNow(content) {
+    console.log('initialContent._id', initialContent._id)
     cancelSetError()
     localStorage.setItem(
-      initialContent.ID || 'content',
+      initialContent._id || 'content',
       JSON.stringify(content)
     )
     setIsLoading(true)
@@ -263,10 +250,7 @@ export default function Pen({
 
   const onShareComplete = useCallback(
     (path) => {
-      setShouldClearOnUpdate(false)
-      Router.push(path).then(() => {
-        setShouldClearOnUpdate(true)
-      })
+      Router.push(path)
     },
     [size.layout, responsiveDesignMode, responsiveSize]
   )
@@ -304,7 +288,7 @@ export default function Pen({
   // }, [])
 
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <Header
         rightbtn={
           <>
@@ -467,17 +451,6 @@ export default function Pen({
                   responsiveSize={responsiveSize}
                   onChangeResponsiveSize={setResponsiveSize}
                   iframeClassName={resizing ? 'pointer-events-none' : ''}
-                  onLoad={() => {
-                    inject({
-                      html: initialContent.html,
-                    })
-                    compileNow({
-                      css: initialContent.css,
-                      config: initialContent.config,
-                      html: initialContent.html,
-                      ID: initialContent.ID,
-                    })
-                  }}
                 />
                 <ErrorOverlay value={theme} onChange={setTheme} error={error} />
               </div>
@@ -485,6 +458,6 @@ export default function Pen({
           </>
         ) : null}
       </main>
-    </>
+    </div>
   )
 }

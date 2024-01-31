@@ -1,12 +1,12 @@
+'use client'
 import React, { useRef, useEffect, useState, useCallback } from 'react'
-import TypeIt from 'typeit'
-
 import { themes } from '@/css/markdown-body'
 import { compileMdx } from '@/hooks/compileMdx'
 import { codeThemes, baseCss } from '@/css/mdx'
 import { useDebouncedState } from '@/hooks/useDebouncedState'
 import { Preview } from '@/components/Preview'
 import { ErrorOverlay } from '@/components/ErrorOverlay'
+import TypeCode from './typeCode'
 
 const theme = {
   markdownTheme: 'default',
@@ -16,111 +16,23 @@ const theme = {
 
 export default function Hero({ children }) {
   const [code, setCode] = useState()
-  const ref = useRef()
 
   const [error, setError, setErrorImmediate] = useDebouncedState(
     undefined,
     1000
   )
 
+  const instanceRef = useRef()
   const previewRef = useRef()
   const paused = useRef(false) //暂停
   function pause() {
     paused.current = !paused.current
   }
-  useEffect(() => {
-    const instance = new TypeIt(ref.current, {
-      speed: 50,
-      //loop: true,
-      waitUntilVisible: true,
-      startDelay: 1000,
-      afterStep: () => {
-        setCode(ref.current.innerText.replace('|', ''))
-      },
-    })
-      .type(
-        '<span class="token punctuation">##</span><span class="token title important"> 什么是 MDX ？</span>'
-      )
-      .pause(500)
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .type(
-        'mdx 是 markdown + jsx 的结合，即可以支持 markdown 语法也可以写自定义组件。'
-      )
-      .pause(500)
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .type('比如： 内置的二维码生成器')
-      .pause(500)
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .exec(pause)
-      .type(`<span class="token punctuation">&lt;</span>`)
-      .type('<span class="token tag">QRCodeBlock</span>')
-      .type(' ')
-      .type('<span class="token punctuation">/&gt;</span>')
-      .pause(500)
-      .move(-3)
-      .type('<span class="token attr-name"> url</span>=""')
-      .move(-1)
-      .type('<span class="token attr-value">https://baidu.com</span>')
-      .move(1)
-      .type(' <span class="token attr-name">text</span>=""')
-      .move(-1)
-      .type('<span class="token attr-value">长按二维码识别</span>')
-      .exec(pause)
-      .move(null, { to: 'END' })
-      .pause(500)
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .pause(3000)
-      .type(
-        '<span class="token punctuation">##</span><span class="token title important"> 代码片段</span>'
-      )
-
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .type(
-        '<span class="token punctuation">```</span><br><br><span class="token punctuation">```</span>'
-      )
-      .move(-5)
-      .type(`js`)
-      .move(1)
-      .type(
-        `console.<span class="token function">log</span>(<span class="token string">'hello world'</span>);`
-      )
-      .pause(1000)
-      .move(-30, { instant: true })
-      .type(`diff-`)
-      .move(3)
-      .type(`- `)
-      .move(27, { instant: true })
-      .type('<br>')
-      .type(
-        `+ console.<span class="token function">log</span>(<span class="token string">'hello mdx'</span>);`
-      )
-      .move(null, { to: 'END' })
-      .pause(500)
-      .break({ delay: 500 })
-      .break({ delay: 500 })
-      .type('---')
-      .type('<br><br>')
-      .type('更多功能等你挖掘探索！')
-
-      //.type()
-      .go()
-
-    return () => {
-      instance.destroy()
-    }
-  }, [])
 
   const inject = useCallback(async (content) => {
     if (!paused.current) {
-      previewRef.current.contentWindow.postMessage(
-        { ...content, scrollEnd: true },
-        '*'
-      )
+      previewRef.current &&
+        previewRef.current.setState({ ...content, scrollEnd: true })
     }
   }, [])
 
@@ -188,7 +100,7 @@ export default function Hero({ children }) {
             MDX Editor
           </div>
           <pre style={{ background: 'none' }} className="language-markdown">
-            <code className="language-markdown" ref={ref}></code>
+            <TypeCode pause={pause} setCode={setCode} />
           </pre>
         </div>
       </div>
@@ -264,7 +176,7 @@ export default function Hero({ children }) {
               ref={previewRef}
               responsiveSize={{ width: 540, height: 720 }}
             />
-            <ErrorOverlay error={error} />
+            <ErrorOverlay value={{}} error={error} />
           </div>
         </div>
         <div className="absolute bottom-0 inset-x-0 h-20">

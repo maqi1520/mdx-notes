@@ -23,7 +23,11 @@ export const MDXComponents = {
     if (props.href && props.href.indexOf('https://mp.weixin.qq.com') > -1) {
       return <a {...props} />
     }
-    return <span className="link">{props.children}</span>
+    return (
+      <span data-href={props.href} className="link">
+        {props.children}
+      </span>
+    )
   },
   //pre: CodeBlock,
   QRCodeBlock,

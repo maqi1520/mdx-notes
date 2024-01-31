@@ -7,8 +7,11 @@ const headers = [
     value: '*',
   },
 ]
-
+/** @type {import('next').NextConfig} */
 module.exports = {
+  experimental: {
+    serverComponentsExternalPackages: ['mermaid-isomorphic'],
+  },
   images: {
     remotePatterns: [
       {
@@ -33,6 +36,14 @@ module.exports = {
         source: '/api/:path*',
         destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
       },
+      {
+        source: '/user/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/user/:path*`,
+      },
+      {
+        source: '/auth/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/auth/:path*`,
+      },
     ]
   },
   webpack: (config, { isServer, webpack, dev }) => {
@@ -56,6 +67,13 @@ module.exports = {
           }
         })
       })
+    // config.resolve.alias = {
+    //   ...config.resolve.alias,
+    //   'mermaid-isomorphic': path.resolve(
+    //     __dirname,
+    //     './node_modules/mermaid-isomorphic/browser'
+    //   ),
+    // }
 
     config.output.globalObject = 'self'
     if (!isServer) {

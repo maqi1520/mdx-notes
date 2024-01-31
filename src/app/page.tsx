@@ -1,19 +1,16 @@
 import React from 'react'
-import Image from 'next/image'
-//import Pen from '../components/Pen'
-import { buttonVariants } from '@/components/ui/button'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
-
-import { getTemplates } from '../utils/database'
-import { Header } from '../components/Header'
+import { buttonVariants } from '@/components/ui/button'
+import Hero from '@/components/hero/index'
+import { SiteHeader } from '@/components/site-header'
+import { SiteFooter } from '@/components/site-footer'
+import { getTemplates } from '@/utils/database'
 import {
   BookOpenCheckIcon,
   BrushIcon,
   CodeIcon,
   DownloadIcon,
   FileTextIcon,
-  GithubIcon,
   ListIcon,
   NotepadTextIcon,
   PaletteIcon,
@@ -21,11 +18,9 @@ import {
   QrCodeIcon,
   ShareIcon,
 } from 'lucide-react'
-import { OpenAIIcon, WechatIcon } from '../components/icons'
-
-const Hero = dynamic(() => import('../components/hero/index'), {
-  ssr: false,
-})
+import { OpenAIIcon, WechatIcon } from '@/components/icons'
+import Image from 'next/image'
+import { Result } from '@/types/template'
 
 const features = [
   {
@@ -81,13 +76,18 @@ const features = [
 
 const users = ['JS酷', 'web技术学院', '前端充电宝', '云谦和他的朋友们']
 
-export default function Page({ data = [] }) {
+export default async function Page() {
+  const { data } = await getTemplates<Result>({
+    action: 'template',
+    search: '',
+    pageSize: 6,
+  })
   return (
     <div className="relative min-h-full">
-      <div className="absolute inset-0 h-screen  bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
-        <div className="absolute inset-0 h-screen bg-grid-slate-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-slate-400/[0.05] dark:bg-bottom dark:border-b dark:border-slate-100/5"></div>
+      <div className="absolute inset-0 h-[860px] bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
+        <div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-slate-400/[0.05] dark:bg-bottom dark:border-b dark:border-slate-100/5"></div>
       </div>
-      <Header />
+      <SiteHeader />
       <div className="container mx-auto p-5">
         <Hero>
           <div className="mt-12 text-center">
@@ -243,54 +243,9 @@ export default function Page({ data = [] }) {
               </a>
             </p>
           </section>
-          <div className="mt-16 pt-10 border-t flex justify-between">
-            <div>
-              Made with ❤️ by
-              <a
-                href="https://maqib.cn"
-                target="_blank"
-                rel="noreferrer"
-                className="font-bold underline-offset-2 transition hover:text-primary hover:underline"
-              >
-                &nbsp;maqibin
-              </a>
-              &nbsp;on&nbsp;
-              <a
-                href="https://github.com/maqi1520/mdx-editor"
-                target="_blank"
-                rel="noreferrer"
-                className="font-bold underline-offset-2 transition hover:text-primary hover:underline"
-              >
-                GitHub
-              </a>
-            </div>
-            <span>© 2024</span>
-          </div>
         </div>
       </div>
+      <SiteFooter />
     </div>
   )
-}
-
-export async function getServerSideProps({ params, res, query }) {
-  try {
-    const res = await getTemplates({
-      action: 'template',
-      search: query.search,
-      pageSize: 6,
-    })
-
-    return {
-      props: {
-        data: res.data,
-        hasmore: res.hasMore,
-      },
-    }
-  } catch (error) {
-    return {
-      props: {
-        errorCode: error.status || 500,
-      },
-    }
-  }
 }
