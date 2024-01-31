@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
-import Hero from '@/components/hero/index'
-import { SiteHeader } from '@/components/site-header'
+
+import { Header as SiteHeader } from '@/components/Header'
 import { SiteFooter } from '@/components/site-footer'
 import { getTemplates } from '@/utils/database'
 import {
@@ -21,6 +21,10 @@ import {
 import { OpenAIIcon, WechatIcon } from '@/components/icons'
 import Image from 'next/image'
 import { Result } from '@/types/template'
+import dynamic from 'next/dynamic'
+const Hero = dynamic(() => import('@/components/hero'), {
+  ssr: false,
+})
 
 const features = [
   {
@@ -76,8 +80,7 @@ const features = [
 
 const users = ['JS酷', 'web技术学院', '前端充电宝', '云谦和他的朋友们']
 
-export default async function Page() {
-  const data = (await getTemplates<Result>(6)) ?? []
+export default function Page({ data }) {
   return (
     <div className="relative min-h-full">
       <div className="absolute inset-0 h-[860px] bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
@@ -244,4 +247,14 @@ export default async function Page() {
       <SiteFooter />
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  const data = (await getTemplates<Result>(6)) ?? []
+
+  return {
+    props: {
+      data,
+    },
+  }
 }

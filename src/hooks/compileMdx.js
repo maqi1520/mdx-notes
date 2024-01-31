@@ -10,7 +10,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
 import rehypePrismPlus from 'rehype-prism-plus'
-//import rehypeMermaid from 'rehype-mermaid'
+import rehypeMermaid from 'rehype-mermaid'
 import remarkToc from 'remark-toc'
 import ReactDOMServer from 'react-dom/server'
 import { validateReactComponent } from '../utils/validateJavaScript'
@@ -94,7 +94,7 @@ export const compileMdx = async (
         rehypeDivToSection,
         reHypeLinkFoot,
         rehypeKatex,
-        //[rehypeMermaid, { strategy: 'img-svg' }],
+        [rehypeMermaid, { strategy: 'img-svg' }],
         [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
         [rehypeCodeTitle, { isMac }],
       ],

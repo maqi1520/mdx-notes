@@ -6,7 +6,6 @@ import { GithubIcon } from '@/components/icons'
 import { TwitterIcon } from 'lucide-react'
 import { MainNav } from '@/components/main-nav'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { UserAccountNav } from '@/components/user-account-nav'
 
 export async function SiteHeader() {
   return (
@@ -46,7 +45,6 @@ export async function SiteHeader() {
               </div>
             </Link>
             <ThemeToggle />
-            <UserAccountNav />
           </nav>
         </div>
       </div>

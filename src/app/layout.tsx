@@ -1,5 +1,4 @@
 import '@/css/main.css'
-import '@/css/prism-okaidia.css'
 import { Metadata } from 'next'
 
 import { siteConfig } from '@/config/site'

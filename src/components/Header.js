@@ -1,9 +1,9 @@
 import { Logo } from './Logo'
 import Link from 'next/link'
-import { toggleTheme } from '../utils/theme'
-import { LayoutTemplate, Sun, MoonStar } from 'lucide-react'
+
+import { ThemeToggle } from '@/components/theme-toggle'
+import { LayoutTemplate } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { UserAccountNav } from './user-account-nav'
 
 export function Header({ children, rightbtn }) {
   return (
@@ -26,11 +26,7 @@ export function Header({ children, rightbtn }) {
             <LayoutTemplate className="w-5 h-5" />
           </Button>
         </Link>
-        <Button size="icon" onClick={toggleTheme} variant="secondary">
-          <Sun className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 hidden dark:block" />
-          <MoonStar className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 dark:hidden" />
-        </Button>
-        <UserAccountNav />
+        <ThemeToggle />
       </div>
     </header>
   )

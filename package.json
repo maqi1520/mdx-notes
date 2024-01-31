@@ -14,7 +14,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.1.1",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "next": "13.x",
+    "next": "14.1.0",
     "next-themes": "^0.2.1",
     "node-fetch": "^3.2.3",
     "openai": "^4.25.0",

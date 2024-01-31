@@ -1,4 +1,3 @@
-'use client'
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { themes } from '@/css/markdown-body'
 import { compileMdx } from '@/hooks/compileMdx'
