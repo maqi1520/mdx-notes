@@ -25,7 +25,7 @@ export default async function Account() {
         </h1>
         <p className="mt-2 text-muted-foreground">更新您的个人信息</p>
       </div>
-      <div className="border rounded p-8">
+      <div className="border rounded p-8 bg-background">
         <AccountForm user={user!} />
       </div>
     </div>

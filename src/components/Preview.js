@@ -407,7 +407,6 @@ export const Preview = forwardRef(function Page(
                         return
                       }
                       if (typeof e.data.scrollTop  !== 'undefined') {
-                        console.log(e.data.scrollTop)
                         window.scrollTo({
                           top: 0,
                           left: 0,

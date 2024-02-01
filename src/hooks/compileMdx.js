@@ -134,3 +134,20 @@ export const compileMdx = async (
     html,
   }
 }
+
+export function getFrontMatter(md) {
+  const match = md.match(/^---.*\r?\n([\s\S]*?)---/)
+  const frontmatter = {}
+  if (match && match.length > 1) {
+    const lines = match[1].split(/\r?\n/)
+    lines.forEach((line) => {
+      const kv = line.split(':')
+      if (kv.length > 1) {
+        const key = kv.shift().trim()
+        const value = kv.join('').trim()
+        frontmatter[key] = value
+      }
+    })
+  }
+  return frontmatter
+}

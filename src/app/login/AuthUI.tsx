@@ -6,7 +6,6 @@ import { Auth } from '@supabase/auth-ui-react'
 
 export default function AuthUI() {
   const { supabase } = useSupabase()
-  console.log(`${getURL()}auth/callback`)
 
   return (
     <div className="flex flex-col space-y-4">

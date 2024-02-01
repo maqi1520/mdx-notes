@@ -17,7 +17,7 @@ import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
-import { compileMdx } from '../hooks/compileMdx'
+import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
 import {
   PenSquare,
@@ -137,10 +137,8 @@ export default function Pen({
   }
 
   async function handleFork() {
-    const title = initialContent.html
-      .split('\n')[0]
-      .replace('# ', '')
-      .slice(0, 50)
+    const frontMatter = getFrontMatter(initialContent.html)
+    const title = frontMatter.title || 'Untitled'
     const res = await fetch(`/api/posts`, {
       method: 'POST',
       headers: {
@@ -156,7 +154,8 @@ export default function Pen({
   }
 
   async function updatePost(content) {
-    const title = content.html.split('\n')[0].replace('# ', '').slice(0, 50)
+    const frontMatter = getFrontMatter(initialContent.html)
+    const title = frontMatter.title || 'Untitled'
     const res = await fetch(`/api/posts/?id=${id}`, {
       method: 'PATCH',
       headers: {
@@ -172,7 +171,7 @@ export default function Pen({
   }
 
   const compile = useCallback(debounce(compileNow, 200), [theme])
-  const handleUpdate = useCallback(debounce(updatePost, 500), [id])
+  const handleUpdate = useCallback(debounce(updatePost, 1000), [id])
 
   const onChange = useCallback(
     (document, content) => {

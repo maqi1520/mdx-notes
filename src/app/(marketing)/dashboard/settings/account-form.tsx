@@ -108,6 +108,15 @@ export default function AccountForm({ user }: { user: User }) {
         />
       </div>
       <div className="space-y-2">
+        <label htmlFor="website">avatar</label>
+        <Input
+          id="avatar_url"
+          type="url"
+          value={avatar_url || ''}
+          onChange={(e) => setAvatarUrl(e.target.value)}
+        />
+      </div>
+      <div className="space-y-2">
         <label htmlFor="website">Website</label>
         <Input
           id="website"

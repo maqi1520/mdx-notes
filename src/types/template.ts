@@ -8,5 +8,5 @@ export interface Daum {
   doc_id: string
   creator: string
   tags: string[]
-  desc: string
+  description: string
 }

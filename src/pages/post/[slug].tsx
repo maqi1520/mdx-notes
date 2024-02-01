@@ -28,7 +28,17 @@ interface Props {
 }
 export default function App({ errorCode, ...props }: Props) {
   if (errorCode) {
-    return <Error statusCode={errorCode} />
+    return (
+      <Error
+        withDarkMode
+        title={
+          errorCode === 403
+            ? 'You are not authorized to access this page'
+            : 'An unexpected error has occurred'
+        }
+        statusCode={errorCode}
+      />
+    )
   }
   return <Pen {...props} />
 }
@@ -74,7 +84,7 @@ export async function getServerSideProps({ params, res, query }) {
     }
     return {
       props: {
-        errorCode: 500,
+        errorCode: 403,
       },
     }
   } catch (error) {

@@ -4,6 +4,7 @@ import cheerio from 'cheerio'
 import { copyHtml, download } from './utils/index'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/button'
+import { getFrontMatter } from '@/hooks/compileMdx'
 import { CopyIcon, Loader2, PrinterIcon, SaveIcon } from 'lucide-react'
 
 function inlineCSS(html, css) {
@@ -76,7 +77,8 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
   const handleExport = () => {
     let md = editorRef.current.getValue('html')
     if (md) {
-      const title = md.split('\n')[0].replace('# ', '').slice(0, 50)
+      const frontMatter = getFrontMatter(md)
+      const title = frontMatter.title || 'Untitled'
 
       download(title + '.mdx', md)
     }

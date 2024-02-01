@@ -34,6 +34,7 @@ export function UserAccountNav({ user, retry }: Props) {
       }
     })
   }
+
   if (!user || !user?.id) {
     return (
       <Link className={buttonVariants({ variant: 'secondary' })} href="/login">

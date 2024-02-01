@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { toast } from '@/components/ui/use-toast'
+import { Switch } from '@/components/ui/switch'
 
 import { MoreVerticalIcon, Loader2Icon, Trash2Icon } from 'lucide-react'
 
@@ -50,10 +51,11 @@ async function deletePost(postId: string) {
 interface Post {
   id: string
   title: string
+  published: boolean
 }
 
 interface PostOperationsProps {
-  post: Pick<Post, 'id' | 'title'>
+  post: Post
 }
 
 export function PostOperations({ post }: PostOperationsProps) {
@@ -61,8 +63,26 @@ export function PostOperations({ post }: PostOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
 
+  const togglePublish = async (checked: boolean) => {
+    const response = await fetch(`/api/posts/?id=${post.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        published: checked,
+      }),
+    })
+
+    console.log(response)
+
+    router.refresh()
+  }
+
   return (
-    <>
+    <div className="w-32 flex justify-between items-center">
+      <Switch onCheckedChange={togglePublish} defaultChecked={post.published} />
+
       <DropdownMenu>
         <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
           <MoreVerticalIcon className="h-4 w-4" />
@@ -120,6 +140,6 @@ export function PostOperations({ post }: PostOperationsProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   )
 }
