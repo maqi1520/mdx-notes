@@ -67,7 +67,7 @@ export default async function Page({}: Props) {
         </div>
 
         {posts?.length ? (
-          <div>
+          <div className="divide-y divide-border">
             {posts.map((post) => (
               <PostItem key={post.id} item={post} />
             ))}

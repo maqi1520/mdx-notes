@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <div className="absolute inset-0 text-slate-900/[0.09] dark:text-gray-200/[0.1] [mask-image:linear-gradient(to_bottom_left,white,transparent,transparent)]">
+          <div className="absolute -z-10 inset-0 text-slate-900/[0.09] dark:text-gray-200/[0.1] [mask-image:linear-gradient(to_bottom_left,white,transparent,transparent)]">
             <svg
               className="absolute inset-0 h-full w-full"
               xmlns="http://www.w3.org/2000/svg"

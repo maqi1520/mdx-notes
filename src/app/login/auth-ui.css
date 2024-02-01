@@ -1,0 +1,9 @@
+.supabase-auth-ui_ui-container .supabase-auth-ui_ui-container > button {
+  background: hsl(var(--background));
+  border-width: 1px;
+  border-color: hsl(var(--input));
+}
+
+.supabase-auth-ui_ui-container .supabase-auth-ui_ui-container > button:hover {
+  background-color: hsl(var(--accent));
+}
