@@ -7,21 +7,8 @@ const supabase = createClient(
 
 export async function get<T>(id: string) {
   try {
-    const res = await supabase.auth.getSession()
-
     const { data } = await supabase.from('posts').select().eq('id', id).single()
-
-    if (!data) return null
-
-    if (data.published) {
-      return data as T
-    } else if (
-      data.published === false &&
-      res.data.session?.user.id === data.author_id
-    ) {
-      return data as T
-    }
-    return null
+    return data as T
   } catch (error) {
     console.error('Error:', error)
     return null

@@ -3,6 +3,8 @@ import { sizeToObject } from '@/utils/size'
 import { getLayoutQueryString } from '@/utils/getLayoutQueryString'
 import { get } from '@/lib/database'
 import { getDefaultContent } from '@/utils/getDefaultContent'
+import { createPagesServerClient, User } from '@supabase/auth-helpers-nextjs'
+import { Database } from '@/types/database.type'
 
 import dynamic from 'next/dynamic'
 const Pen = dynamic(() => import('@/components/Pen'), {
@@ -10,6 +12,7 @@ const Pen = dynamic(() => import('@/components/Pen'), {
 })
 
 type Result = {
+  published: boolean
   title: string
   content: { html: string; css: string; config: string }
   id: string
@@ -30,7 +33,7 @@ export default function App({ errorCode, ...props }: Props) {
   if (errorCode) {
     return (
       <Error
-        withDarkMode
+        withDarkMode={true}
         title={
           errorCode === 403
             ? 'You are not authorized to access this page'
@@ -43,7 +46,9 @@ export default function App({ errorCode, ...props }: Props) {
   return <Pen {...props} />
 }
 
-export async function getServerSideProps({ params, res, query }) {
+export async function getServerSideProps(ctx) {
+  const { params, query } = ctx
+
   const layoutProps = {
     initialLayout: ['vertical', 'horizontal', 'preview'].includes(query.layout)
       ? query.layout
@@ -64,10 +69,15 @@ export async function getServerSideProps({ params, res, query }) {
   }
 
   try {
+    const supabase = createPagesServerClient<Database>(ctx)
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
     const id = params.slug
     const res = await get<Result>(id)
 
-    if (res) {
+    if (res && (res.published || session?.user?.id === res.author_id)) {
       return {
         props: {
           id,
