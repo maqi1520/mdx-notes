@@ -401,7 +401,7 @@ export default function Pen({
               codeThemes[theme.codeTheme].css
             }
             editorRef={editorRef}
-            previewRef={previewRef}
+            inject={inject}
           />
         </div>
       </Header>

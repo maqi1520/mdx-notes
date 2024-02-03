@@ -34,7 +34,7 @@ function toDataURL(src, outputFormat) {
   })
 }
 
-export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
+export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
   const [{ state }, setState] = useState({
     state: 'idle',
     errorText: undefined,
@@ -86,12 +86,9 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, baseCss }) => {
   const handleExportPDF = () => {
     let md = editorRef.current.getValue('html')
     if (md) {
-      previewRef.current.contentWindow.postMessage(
-        {
-          print: true,
-        },
-        '*'
-      )
+      inject({
+        print: true,
+      })
     }
   }
   return (
