@@ -1,0 +1,10 @@
+{
+  "i18n-ally.localesPaths": ["src/utils/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.regex.usageMatch": [
+    "[^\\w\\d]t\\(['\"`]({key})['\"`]",
+    "(?:i18n|I18n)\\.t\\(\\s*['\"`]({key})['\"`]"
+  ],
+  "i18n-ally.displayLanguage": "zh-CN",
+  "i18n-ally.enabledFrameworks": ["i18next"]
+}
