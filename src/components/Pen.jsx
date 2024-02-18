@@ -29,6 +29,7 @@ import {
 
 import clsx from 'clsx'
 import { useGlobalValue } from '@/hooks/useGlobalValue'
+import { postData } from '@/utils/helpers'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -38,13 +39,13 @@ const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 export default function Pen({
   id,
   initialContent,
-  initialPath,
-  author_id,
   initialLayout,
   initialResponsiveSize,
   initialActiveTab,
 }) {
   const [globalValue] = useGlobalValue()
+  const currentUserId = globalValue.user?._id
+  const author_id = initialContent.author_id
   const router = useRouter()
   const htmlRef = useRef()
   const previewRef = useRef()
@@ -139,32 +140,26 @@ export default function Pen({
   async function handleFork() {
     const frontMatter = getFrontMatter(initialContent.html)
     const title = frontMatter.title || 'Untitled'
-    const res = await fetch(`/api/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const data = await postData({
+      url: `/api/posts`,
+      data: {
         title,
-        content: initialContent,
-      }),
+        ...initialContent,
+      },
     })
-    const data = await res.json()
     router.push(`/post/${data.data.id}`)
   }
 
   async function updatePost(content) {
-    const frontMatter = getFrontMatter(initialContent.html)
+    const frontMatter = getFrontMatter(content.html)
     const title = frontMatter.title || 'Untitled'
-    const res = await fetch(`/api/posts/?id=${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const res = await postData({
+      url: `/user/update_post`,
+      data: {
+        id,
         title,
-        content,
-      }),
+        ...content,
+      },
     })
     setDirty(false)
     console.log(res)
@@ -387,7 +382,7 @@ export default function Pen({
         }
       >
         <div className="hidden sm:flex space-x-2">
-          {globalValue.user && author_id !== globalValue.user.id && (
+          {author_id !== currentUserId && (
             <Button size="sm" onClick={handleFork}>
               <GitForkIcon className="w-4 h-4 mr-1" />
               Fork
@@ -449,7 +444,7 @@ export default function Pen({
               <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
                 {renderEditor && (
                   <Editor
-                    readOnly={author_id !== globalValue.user?.id}
+                    readOnly={author_id !== currentUserId}
                     editorRef={(ref) => (editorRef.current = ref)}
                     initialContent={initialContent}
                     onChange={onChange}

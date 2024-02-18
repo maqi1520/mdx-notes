@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 
 import { Header as SiteHeader } from '@/components/Header'
 import { SiteFooter } from '@/components/site-footer'
-import { getTemplates } from '@/lib/database'
 import {
   BookOpenCheckIcon,
   BrushIcon,
@@ -20,8 +19,8 @@ import {
 } from 'lucide-react'
 import { OpenAIIcon, WechatIcon } from '@/components/icons'
 import Image from 'next/image'
-import { Result } from '@/types/template'
 import dynamic from 'next/dynamic'
+import { useTemplates } from '@/hooks/useTemplates'
 const Hero = dynamic(() => import('@/components/hero'), {
   ssr: false,
 })
@@ -80,7 +79,8 @@ const features = [
 
 const users = ['JS酷', 'web技术学院', '前端充电宝', '云谦和他的朋友们']
 
-export default function Page({ data }) {
+export default function Page() {
+  const { value: data } = useTemplates(6)
   return (
     <div className="relative min-h-full">
       <div className="absolute inset-0 h-[860px] bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
@@ -176,26 +176,27 @@ export default function Page({ data }) {
               标签页中自定义你的组件；如果你不是一个程序员，不会使用JSX，那么你也可以基于现有模板进行创作。
             </p>
             <div className="mt-10 grid grid-cols-2 gap-10">
-              {data.map((item) => (
-                <div key={item.doc_id}>
-                  <div className="overflow-hidden rounded">
-                    <Link href={'/post/' + item.doc_id}>
-                      <Image
-                        width={711}
-                        height={500}
-                        alt=""
-                        className="transition-transform hover:scale-110"
-                        src={item.img}
-                      />
-                    </Link>
+              {data &&
+                data.map((item) => (
+                  <div key={item.docId}>
+                    <div className="overflow-hidden rounded">
+                      <Link href={'/post/' + item.docId}>
+                        <Image
+                          width={711}
+                          height={500}
+                          alt=""
+                          className="transition-transform hover:scale-110"
+                          src={item.img}
+                        />
+                      </Link>
+                    </div>
+                    <div className="mt-4">
+                      <Link href={'/' + item.docId} className="underline">
+                        {item.name}
+                      </Link>
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <Link href={'/' + item.doc_id} className="underline">
-                      {item.name}
-                    </Link>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </section>
           <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
@@ -250,14 +251,4 @@ export default function Page({ data }) {
       <SiteFooter />
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  const data = (await getTemplates<Result>(6)) ?? []
-
-  return {
-    props: {
-      data,
-    },
-  }
 }

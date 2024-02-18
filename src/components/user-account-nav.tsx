@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useAsyncRetry } from 'react-use'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGlobalValue } from '@/hooks/useGlobalValue'
+import { postData } from '@/utils/helpers'
 
 interface Props {
   user?: any
@@ -24,9 +25,7 @@ interface Props {
 export function UserAccountNav({ user, retry }: Props) {
   const router = useRouter()
   const logout = async () => {
-    fetch('/auth/logout', {
-      method: 'POST',
-    }).then((res) => {
+    postData({ url: '/auth/logout' }).then((res) => {
       if (retry) {
         retry()
       } else {
@@ -35,7 +34,7 @@ export function UserAccountNav({ user, retry }: Props) {
     })
   }
 
-  if (!user || !user?.id) {
+  if (!user || !user?._id) {
     return (
       <Link className={buttonVariants({ variant: 'secondary' })} href="/login">
         登录
@@ -77,14 +76,15 @@ export function UserAccountNav({ user, retry }: Props) {
 export function UserInfo() {
   const [, setGlobal] = useGlobalValue()
   const { value, loading, retry } = useAsyncRetry(async () => {
-    const res = await fetch('/api/profile')
-    const data = await res.json()
-    return data
+    const res = await postData({
+      url: '/user/get',
+    })
+    return res
   }, [])
 
   useEffect(() => {
     setGlobal({ user: value })
-  }, [value])
+  }, [value, setGlobal])
 
   if (loading) {
     return <Skeleton className="w-10 h-10 rounded-full" />

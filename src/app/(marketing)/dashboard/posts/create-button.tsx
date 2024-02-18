@@ -5,25 +5,22 @@ import { Button, ButtonProps } from '@/components/ui/button'
 
 import { useRouter } from 'next/navigation'
 import { PlusIcon } from 'lucide-react'
+import { postData } from '@/utils/helpers'
 
 export function CreateButton({ variant }: ButtonProps) {
   const router = useRouter()
   const handleCreate = async () => {
     const title = 'Untitled'
-    const res = await fetch(`/api/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const res = await postData({
+      url: `/user/create_post`,
+      data: {
         title,
-        content: {
-          html: `---\ntitle: ${title}\n---\n\n# ${title}\n\n`,
-        },
-      }),
+        html: `---\ntitle: ${title}\n---\n\n# ${title}\n\n`,
+        css: '',
+        config: '',
+      },
     })
-    const data = await res.json()
-    router.push(`/post/${data.data.id}`)
+    router.push(`/post/${res.id}`)
   }
   return (
     <Button variant={variant} className="ml-auto" onClick={handleCreate}>

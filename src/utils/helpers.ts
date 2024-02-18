@@ -13,7 +13,7 @@ export const getURL = () => {
 export const postData = async ({ url, data }: { url: string; data?: {} }) => {
   console.log('posting,', url, data)
 
-  const res = await fetch(url, {
+  const res = await fetch(process?.env?.NEXT_PUBLIC_SITE_API_URL + url, {
     method: 'POST',
     headers: new Headers({ 'Content-Type': 'application/json' }),
     credentials: 'same-origin',

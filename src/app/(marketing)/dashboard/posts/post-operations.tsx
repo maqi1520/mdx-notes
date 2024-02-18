@@ -25,16 +25,14 @@ import { toast } from '@/components/ui/use-toast'
 import { Switch } from '@/components/ui/switch'
 
 import { MoreVerticalIcon, Loader2Icon, Trash2Icon } from 'lucide-react'
+import { postData } from '@/utils/helpers'
 
 async function deletePost(postId: string) {
-  const response = await fetch(`/api/posts`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  const response = await postData({
+    url: `/user/delete_post`,
+    data: {
       id: postId,
-    }),
+    },
   })
 
   if (!response?.ok) {
@@ -49,34 +47,30 @@ async function deletePost(postId: string) {
 }
 
 interface Post {
-  id: string
+  _id: string
   title: string
   published: boolean
 }
 
 interface PostOperationsProps {
   post: Post
+  refresh: () => void
 }
 
-export function PostOperations({ post }: PostOperationsProps) {
-  const router = useRouter()
+export function PostOperations({ post, refresh }: PostOperationsProps) {
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
 
   const togglePublish = async (checked: boolean) => {
-    const response = await fetch(`/api/posts/?id=${post.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const response = await postData({
+      url: `/user/update_post`,
+      data: {
+        id: post._id,
         published: checked,
-      }),
+      },
     })
 
-    console.log(response)
-
-    router.refresh()
+    refresh()
   }
 
   return (
@@ -90,7 +84,7 @@ export function PostOperations({ post }: PostOperationsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/post/${post.id}`} className="flex w-full">
+            <Link href={`/post/${post._id}`} className="flex w-full">
               Edit
             </Link>
           </DropdownMenuItem>
@@ -120,12 +114,12 @@ export function PostOperations({ post }: PostOperationsProps) {
                 event.preventDefault()
                 setIsDeleteLoading(true)
 
-                const deleted = await deletePost(post.id)
+                const deleted = await deletePost(post._id)
 
                 if (deleted) {
                   setIsDeleteLoading(false)
                   setShowDeleteAlert(false)
-                  router.refresh()
+                  refresh()
                 }
               }}
               className="bg-destructive focus:ring-destructive"

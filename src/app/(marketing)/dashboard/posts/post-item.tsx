@@ -7,15 +7,16 @@ import { PostOperations } from './post-operations'
 
 type Props = {
   item: any
+  refresh: () => void
 }
 
-export function PostItem({ item }: Props) {
+export function PostItem({ item, refresh }: Props) {
   return (
-    <div key={item.id} className="flex items-center justify-between p-4">
+    <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
         <Link
           className="font-semibold hover:underline"
-          href={`/post/${item.id}`}
+          href={`/post/${item._id}`}
         >
           {item.title}
         </Link>
@@ -26,7 +27,7 @@ export function PostItem({ item }: Props) {
           </p>
         </div>
       </div>
-      <PostOperations post={item} />
+      <PostOperations refresh={refresh} post={item} />
     </div>
   )
 }

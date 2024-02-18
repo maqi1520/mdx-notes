@@ -1,81 +1,44 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { Database } from '@/types/database.type'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import {
-  User,
-  createClientComponentClient,
-} from '@supabase/auth-helpers-nextjs'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useAsyncRetry } from 'react-use'
+import { postData } from '@/utils/helpers'
 
-export default function AccountForm({ user }: { user: User }) {
+export default function AccountForm() {
+  const {
+    value: user,
+    retry,
+    loading: isFetching,
+  } = useAsyncRetry(async () => {
+    return postData({ url: '/user/get' })
+  }, [])
   const { toast } = useToast()
-  const supabase = createClientComponentClient<Database>()
-  const [loading, setLoading] = useState(true)
-  const [full_name, setFullName] = useState<string | null>(null)
-  const [username, setUsername] = useState<string | null>(null)
-  const [website, setWebsite] = useState<string | null>(null)
-  const [avatar_url, setAvatarUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  const getProfile = useCallback(async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const username = form.username.value
+    const full_name = form.full_name.value
+    const website = form.website.value
+    const avatar_url = form.full_name.value
+
     try {
       setLoading(true)
-
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
-        .eq('id', user.id)
-        .single()
-
-      if (error && status !== 406) {
-        throw error
-      }
-
-      if (data) {
-        setFullName(data.full_name)
-        setUsername(data.username)
-        setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
-      }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
-  }, [user, supabase])
-
-  useEffect(() => {
-    getProfile()
-  }, [user, getProfile])
-
-  async function updateProfile({
-    username,
-    website,
-    full_name,
-    avatar_url,
-  }: {
-    username: string | null
-    full_name: string | null
-    website: string | null
-    avatar_url: string | null
-  }) {
-    try {
-      setLoading(true)
-
-      const { error } = await supabase.from('profiles').upsert({
-        id: user?.id as string,
-        full_name,
-        username,
-        website,
-        avatar_url,
-        updated_at: new Date().toISOString(),
+      const res = await postData({
+        url: '/user/update',
+        data: { username, full_name, website, avatar_url },
       })
-      if (error) throw error
-      toast({
-        title: 'Success!',
-        description: 'Your profile has been updated.',
-      })
+      if (res.updated) {
+        toast({
+          title: 'Success!',
+          description: 'Your profile has been updated.',
+        })
+        retry()
+      }
     } catch (error) {
       alert('Error updating the data!')
     } finally {
@@ -83,59 +46,60 @@ export default function AccountForm({ user }: { user: User }) {
     }
   }
 
-  return (
-    <div className="w-3/5 space-y-8">
-      <div className="space-y-2">
-        <label htmlFor="email">Email</label>
-        <Input id="email" type="text" value={user?.email} disabled />
+  if (isFetching) {
+    return (
+      <div className="space-y-8">
+        <Skeleton className="h-8 w-3/5" />
+        <Skeleton className="h-8 w-3/5" />
+        <Skeleton className="h-8 w-3/5" />
+        <Skeleton className="h-8 w-3/5" />
+        <Skeleton className="h-10 w-24" />
       </div>
-      <div className="space-y-2">
-        <label htmlFor="fullName">Full Name</label>
-        <Input
-          id="fullName"
-          type="text"
-          value={full_name || ''}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="username">Username</label>
-        <Input
-          id="username"
-          type="text"
-          value={username || ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="website">avatar</label>
-        <Input
-          id="avatar_url"
-          type="url"
-          value={avatar_url || ''}
-          onChange={(e) => setAvatarUrl(e.target.value)}
-        />
-      </div>
-      <div className="space-y-2">
-        <label htmlFor="website">Website</label>
-        <Input
-          id="website"
-          type="url"
-          value={website || ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
+    )
+  }
 
-      <div>
-        <Button
-          onClick={() =>
-            updateProfile({ full_name, username, website, avatar_url })
-          }
-          disabled={loading}
-        >
-          {loading ? 'Loading ...' : 'Update'}
-        </Button>
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="w-3/5 space-y-8">
+        <div className="space-y-2">
+          <label htmlFor="email">Email</label>
+          <Input name="email" type="text" defaultValue={user?.email} disabled />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="fullName">Full Name</label>
+          <Input
+            name="full_name"
+            type="text"
+            defaultValue={user?.full_name || ''}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="username">Username</label>
+          <Input
+            name="username"
+            type="text"
+            defaultValue={user?.username || ''}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="website">avatar</label>
+          <Input
+            name="avatar_url"
+            type="url"
+            defaultValue={user?.avatar_url || ''}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="website">Website</label>
+          <Input name="website" type="url" defaultValue={user?.website || ''} />
+        </div>
+
+        <div>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Loading ...' : 'Update'}
+          </Button>
+        </div>
       </div>
-    </div>
+    </form>
   )
 }

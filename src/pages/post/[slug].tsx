@@ -1,35 +1,59 @@
+import { useState, useEffect } from 'react'
 import Error from 'next/error'
 import { sizeToObject } from '@/utils/size'
-import { getLayoutQueryString } from '@/utils/getLayoutQueryString'
-import { get } from '@/lib/database'
-import { getDefaultContent } from '@/utils/getDefaultContent'
-import { createPagesServerClient, User } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types/database.type'
 
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { postData } from '@/utils/helpers'
 const Pen = dynamic(() => import('@/components/Pen'), {
   ssr: false,
 })
 
-type Result = {
-  published: boolean
+interface Post {
+  _id: string
+  css: string
+  config: string
   title: string
-  content: { html: string; css: string; config: string }
-  id: string
   author_id: string
+  html: string
 }
 
-interface Props {
-  errorCode?: number
-  initialContent: { html: string; css: string; config: string }
-  id: string
-  author_id: string
-  initialLayout: string
-  initialPath: string
-  initialResponsiveSize: { width: number; height: number }
-  initialActiveTab: string
-}
-export default function App({ errorCode, ...props }: Props) {
+export default function App() {
+  const [errorCode, setErrorCode] = useState(0)
+  const [initialContent, setInitialContent] = useState<Post | null>()
+  const router = useRouter()
+  const { query } = router
+  const slug = query.slug as string
+
+  useEffect(() => {
+    if (router.isReady) {
+      const fetchContent = async () => {
+        const res = await postData({
+          url: '/auth/post_get',
+          data: {
+            id: slug,
+          },
+        })
+        if (res) {
+          setInitialContent(res)
+        }
+      }
+      fetchContent()
+    }
+  }, [slug, router.isReady])
+
+  const layoutProps = {
+    initialLayout: ['vertical', 'horizontal', 'preview'].includes(
+      query.layout as string
+    )
+      ? query.layout
+      : 'vertical',
+    initialResponsiveSize: sizeToObject(query.size),
+    initialActiveTab: ['html', 'css', 'config'].includes(query.file as string)
+      ? query.file
+      : 'html',
+  }
+
   if (errorCode) {
     return (
       <Error
@@ -43,65 +67,8 @@ export default function App({ errorCode, ...props }: Props) {
       />
     )
   }
-  return <Pen {...props} />
-}
-
-export async function getServerSideProps(ctx) {
-  const { params, query } = ctx
-
-  const layoutProps = {
-    initialLayout: ['vertical', 'horizontal', 'preview'].includes(query.layout)
-      ? query.layout
-      : 'vertical',
-    initialResponsiveSize: sizeToObject(query.size),
-    initialActiveTab: ['html', 'css', 'config'].includes(query.file)
-      ? query.file
-      : 'html',
+  if (initialContent) {
+    return <Pen {...layoutProps} id={slug} initialContent={initialContent} />
   }
-
-  if (params.slug === 'demo') {
-    return {
-      props: {
-        initialContent: await getDefaultContent(),
-        ...layoutProps,
-      },
-    }
-  }
-
-  try {
-    const supabase = createPagesServerClient<Database>(ctx)
-    // Check if we have a session
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    const id = params.slug
-    const res = await get<Result>(id)
-
-    if (res && (res.published || session?.user?.id === res.author_id)) {
-      return {
-        props: {
-          id,
-          initialContent: res.content,
-          author_id: res.author_id,
-          initialPath: `/${res.id}${getLayoutQueryString({
-            layout: query.layout,
-            responsiveSize: query.size,
-            file: query.file,
-          })}`,
-          ...layoutProps,
-        },
-      }
-    }
-    return {
-      props: {
-        errorCode: 403,
-      },
-    }
-  } catch (error) {
-    return {
-      props: {
-        errorCode: error.status || 500,
-      },
-    }
-  }
+  return null
 }

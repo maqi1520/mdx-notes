@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
-import SupabaseProvider from '@/app/supabase-provider'
 import type { Viewport } from 'next'
 export const viewport: Viewport = {
   themeColor: [
@@ -69,10 +68,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </svg>
           </div>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <SupabaseProvider>
-              {children}
-              <Toaster />
-            </SupabaseProvider>
+            {children}
+            <Toaster />
             <TailwindIndicator />
           </ThemeProvider>
         </body>

@@ -5,7 +5,7 @@ export interface Daum {
   img: string
   name: string
   status: number
-  doc_id: string
+  docId: string
   creator: string
   tags: string[]
   description: string
