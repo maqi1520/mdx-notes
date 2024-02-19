@@ -100,7 +100,7 @@ export default function Page() {
                     variant: 'outline',
                     size: 'lg',
                   })}
-                  href="/post/demo"
+                  href="/dashboard/posts"
                 >
                   Web 版
                 </Link>
@@ -180,7 +180,7 @@ export default function Page() {
                 data.map((item) => (
                   <div key={item.docId}>
                     <div className="overflow-hidden rounded">
-                      <Link href={'/post/' + item.docId}>
+                      <Link href={'/post?id=' + item.docId}>
                         <Image
                           width={711}
                           height={500}
@@ -191,7 +191,10 @@ export default function Page() {
                       </Link>
                     </div>
                     <div className="mt-4">
-                      <Link href={'/' + item.docId} className="underline">
+                      <Link
+                        href={'/post?id=' + item.docId}
+                        className="underline"
+                      >
                         {item.name}
                       </Link>
                     </div>

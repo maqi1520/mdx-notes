@@ -9,9 +9,7 @@ export const metadata: Metadata = {
 }
 
 type Props = {}
-export default async function Page({}: Props) {
-  const posts = []
-
+export default function Page({}: Props) {
   return (
     <div>
       <div>

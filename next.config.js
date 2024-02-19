@@ -1,12 +1,6 @@
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const path = require('path')
 
-const headers = [
-  {
-    key: 'Access-Control-Allow-Origin',
-    value: '*',
-  },
-]
 /** @type {import('next').NextConfig} */
 module.exports = {
   output: 'export',
@@ -20,14 +14,6 @@ module.exports = {
         pathname: '/img/**',
       },
     ],
-  },
-  async headers() {
-    return [
-      {
-        source: '/fonts/(.*)',
-        headers,
-      },
-    ]
   },
   webpack: (config, { isServer, webpack, dev }) => {
     config.module.rules
@@ -50,13 +36,6 @@ module.exports = {
           }
         })
       })
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
-    //   'mermaid-isomorphic': path.resolve(
-    //     __dirname,
-    //     './node_modules/mermaid-isomorphic/browser'
-    //   ),
-    // }
 
     config.output.globalObject = 'self'
     if (!isServer) {

@@ -6,27 +6,27 @@ import { postData } from '@/utils/helpers'
 import Link from 'next/link'
 import { useState } from 'react'
 
-export default function LoginForm() {
+export default function Form() {
   const router = useRouter()
+
+  const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const form = e.currentTarget
     const email = form.email.value
     const password = form.password.value
-    console.log({ email, password })
+    setSuccess('')
     setError('')
     const res = await postData({
-      url: '/auth/login',
+      url: '/auth/register',
       data: { email, password },
     })
-    if (res.token) {
-      localStorage.setItem('token', res.token)
-      router.replace('/dashboard/posts')
-    }
     if (!res.success) {
       setError(res.message)
+    } else {
+      setSuccess('注册邮件已发送，请到通过邮箱链接登录')
+      form.password.value = ''
     }
   }
   return (
@@ -41,27 +41,30 @@ export default function LoginForm() {
 
         <div className="flex flex-col space-y-2">
           <label htmlFor="password" className="text-sm font-semibold">
-            密码
+            创建密码
           </label>
-          <Input id="password" type="password" />
+          <Input minLength={6} maxLength={18} id="password" type="password" />
         </div>
-        <div className="flex">
-          <Link className="text-primary underline" href="/register">
-            还没有帐户？注册
-          </Link>
-          <Link className="text-primary underline ml-auto" href="/register">
-            忘记密码？
+        <div>
+          <Link className="text-primary underline" href="/login">
+            已经有帐户？登录
           </Link>
         </div>
 
         <div className="flex">
           <Button className="w-full" type="submit">
-            登录
+            注册
           </Button>
         </div>
         {error && (
           <div className="w-full rounded border p-3 border-destructive text-destructive bg-destructive/10">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="w-full rounded border p-3 border-primary text-primary bg-primary/10">
+            {success}
           </div>
         )}
       </form>

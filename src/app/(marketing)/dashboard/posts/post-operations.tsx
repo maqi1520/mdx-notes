@@ -35,7 +35,7 @@ async function deletePost(postId: string) {
     },
   })
 
-  if (!response?.ok) {
+  if (!response.deleted) {
     toast({
       title: 'Something went wrong.',
       description: 'Your post was not deleted. Please try again.',
@@ -84,7 +84,7 @@ export function PostOperations({ post, refresh }: PostOperationsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={`/post/${post._id}`} className="flex w-full">
+            <Link href={`/post?id=${post._id}`} className="flex w-full">
               Edit
             </Link>
           </DropdownMenuItem>

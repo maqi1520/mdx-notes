@@ -8,12 +8,12 @@ function SkeletonCard() {
       <h2 className="text-lg font-bold sm:text-xl md:text-2xl">
         <Skeleton className="w-2/5 h-3" />
       </h2>
-      <p className="text-sm">
+      <div className="text-sm">
         <Skeleton className="w-4/5 h-3" />
-      </p>
-      <p className="pt-2 text-xs font-medium">
+      </div>
+      <div className="pt-2 text-xs font-medium">
         <Skeleton className="w-2/5 h-3" />
-      </p>
+      </div>
     </div>
   )
 }

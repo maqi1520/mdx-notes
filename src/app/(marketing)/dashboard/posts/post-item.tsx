@@ -16,7 +16,7 @@ export function PostItem({ item, refresh }: Props) {
       <div className="grid gap-1">
         <Link
           className="font-semibold hover:underline"
-          href={`/post/${item._id}`}
+          href={`/post?id=${item._id}`}
         >
           {item.title}
         </Link>

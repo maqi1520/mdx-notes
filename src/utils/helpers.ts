@@ -13,9 +13,17 @@ export const getURL = () => {
 export const postData = async ({ url, data }: { url: string; data?: {} }) => {
   console.log('posting,', url, data)
 
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+  })
+  const token = localStorage.getItem('token')
+  if (token) {
+    headers.append('Authorization', `Bearer ${token}`)
+  }
+
   const res = await fetch(process?.env?.NEXT_PUBLIC_SITE_API_URL + url, {
     method: 'POST',
-    headers: new Headers({ 'Content-Type': 'application/json' }),
+    headers,
     credentials: 'same-origin',
     body: JSON.stringify(data),
   })

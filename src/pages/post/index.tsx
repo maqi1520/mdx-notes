@@ -5,6 +5,7 @@ import { sizeToObject } from '@/utils/size'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { postData } from '@/utils/helpers'
+import { getDefaultContent } from '@/utils/getDefaultContent'
 const Pen = dynamic(() => import('@/components/Pen'), {
   ssr: false,
 })
@@ -23,24 +24,29 @@ export default function App() {
   const [initialContent, setInitialContent] = useState<Post | null>()
   const router = useRouter()
   const { query } = router
-  const slug = query.slug as string
+  const id = query.id as string
 
   useEffect(() => {
     if (router.isReady) {
       const fetchContent = async () => {
-        const res = await postData({
-          url: '/auth/post_get',
-          data: {
-            id: slug,
-          },
-        })
-        if (res) {
-          setInitialContent(res)
+        try {
+          const res = await postData({
+            url: '/auth/post_get',
+            data: {
+              id,
+            },
+          })
+          if (res) {
+            setInitialContent(res)
+          }
+        } catch (error) {
+          console.log(error)
+          setErrorCode(404)
         }
       }
       fetchContent()
     }
-  }, [slug, router.isReady])
+  }, [id, router.isReady])
 
   const layoutProps = {
     initialLayout: ['vertical', 'horizontal', 'preview'].includes(
@@ -54,7 +60,7 @@ export default function App() {
       : 'html',
   }
 
-  if (errorCode) {
+  if (router.isReady && (!id || errorCode)) {
     return (
       <Error
         withDarkMode={true}
@@ -68,7 +74,7 @@ export default function App() {
     )
   }
   if (initialContent) {
-    return <Pen {...layoutProps} id={slug} initialContent={initialContent} />
+    return <Pen {...layoutProps} id={id} initialContent={initialContent} />
   }
   return null
 }

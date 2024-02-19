@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { CreditCardIcon, LogOutIcon, UserIcon } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useAsyncRetry } from 'react-use'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGlobalValue } from '@/hooks/useGlobalValue'
@@ -23,14 +22,10 @@ interface Props {
 }
 
 export function UserAccountNav({ user, retry }: Props) {
-  const router = useRouter()
   const logout = async () => {
     postData({ url: '/auth/logout' }).then((res) => {
-      if (retry) {
-        retry()
-      } else {
-        router.replace('/')
-      }
+      localStorage.removeItem('token')
+      window.location.replace('/')
     })
   }
 
@@ -45,7 +40,11 @@ export function UserAccountNav({ user, retry }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar>
-            <AvatarImage src={user.avatar_url} alt={user.name} />
+            <AvatarImage
+              className="border rounded-full bg-primary/10"
+              src={user.avatar_url}
+              alt={user.name}
+            />
             <AvatarFallback>{user.name}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
@@ -83,7 +82,9 @@ export function UserInfo() {
   }, [])
 
   useEffect(() => {
-    setGlobal({ user: value })
+    if (value?._id) {
+      setGlobal({ user: value })
+    }
   }, [value, setGlobal])
 
   if (loading) {

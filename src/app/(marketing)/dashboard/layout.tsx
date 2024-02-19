@@ -1,5 +1,9 @@
+'use client'
 import { SidebarNav } from '@/components/sidebar-nav'
+import { useGlobalValue } from '@/hooks/useGlobalValue'
 import { FileIcon, UserIcon } from 'lucide-react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const sidebarNavItems = [
   {
@@ -19,6 +23,11 @@ interface SettingsLayoutProps {
 }
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
+  const [globalValue] = useGlobalValue()
+  if (!globalValue?.user) {
+    return null
+  }
+
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 container mx-auto pt-6">
       <aside className="lg:w-1/5">

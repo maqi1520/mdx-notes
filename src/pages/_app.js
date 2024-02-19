@@ -3,7 +3,6 @@ import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
-import { Analytics } from '@vercel/analytics/react'
 
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
@@ -61,7 +60,6 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
         <Toaster />
       </ThemeProvider>
-      <Analytics />
     </>
   )
 }

@@ -19,17 +19,19 @@ export default function TemplateList() {
           className="group rounded-3xl bg-slate-50 p-6 dark:bg-slate-800/80 dark:highlight-white/5 hover:bg-slate-100 dark:hover:bg-slate-700/50"
         >
           <div className="aspect-[672/460] rounded-md overflow-hidden shadow-[0_2px_8px_rgba(15,23,42,0.08)] bg-slate-200 dark:bg-slate-700">
-            <Image
-              width={672}
-              height={460}
-              alt=""
-              className="block transition-transform hover:scale-110"
-              src={item.img}
-            />
+            <Link href={'/post?id=' + item.docId}>
+              <Image
+                width={672}
+                height={460}
+                alt=""
+                className="block transition-transform hover:scale-110"
+                src={item.img}
+              />
+            </Link>
           </div>
           <div className="flex flex-wrap items-center mt-6">
             <h2 className="text-sm leading-6 text-slate-900 dark:text-white font-semibold group-hover:text-sky-500 dark:group-hover:text-sky-400">
-              <Link href={'/post/' + item.docId}>{item.name}</Link>
+              <Link href={'/post?id=' + item.docId}>{item.name}</Link>
             </h2>
 
             <div className="w-full flex-none text-xs leading-6 text-slate-500 dark:text-slate-400">

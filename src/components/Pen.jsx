@@ -147,7 +147,7 @@ export default function Pen({
         ...initialContent,
       },
     })
-    router.push(`/post/${data.data.id}`)
+    router.push(`/post?id=${data.data.id}`)
   }
 
   async function updatePost(content) {
@@ -162,7 +162,6 @@ export default function Pen({
       },
     })
     setDirty(false)
-    console.log(res)
   }
 
   const compile = useCallback(debounce(compileNow, 200), [theme])

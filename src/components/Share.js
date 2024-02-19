@@ -58,7 +58,7 @@ export function Share({
         .then((res) => res.json())
         .then((res) => {
           if (current) {
-            const newPath = `/post/${res.data.id}${getLayoutQueryString({
+            const newPath = `/post?id=${res.data.id}${getLayoutQueryString({
               layout,
               responsiveSize,
               file: activeTab,

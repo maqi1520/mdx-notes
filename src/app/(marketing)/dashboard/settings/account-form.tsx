@@ -24,7 +24,7 @@ export default function AccountForm() {
     const username = form.username.value
     const full_name = form.full_name.value
     const website = form.website.value
-    const avatar_url = form.full_name.value
+    const avatar_url = form.avatar_url.value
 
     try {
       setLoading(true)
@@ -62,11 +62,11 @@ export default function AccountForm() {
     <form onSubmit={handleSubmit}>
       <div className="w-3/5 space-y-8">
         <div className="space-y-2">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">邮箱</label>
           <Input name="email" type="text" defaultValue={user?.email} disabled />
         </div>
         <div className="space-y-2">
-          <label htmlFor="fullName">Full Name</label>
+          <label htmlFor="fullName">全名</label>
           <Input
             name="full_name"
             type="text"
@@ -74,7 +74,7 @@ export default function AccountForm() {
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">昵称</label>
           <Input
             name="username"
             type="text"
@@ -82,7 +82,7 @@ export default function AccountForm() {
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="website">avatar</label>
+          <label htmlFor="website">头像地址</label>
           <Input
             name="avatar_url"
             type="url"
@@ -90,7 +90,7 @@ export default function AccountForm() {
           />
         </div>
         <div className="space-y-2">
-          <label htmlFor="website">Website</label>
+          <label htmlFor="website">网站</label>
           <Input name="website" type="url" defaultValue={user?.website || ''} />
         </div>
 

@@ -6,6 +6,7 @@ import { Button, ButtonProps } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { PlusIcon } from 'lucide-react'
 import { postData } from '@/utils/helpers'
+import { toast } from '@/components/ui/use-toast'
 
 export function CreateButton({ variant }: ButtonProps) {
   const router = useRouter()
@@ -20,7 +21,15 @@ export function CreateButton({ variant }: ButtonProps) {
         config: '',
       },
     })
-    router.push(`/post/${res.id}`)
+    if (res.id) {
+      router.push(`/post?id=${res.id}`)
+    } else {
+      toast({
+        title: 'Something went wrong.',
+        description: 'Your post was not created. Please try again.',
+        variant: 'destructive',
+      })
+    }
   }
   return (
     <Button variant={variant} className="ml-auto" onClick={handleCreate}>
