@@ -5,7 +5,6 @@ import { sizeToObject } from '@/utils/size'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { postData } from '@/utils/helpers'
-import { getDefaultContent } from '@/utils/getDefaultContent'
 const Pen = dynamic(() => import('@/components/Pen'), {
   ssr: false,
 })
@@ -29,9 +28,14 @@ export default function App() {
   useEffect(() => {
     if (router.isReady) {
       const fetchContent = async () => {
+        const content = localStorage.getItem('content')
+        if (id == 'demo' && content) {
+          setInitialContent(JSON.parse(content))
+          return
+        }
         try {
           const res = await postData({
-            url: '/auth/post_get',
+            url: '/api/auth/post_get',
             data: {
               id,
             },

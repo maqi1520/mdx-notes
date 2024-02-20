@@ -18,7 +18,7 @@ export default function LoginForm() {
     console.log({ email, password })
     setError('')
     const res = await postData({
-      url: '/auth/login',
+      url: '/api/auth/login',
       data: { email, password },
     })
     if (res.token) {
@@ -49,7 +49,10 @@ export default function LoginForm() {
           <Link className="text-primary underline" href="/register">
             还没有帐户？注册
           </Link>
-          <Link className="text-primary underline ml-auto" href="/register">
+          <Link
+            className="text-primary underline ml-auto"
+            href="/password_reset"
+          >
             忘记密码？
           </Link>
         </div>

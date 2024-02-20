@@ -20,7 +20,7 @@ export function PostList() {
     retry,
   } = useAsyncRetry(async () => {
     return postData({
-      url: '/user/posts',
+      url: '/api/user/posts',
     })
   }, [])
 

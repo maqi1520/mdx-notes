@@ -19,7 +19,7 @@ export default function Form() {
     setSuccess('')
     setError('')
     const res = await postData({
-      url: '/auth/register',
+      url: '/api/auth/register',
       data: { email, password },
     })
     if (!res.success) {

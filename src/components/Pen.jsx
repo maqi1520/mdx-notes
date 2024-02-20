@@ -151,10 +151,16 @@ export default function Pen({
   }
 
   async function updatePost(content) {
+    // demo 也保存到本地
+    if (id === 'demo') {
+      localStorage.setItem('content', JSON.stringify(content))
+      setDirty(false)
+      return
+    }
     const frontMatter = getFrontMatter(content.html)
     const title = frontMatter.title || 'Untitled'
     const res = await postData({
-      url: `/user/update_post`,
+      url: `/api/user/update_post`,
       data: {
         id,
         title,
@@ -443,7 +449,7 @@ export default function Pen({
               <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
                 {renderEditor && (
                   <Editor
-                    readOnly={author_id !== currentUserId}
+                    readOnly={currentUserId !== author_id && id !== 'demo'}
                     editorRef={(ref) => (editorRef.current = ref)}
                     initialContent={initialContent}
                     onChange={onChange}

@@ -11,8 +11,6 @@ export const getURL = () => {
 }
 
 export const postData = async ({ url, data }: { url: string; data?: {} }) => {
-  console.log('posting,', url, data)
-
   const headers = new Headers({
     'Content-Type': 'application/json',
   })

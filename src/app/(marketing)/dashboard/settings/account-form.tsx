@@ -13,7 +13,7 @@ export default function AccountForm() {
     retry,
     loading: isFetching,
   } = useAsyncRetry(async () => {
-    return postData({ url: '/user/get' })
+    return postData({ url: '/api/user/get' })
   }, [])
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
@@ -29,7 +29,7 @@ export default function AccountForm() {
     try {
       setLoading(true)
       const res = await postData({
-        url: '/user/update',
+        url: '/api/user/update',
         data: { username, full_name, website, avatar_url },
       })
       if (res.updated) {

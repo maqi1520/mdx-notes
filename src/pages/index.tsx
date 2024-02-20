@@ -100,7 +100,7 @@ export default function Page() {
                     variant: 'outline',
                     size: 'lg',
                   })}
-                  href="/dashboard/posts"
+                  href="/post/?id=demo"
                 >
                   Web 版
                 </Link>
@@ -138,13 +138,7 @@ export default function Page() {
             </p>
 
             <div className="mt-6 flex justify-center">
-              <video
-                controls
-                loop
-                className="rounded-xl"
-                width="1200"
-                height="780"
-              >
+              <video controls className="rounded-xl" width="1200" height="780">
                 <source src="/demo.mp4" type="video/mp4" />
               </video>
             </div>

@@ -23,7 +23,7 @@ interface Props {
 
 export function UserAccountNav({ user, retry }: Props) {
   const logout = async () => {
-    postData({ url: '/auth/logout' }).then((res) => {
+    postData({ url: '/api/auth/logout' }).then((res) => {
       localStorage.removeItem('token')
       window.location.replace('/')
     })
@@ -76,7 +76,7 @@ export function UserInfo() {
   const [, setGlobal] = useGlobalValue()
   const { value, loading, retry } = useAsyncRetry(async () => {
     const res = await postData({
-      url: '/user/get',
+      url: '/api/user/get',
     })
     return res
   }, [])

@@ -29,7 +29,7 @@ import { postData } from '@/utils/helpers'
 
 async function deletePost(postId: string) {
   const response = await postData({
-    url: `/user/delete_post`,
+    url: `/api/user/delete_post`,
     data: {
       id: postId,
     },
@@ -63,7 +63,7 @@ export function PostOperations({ post, refresh }: PostOperationsProps) {
 
   const togglePublish = async (checked: boolean) => {
     const response = await postData({
-      url: `/user/update_post`,
+      url: `/api/user/update_post`,
       data: {
         id: post._id,
         published: checked,

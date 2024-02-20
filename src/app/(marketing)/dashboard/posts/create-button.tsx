@@ -13,7 +13,7 @@ export function CreateButton({ variant }: ButtonProps) {
   const handleCreate = async () => {
     const title = 'Untitled'
     const res = await postData({
-      url: `/user/create_post`,
+      url: `/api/user/create_post`,
       data: {
         title,
         html: `---\ntitle: ${title}\n---\n\n# ${title}\n\n`,
