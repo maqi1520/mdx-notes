@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import type { Viewport } from 'next'
+import { GoogleTagManager } from '@next/third-parties/google'
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'cyan' },
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <TailwindIndicator />
           </ThemeProvider>
         </body>
+        <GoogleTagManager gtmId="G-CWXELVQ40Y" />
       </html>
     </>
   )

@@ -3,8 +3,9 @@ import 'prismjs/themes/prism-okaidia.css'
 import Head from 'next/head'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
+import { GoogleTagManager } from '@next/third-parties/google'
 
-const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
+const TITLE = 'MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
   '微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF'
 
@@ -60,6 +61,7 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
         <Toaster />
       </ThemeProvider>
+      <GoogleTagManager gtmId="G-CWXELVQ40Y" />
     </>
   )
 }
