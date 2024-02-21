@@ -18,7 +18,7 @@ export function PostItem({ item, refresh }: Props) {
           className="font-semibold hover:underline"
           href={`/post?id=${item._id}`}
         >
-          {item.title}
+          {item.title || 'Untitled'}
         </Link>
 
         <div>

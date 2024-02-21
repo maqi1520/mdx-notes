@@ -1,7 +1,8 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAsyncRetry } from 'react-use'
 import { EmptyPlaceholder } from '@/components/empty-placeholder'
+import { Input } from '@/components/ui/input'
 import { PostItem } from './post-item'
 import { CreateButton } from './create-button'
 import {
@@ -14,6 +15,7 @@ import { AnnoyedIcon, HelpCircleIcon } from 'lucide-react'
 import { postData } from '@/utils/helpers'
 
 export function PostList() {
+  const [title, setTitle] = useState('')
   const {
     value: posts,
     loading,
@@ -21,8 +23,20 @@ export function PostList() {
   } = useAsyncRetry(async () => {
     return postData({
       url: '/api/user/posts',
+      data: {
+        title,
+      },
     })
-  }, [])
+  }, [title])
+
+  const handleKeydown = (e: any) => {
+    if (e.keyCode === 13) {
+      setTitle(e.target?.value)
+    }
+    if (e.target?.value == '') {
+      setTitle('')
+    }
+  }
 
   if (!posts && loading) {
     return (
@@ -39,8 +53,9 @@ export function PostList() {
   return (
     <div className="divide-y divide-border rounded-md border mt-8 bg-background">
       <div className="flex items-center justify-between p-4 text-muted-foreground">
-        <div className="grid gap-1">
-          <span className="font-semibold">标题</span>
+        <div className="flex justify-center items-center">
+          <span className="font-semibold flex-none mr-2">标题</span>{' '}
+          <Input placeholder="根据标题搜索" onKeyDown={handleKeydown} />
         </div>
         <div className="space-x-3 w-32 flex justify-between">
           <TooltipProvider>
