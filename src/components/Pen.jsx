@@ -157,6 +157,9 @@ export default function Pen({
       setDirty(false)
       return
     }
+    if (!currentUserId) {
+      return
+    }
     const frontMatter = getFrontMatter(content.html)
     const title = frontMatter.title || 'Untitled'
     const res = await postData({
