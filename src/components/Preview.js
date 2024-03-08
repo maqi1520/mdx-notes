@@ -9,6 +9,7 @@ import {
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import clsx from 'clsx'
 import { getPointerPosition } from '../utils/getPointerPosition'
+import { onDidChangeTheme, getTheme } from '../utils/theme'
 
 const Preview = forwardRef(
   (
@@ -21,15 +22,15 @@ const Preview = forwardRef(
     ref
   ) => {
     const iframeRef = useRef()
-    const dataRef = useRef()
+    const dataRef = useRef({})
 
     useImperativeHandle(
       ref,
       () => ({
         setState: (content) => {
           //首次加载 postMessage 会失败，先存到 ref 中
-          dataRef.current = content
-          iframeRef.current.contentWindow.postMessage(content, '*')
+          dataRef.current = { ...content, theme: getTheme() }
+          iframeRef.current.contentWindow.postMessage(dataRef.current, '*')
         },
       }),
       []
@@ -83,6 +84,19 @@ const Preview = forwardRef(
         zoom: Math.min(widthZoom, heightZoom),
       }
     }
+
+    useEffect(() => {
+      function handleThemeChange(theme) {
+        iframeRef.current.contentWindow.postMessage(
+          {
+            theme: getTheme(),
+          },
+          '*'
+        )
+      }
+      const dispose = onDidChangeTheme(handleThemeChange)
+      return () => dispose()
+    }, [])
 
     useEffect(() => {
       let isInitial = true
@@ -381,6 +395,34 @@ const Preview = forwardRef(
                     .markdown-body{
                       overflow-x:hidden;
                     }
+                    .darkmode-background {
+                        background: #fff;
+                        position: fixed;
+                        pointer-events: none;
+                        z-index: -10;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                    }
+                    .darkmode-layer {
+                      width: 100%;
+                      height: 100%;
+                      top: 0;
+                      left: 0;
+                      position: fixed;
+                      pointer-events: none;
+                      background: #fff;
+                      transition: all 0.3s ease;
+                      mix-blend-mode: difference;
+                      display:none;
+                    }
+                    .darkmode--activated .darkmode-layer{
+                      display:block
+                    }
+                    body.darkmode--activated img, body.darkmode--activated .darkmode-ignore {
+                      isolation: isolate;
+                    }
                     </style>
                     <style type="text/css" media="print">
                     @page {
@@ -396,6 +438,13 @@ const Preview = forwardRef(
                     var hasHtml = false
                     var hasCss = false
                     window.addEventListener('message', (e) => {
+                      if(e.data.theme==='dark'){
+                        document.body.classList.add('darkmode--activated')
+                      }
+                      if(e.data.theme==='light'){
+                        document.body.classList.remove('darkmode--activated')
+                      }
+                     
                       if (typeof e.data.line  !== 'undefined') {
                         var previewEl = document.documentElement
                         const el = previewEl.querySelector('[data-line="'+e.data.line+'"]');
@@ -460,6 +509,8 @@ const Preview = forwardRef(
                     </script>
                   </head>
                   <body>
+                    <div class="darkmode-background"></div>
+                   <div class="darkmode-layer"></div>
                     <div id="root"></div>
                     <script>
                   //  var previewEl = document
