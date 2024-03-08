@@ -38,7 +38,6 @@ import {
   Square,
 } from 'lucide-react'
 import clsx from 'clsx'
-import dayjs from 'dayjs'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -384,13 +383,8 @@ export default function Pen() {
     router.push('/slide')
   }, [])
 
-  const createOrOpenDailyNote = () => {
-    const fileName = dayjs().format('YYYY-MM-DD')
-    const config = JSON.parse(localStorage.getItem('config'))
-    const fullPath = config.journalDir
-      ? config.journalDir + '/' + fileName
-      : fileName
-    refFileTree.current.openMd(fullPath, '')
+  const createOrOpenDailyNote = async () => {
+    refFileTree.current.createOrOpenDailyNote()
   }
 
   // useEffect(() => {

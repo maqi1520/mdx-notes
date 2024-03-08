@@ -53,5 +53,7 @@
   "journal": "日记",
   "journal directory": "日记目录",
   "Command": "命令",
-  "Format markdown": "markdown 模式"
+  "Format markdown": "markdown 模式",
+  "template directory": "日记模板路径",
+  "The template file does not exist": "文件模板不存在"
 }

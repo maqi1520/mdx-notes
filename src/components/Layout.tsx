@@ -40,6 +40,7 @@ const uploadOptions = [
 
 interface Config {
   journalDir: string
+  journalTemplateDir: string
   upload: string
   command: string
 }
@@ -48,6 +49,7 @@ export default function Layout({ children }: Props) {
   let [language, setLanguage] = useState('en')
   let [config, setConfig] = useLocalStorage<Config>('config', {
     journalDir: '',
+    journalTemplateDir: '',
     upload: 'none',
     command: '',
   })
@@ -89,6 +91,25 @@ export default function Layout({ children }: Props) {
                   setConfig((prev: Config) => ({
                     ...prev,
                     journalDir: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-sm text-gray-500 dark:text-white flex items-center">
+              <label
+                className="flex-none px-2 w-28 text-right"
+                htmlFor="journal"
+              >
+                {t('template directory')}:
+              </label>
+              <Input
+                value={config?.journalTemplateDir!}
+                onChange={(e) =>
+                  setConfig((prev: Config) => ({
+                    ...prev,
+                    journalTemplateDir: e.target.value,
                   }))
                 }
               />

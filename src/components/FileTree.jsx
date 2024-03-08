@@ -32,6 +32,7 @@ import {
   removeFile,
   renameFile,
   writeTextFile,
+  readTextFile,
   removeDir,
   BaseDirectory,
 } from '@tauri-apps/api/fs'
@@ -51,6 +52,7 @@ import {
   ListTreeIcon,
   ListIcon,
 } from 'lucide-react'
+import dayjs from 'dayjs'
 
 async function show_in_folder(path) {
   await tauri.invoke('show_in_folder', { path })
@@ -99,6 +101,33 @@ const FileTree = forwardRef(
       }
       onSelect(filePath)
       setSelectedKeys([filePath])
+    }
+    const createOrOpenDailyNote = async () => {
+      const fileName = dayjs().format('YYYY-MM-DD')
+      const config = JSON.parse(localStorage.getItem('config'))
+      const dirPath = JSON.parse(localStorage.getItem('dir-path'))
+
+      const fullPath = config.journalDir
+        ? config.journalDir + '/' + fileName
+        : fileName
+      if (config.journalTemplateDir) {
+        const filePath = await resolve(
+          dirPath,
+          config.journalTemplateDir.trim()
+        )
+
+        try {
+          const content = await readTextFile(filePath)
+          openMd(fullPath, content.replace(/{{date}}/g, fileName))
+        } catch (error) {
+          message(t('The template file does not exist'), {
+            title: t('Prompt'),
+            type: 'error',
+          })
+        }
+      } else {
+        openMd(fullPath, '')
+      }
     }
 
     useEffect(() => {
@@ -199,6 +228,7 @@ const FileTree = forwardRef(
         setToc,
         setScrollLine,
         openMd,
+        createOrOpenDailyNote,
         reload: () => setCount((p) => p + 1),
       }),
       []

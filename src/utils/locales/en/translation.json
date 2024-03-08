@@ -53,5 +53,7 @@
   "journal": "Journal",
   "journal directory": "Journal directory",
   "Command": "Command",
-  "Format markdown": "Format markdown"
+  "Format markdown": "Format markdown",
+  "template directory": "template directory",
+  "The template file does not exist": "The template file does not exist"
 }
