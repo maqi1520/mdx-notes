@@ -174,7 +174,10 @@ export default function Pen({
   }
 
   const compile = useCallback(debounce(compileNow, 200), [theme])
-  const handleUpdate = useCallback(debounce(updatePost, 1000), [id])
+  const handleUpdate = useCallback(debounce(updatePost, 1000), [
+    id,
+    currentUserId,
+  ])
 
   const onChange = useCallback(
     (document, content) => {
