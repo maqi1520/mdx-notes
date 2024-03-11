@@ -80,7 +80,16 @@ const FileTree = forwardRef(
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
 
-    const openMd = async (file, content = '') => {
+    const openMd = async (file, content) => {
+      if (!content) {
+        content = `---
+title: ${file}
+---
+
+# ${file}
+
+`
+      }
       const path = findPathInTree(file.trim(), store.mdFiles)
       if (path) {
         onSelect(path)
@@ -126,7 +135,7 @@ const FileTree = forwardRef(
           })
         }
       } else {
-        openMd(fullPath, '')
+        openMd(fullPath)
       }
     }
 

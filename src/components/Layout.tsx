@@ -73,7 +73,7 @@ export default function Layout({ children }: Props) {
     <>
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle> {t('Setting')}</DialogTitle>
           </DialogHeader>
