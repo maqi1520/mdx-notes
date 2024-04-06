@@ -1,4 +1,3 @@
-/* --- code --- */
 .markdown-body ul.contains-task-list {
   padding-left: 0;
 }
@@ -9,11 +8,15 @@ input[type='checkbox'] {
   border-radius: 2px;
   width: 16px;
   height: 16px;
+  margin-right: 8px;
 }
 
+.markdown-body .task-list-item {
+  display: flex;
+  align-items: center;
+}
 .task-list-item input[type='checkbox'] {
   position: relative;
-  top: 0.3em;
 }
 
 input[type='checkbox']:checked:after {
@@ -37,6 +40,7 @@ input[type='checkbox']:checked {
 .markdown-body ul.contains-task-list li.task-list-item {
   list-style-type: none;
 }
+
 .code__header {
   display: flex;
   justify-content: space-between;
@@ -120,9 +124,8 @@ input[type='checkbox']:checked {
   flex-shrink: 0;
 }
 .markdown-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
-    Arial, sans-serif;
+  line-height: 2em;
+  padding: 0 12px;
 }
 
 /*表格*/

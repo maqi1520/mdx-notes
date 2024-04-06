@@ -361,7 +361,12 @@ const Preview = forwardRef(
                       text-align: justify;
                       font-size: 17px;
                       color: #333;
-                      padding:20px 16px 9px;
+                     
+                    }
+                    @media (max-width: 360px) {
+                      body{
+                        padding:20px 16px 9px;
+                      } 
                     }
                     body * {
                       box-sizing: border-box;

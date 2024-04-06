@@ -1,14 +1,7 @@
 .markdown-body {
   word-break: break-word;
-  line-height: 1.7;
-  font-weight: 400;
-  font-size: 16px;
   overflow-x: hidden;
   color: #2c3e50;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 .markdown-body h1,
 .markdown-body h2,

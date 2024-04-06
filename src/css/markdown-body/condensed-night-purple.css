@@ -1,8 +1,4 @@
 .markdown-body {
-  line-height: 1.75;
-  font-family: -apple-system-font, BlinkMacSystemFont, 'Helvetica Neue',
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
-    Arial, sans-serif;
   letter-spacing: 2px;
   background-image: linear-gradient(
       90deg,
@@ -13,30 +9,27 @@
   background-size: 20px 20px;
   background-position: center center;
   word-break: break-word;
-  font-weight: 400;
-  font-size: 15px;
   overflow-x: hidden;
   color: #333;
-  padding: 0 12px;
 }
 .markdown-body h1 {
   font-size: 23px;
   margin-bottom: 5px;
   font-weight: bold;
   padding-left: 10px;
-  border-left: 5px solid #773098;
+  border-left: 5px solid #6d28d9;
 }
 .markdown-body h2 {
   font-size: 19px;
   font-weight: bold;
   padding-left: 10px;
-  border-left: 5px solid #916dd5;
+  border-left: 5px solid #9333ea;
 }
 .markdown-body h3 {
   font-size: 17px;
   font-weight: bold;
   padding-left: 10px;
-  border-left: 5px solid #d89cf6;
+  border-left: 5px solid #8b5cf6;
 }
 .markdown-body h4 {
   font-size: 16px;
@@ -77,7 +70,7 @@
     'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
     Arial, sans-serif;
   font-size: 1em;
-  color: #916dd5;
+  color: #9333ea;
   word-break: break-word;
   overflow-x: auto;
   background-color: none;
@@ -102,13 +95,13 @@
 .markdown-body a,
 .link {
   text-decoration: none;
-  color: #916dd5;
+  color: #9333ea;
   font-weight: bold;
-  border-bottom: 1px solid #916dd5;
+  border-bottom: 1px solid #9333ea;
 }
 .markdown-body a:hover,
 .markdown-body a:active {
-  color: #773098;
+  color: #6d28d9;
 }
 .markdown-body table {
   display: inline-block !important;
@@ -119,7 +112,7 @@
   border-collapse: collapse;
 }
 .markdown-body thead {
-  background-color: #916dd5;
+  background-color: #9333ea;
   color: #333;
   text-align: left;
 }
@@ -127,17 +120,16 @@
 .markdown-body td {
   padding: 12px 7px;
   line-height: 24px;
-  border: solid 1px #916dd5;
+  border: solid 1px #ddd;
 }
 .markdown-body td {
   min-width: 120px;
 }
 .markdown-body blockquote {
-  color: #666;
   padding: 1px 23px;
   margin: 22px 0;
-  border-left: 4px solid #d89cf6;
-  background-color: #f4eeff;
+  border-left: 4px solid #9333ea;
+  background-color: #faf5ff;
 }
 .markdown-body blockquote::after {
   display: block;
@@ -178,7 +170,7 @@
 }
 .markdown-body b,
 .markdown-body strong {
-  color: #916dd5;
+  color: #9333ea;
   font-weight: bold;
 }
 .markdown-body b::before,
@@ -191,7 +183,7 @@
 }
 .markdown-body i,
 .markdown-body em {
-  color: #916dd5;
+  color: #9333ea;
 }
 @media (max-width: 720px) {
   .markdown-body h1 {
