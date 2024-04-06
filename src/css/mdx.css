@@ -240,9 +240,12 @@ pre {
 .solarizedlight .highlight-line {
   background-color: rgba(255, 193, 7, 0.5);
 }
-.coy .highlight-line,
-.default .highlight-line {
+.coy .highlight-line {
   background-color: #fff8c5;
+}
+
+.default .highlight-line {
+  background-color: rgba(55, 65, 81, 0.5);
 }
 .materialLight .highlight-line {
   background-color: rgba(55, 65, 81, 0.2); /* Set highlight bg color */

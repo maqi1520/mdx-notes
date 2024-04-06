@@ -30,7 +30,8 @@ export const compileMdx = async (
   mdx,
   isMac,
   codeTheme = '',
-  formatMarkdown = false
+  formatMarkdown = false,
+  raw = false
 ) => {
   let err = null
   let html = null
@@ -92,21 +93,23 @@ export const compileMdx = async (
     basename: formatMarkdown ? 'example.md' : 'example.mdx',
     value: mdx,
   })
+  const rehypePlugins = [
+    rehypeAddLineNumbers,
+    rehypeDivToSection,
+    reHypeLinkFoot,
+    rehypeKatex,
+    [rehypeMermaid, { strategy: 'img-svg' }],
+    [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
+    [rehypeCodeTitle, { isMac }],
+  ]
+  if (raw) rehypePlugins.unshift([rehypeRaw, { passThrough: nodeTypes }])
+
   try {
     await compile(file, {
       development: false,
       outputFormat: 'function-body',
       remarkPlugins,
-      rehypePlugins: [
-        [rehypeRaw, { passThrough: nodeTypes }],
-        rehypeAddLineNumbers,
-        rehypeDivToSection,
-        reHypeLinkFoot,
-        rehypeKatex,
-        [rehypeMermaid, { strategy: 'img-svg' }],
-        [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
-        [rehypeCodeTitle, { isMac }],
-      ],
+      rehypePlugins,
     })
     const { default: Content } = await run(String(file), {
       ...runtime,

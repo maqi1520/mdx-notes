@@ -55,5 +55,7 @@
   "Command": "Command",
   "Format markdown": "Format markdown",
   "template directory": "template directory",
-  "The template file does not exist": "The template file does not exist"
+  "The template file does not exist": "The template file does not exist",
+  "Export PDF": "Export PDF",
+  "Support HTML": "Support HTML"
 }

@@ -115,6 +115,14 @@ export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
             }
           />
         </div>
+
+        <div className="flex items-center justify-between">
+          <Label className="flex-none pr-2">{t('Support HTML')}</Label>
+          <Switch
+            checked={value.raw}
+            onCheckedChange={(raw) => onChange({ ...value, raw })}
+          />
+        </div>
       </PopoverContent>
     </Popover>
   )

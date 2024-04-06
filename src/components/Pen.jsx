@@ -109,6 +109,7 @@ export default function Pen() {
     codeTheme: 'default',
     isMac: true,
     view: 'html',
+    raw: false,
   })
   const [responsiveSize, setResponsiveSize] = useState(
     initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE
@@ -199,7 +200,8 @@ export default function Pen() {
       content.html,
       theme.isMac,
       'markdown-body',
-      theme.formatMarkdown
+      theme.formatMarkdown,
+      theme.raw
     ).then((res) => {
       if (res.err) {
         setError(res.err)

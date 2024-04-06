@@ -55,5 +55,7 @@
   "Command": "命令",
   "Format markdown": "markdown 模式",
   "template directory": "日记模板路径",
-  "The template file does not exist": "文件模板不存在"
+  "The template file does not exist": "文件模板不存在",
+  "Export PDF": "Export PDF",
+  "Support HTML": "支持HTML"
 }
