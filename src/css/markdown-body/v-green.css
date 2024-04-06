@@ -1,9 +1,5 @@
-@charset "UTF-8";
 .markdown-body {
   word-break: break-word;
-  line-height: 1.75;
-  font-weight: 400;
-  font-size: 15px;
   overflow-x: hidden;
   color: #333;
 }

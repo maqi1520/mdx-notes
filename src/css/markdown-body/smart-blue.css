@@ -1,8 +1,5 @@
 .markdown-body {
   color: #595959;
-  font-size: 15px;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, Helvetica Neue,
-    PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   background-image: linear-gradient(
       90deg,
       rgba(60, 10, 30, 0.04) 3%,
@@ -11,15 +8,6 @@
     linear-gradient(360deg, rgba(60, 10, 30, 0.04) 3%, rgba(0, 0, 0, 0) 3%);
   background-size: 20px 20px;
   background-position: center center;
-  padding: 0 12px;
-}
-
-/* 段落 */
-.markdown-body p {
-  color: #595959;
-  font-size: 15px;
-  line-height: 2;
-  font-weight: 400;
 }
 
 /* 段落间距控制 */
@@ -36,7 +24,7 @@
 .markdown-body h6 {
   padding: 30px 0;
   margin: 0;
-  color: #135ce0;
+  color: #4f46e5;
 }
 
 /* 一级标题 */
@@ -89,40 +77,34 @@
 
 /* 引用 */
 .markdown-body blockquote {
-  background: #fff9f9;
+  background: #eef2ff;
   margin: 2em 0;
   padding: 2px 20px;
-  border-left: 4px solid #b2aec5;
-}
-
-/* 引用文字 */
-.markdown-body blockquote p {
-  color: #666;
-  line-height: 2;
+  border-left: 4px solid #4f46e5;
 }
 
 /* 链接 */
 .markdown-body a,
 .link {
-  color: #036aca;
-  border-bottom: 1px solid rgba(3, 106, 202, 0.8);
+  color: #4f46e5;
+  border-bottom: 1px solid #4f46e5;
   font-weight: 400;
   text-decoration: none;
 }
 
 /* 加粗 */
 .markdown-body strong {
-  color: #036aca;
+  color: #4f46e5;
 }
 
 /* 加粗斜体 */
 .markdown-body em strong {
-  color: #036aca;
+  color: #4f46e5;
 }
 
 /* 分隔线 */
 .markdown-body hr {
-  border-top: 1px solid #135ce0;
+  border-top: 1px solid #ddd;
 }
 
 /* 代码 */

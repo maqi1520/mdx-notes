@@ -1,8 +1,6 @@
 .markdown-body {
   word-break: break-word;
-  line-height: 1.7;
-  font-weight: 400;
-  font-size: 16px;
+
   overflow-x: hidden;
   color: #212122;
 }
@@ -61,7 +59,6 @@
   line-height: 1.1;
 }
 .markdown-body p {
-  font-size: 16px;
   text-align: start;
   white-space: normal;
   text-size-adjust: auto;

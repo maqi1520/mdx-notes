@@ -3,21 +3,17 @@
 /*全局属性*/
 .markdown-body {
   color: rgb(30 41 59);
-  line-height: 1.6;
   word-spacing: 0px;
   letter-spacing: 0px;
   word-break: break-word;
   word-wrap: break-word;
   text-align: left;
-  font-size: 16px;
 }
 
 /*段落*/
 .markdown-body p {
-  font-size: 16px;
   margin-top: 16px;
   margin-bottom: 16px;
-  line-height: 26px;
   color: rgb(30 41 59);
 }
 
@@ -85,15 +81,10 @@
 
 /*引用*/
 .markdown-body blockquote {
-  background-color: rgb(15 164 233 / 8%);
-  border-left-width: 4px;
-  border-left-color: #0fa4e9;
-  border-left-style: solid;
-  quotes: '\201C''\201D''\2018''\2019';
-  margin: 0;
-  margin-top: 16px;
-  margin-bottom: 16px;
-  padding: 8px 8px 8px 12px;
+  background-color: #f0f9ff;
+  border-left: 4px solid #0fa4e9;
+  padding: 1px 23px;
+  margin: 22px 0;
 }
 
 .markdown-body blockquote h2,
@@ -103,7 +94,6 @@
   color: rgb(30 41 59);
 }
 .markdown-body blockquote p {
-  margin: 0px;
   color: rgb(30 41 59);
   line-height: 26px;
 }

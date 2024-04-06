@@ -1,11 +1,46 @@
-/* --- code --- */
 .markdown-body ul.contains-task-list {
   padding-left: 0;
 }
 
+input[type='checkbox'] {
+  appearance: none;
+  border: 2px solid #888;
+  border-radius: 2px;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.markdown-body .task-list-item {
+  display: flex;
+  align-items: center;
+}
+.task-list-item input[type='checkbox'] {
+  position: relative;
+}
+
+input[type='checkbox']:checked:after {
+  content: '';
+  top: -1px;
+  left: -1px;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  display: block;
+  background-color: #fff;
+  mask-position: 40% 40%;
+  mask-size: 70%;
+  mask-repeat: no-repeat;
+  mask-image: url('data:image/svg+xml; utf8, <svg width="12px" height="10px" viewBox="0 0 12 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-4.000000, -6.000000)" fill="%23000000"><path d="M8.1043257,14.0367999 L4.52468714,10.5420499 C4.32525014,10.3497722 4.32525014,10.0368095 4.52468714,9.8424863 L5.24777413,9.1439454 C5.44721114,8.95166768 5.77142411,8.95166768 5.97086112,9.1439454 L8.46638057,11.5903727 L14.0291389,6.1442083 C14.2285759,5.95193057 14.5527889,5.95193057 14.7522259,6.1442083 L15.4753129,6.84377194 C15.6747499,7.03604967 15.6747499,7.35003511 15.4753129,7.54129009 L8.82741268,14.0367999 C8.62797568,14.2290777 8.3037627,14.2290777 8.1043257,14.0367999"></path></g></g></svg>');
+}
+input[type='checkbox']:checked {
+  background-color: #1677ff;
+  border-color: #1677ff;
+}
 .markdown-body ul.contains-task-list li.task-list-item {
   list-style-type: none;
 }
+
 .code__header {
   display: flex;
   justify-content: space-between;
@@ -89,9 +124,8 @@
   flex-shrink: 0;
 }
 .markdown-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
-    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei',
-    Arial, sans-serif;
+  line-height: 2em;
+  padding: 0 12px;
 }
 
 /*表格*/
