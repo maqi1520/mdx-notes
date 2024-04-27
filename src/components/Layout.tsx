@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import i18n, { t } from '@/utils/i18n'
 import Update from './Update'
-import useLocalStorage from 'react-use/lib/useLocalStorage'
 import {
   Dialog,
   DialogContent,
@@ -47,7 +46,7 @@ interface Config {
 
 export default function Layout({ children }: Props) {
   let [language, setLanguage] = useState('en')
-  let [config, setConfig] = useLocalStorage<Config>('config', {
+  let [config, setConfig] = useState<Config>({
     journalDir: '',
     journalTemplateDir: '',
     upload: 'none',
@@ -58,6 +57,7 @@ export default function Layout({ children }: Props) {
 
   function handleSave() {
     localStorage.setItem('language', language)
+    localStorage.setItem('config', JSON.stringify(config))
 
     i18n.changeLanguage(language)
     setIsOpen(false)
@@ -66,6 +66,9 @@ export default function Layout({ children }: Props) {
 
   useEffect(() => {
     setLanguage(localStorage.getItem('language') || 'en')
+    if (localStorage.getItem('config')) {
+      setConfig(JSON.parse(localStorage.getItem('config') || '{}'))
+    }
     ;(window as any).openSetting = () => setIsOpen(true)
   }, [])
 
