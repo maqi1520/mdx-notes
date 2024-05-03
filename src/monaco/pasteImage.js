@@ -21,7 +21,7 @@ const codeToUpload = {
       path: `${dirPath}${fileName}`,
       contents,
     })
-    return `/img/${time}.png`
+    return `./img/${time}.png`
   },
   PicGo: async () => {
     try {
