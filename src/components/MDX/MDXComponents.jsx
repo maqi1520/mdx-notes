@@ -7,6 +7,25 @@ import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'
 
+// 判断是否为 windows 路径
+function isWindowsPath(path){
+  return /^[a-zA-Z]:\\/.test(path)
+}
+
+function convertSrc(src) {
+  const isRemote = /^https?:\/\/|^data:image\//.test(src)
+  if (isRemote) {
+    return src
+  }  
+  const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
+  if(isWindowsPath(src)) {
+    return convertFileSrc('')+src
+  }
+  return convertFileSrc('')+`${baseUrl}${/^\//.test(src) ? src : '/' + src}`
+  
+  
+}
+
 export const MDXComponents = {
   h1: H1,
   h2: H2,
@@ -26,11 +45,7 @@ export const MDXComponents = {
   QRCodeBlock,
   img: (props) => {
     const { src } = props
-    const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
-    const isRemote = /^https?:\/\/|^data:image\//.test(src)
-    const url = isRemote
-      ? src
-      : convertFileSrc(`${baseUrl}${/^\//.test(src) ? src : '/' + src}`)
+    const url = convertSrc(src)
 
     if (!props.alt) {
       return <img {...props} src={url} />

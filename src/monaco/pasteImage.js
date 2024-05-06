@@ -53,7 +53,12 @@ export function listenPaste(editor) {
 
       if (matches) {
         const blob = items[i].getAsFile()
-        const config = JSON.parse(localStorage.getItem('config'))
+        const config = JSON.parse(localStorage.getItem('config')) ?? {
+          journalDir: '',
+          journalTemplateDir: '',
+          upload: 'none',
+          command: '',
+        }
         const fileName = await codeToUpload[config.upload](blob)
 
         editor.executeEdits('', [
