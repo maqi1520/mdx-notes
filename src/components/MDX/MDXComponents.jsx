@@ -3,12 +3,13 @@
 
 import React from 'react'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { getParentPath } from '@/components/utils/file-tree-util'
 
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'
 
 // 判断是否为 windows 路径
-function isWindowsPath(path){
+function isWindowsPath(path) {
   return /^[a-zA-Z]:\\/.test(path)
 }
 
@@ -16,14 +17,22 @@ function convertSrc(src) {
   const isRemote = /^https?:\/\/|^data:image\//.test(src)
   if (isRemote) {
     return src
-  }  
-  const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
-  if(isWindowsPath(src)) {
-    return convertFileSrc('')+src
   }
-  return convertFileSrc('')+`${baseUrl}${/^\//.test(src) ? src : '/' + src}`
-  
-  
+  const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
+  if (isWindowsPath(src)) {
+    return convertFileSrc('') + src
+  }
+  // 相对路径
+  if (/^\.?\//.test(src)) {
+    return (
+      convertFileSrc('') +
+      `${baseUrl}${src.startsWith('./') ? src.slice(1) : src}`
+    )
+  }
+  // 相对当前文件路径
+  const filePath = JSON.parse(localStorage.getItem('filePath'))
+  const filePathStr = getParentPath(filePath)
+  return convertFileSrc('') + `${filePathStr}${src}`
 }
 
 export const MDXComponents = {

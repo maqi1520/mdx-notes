@@ -144,10 +144,21 @@ export function renamePath(filePath, newName) {
   }
 }
 
+// 给定文件路径中获取当前文件名称
 export function getCurrentFolderName(filePath) {
   // 使用正则表达式匹配文件夹名
   const separator = filePath.includes('/') ? '/' : '\\' // 检测路径分隔符
   const parts = filePath.split(separator) // 将路径分割成数组
   const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
   return lastPart
+}
+
+//给定文件路径，获取当前文件的父级路径
+export function getParentPath(filePath) {
+  // 使用正则表达式匹配文件夹名
+  const separator = filePath.includes('/') ? '/' : '\\' // 检测路径分隔符
+  const parts = filePath.split(separator) // 将路径分割成数组
+  const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
+  const parentPath = filePath.replace(lastPart, '')
+  return parentPath
 }
