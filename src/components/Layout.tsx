@@ -109,6 +109,7 @@ export default function Layout({ children }: Props) {
               </label>
               <Input
                 value={config?.journalTemplateDir!}
+                placeholder="template/日记模版.md"
                 onChange={(e) =>
                   setConfig((prev: Config) => ({
                     ...prev,
