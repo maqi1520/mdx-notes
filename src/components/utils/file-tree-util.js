@@ -17,41 +17,13 @@ export function isMdFile(path) {
   return /\.mdx?$/.test(path)
 }
 
-export function mapTree(path, tree, fn) {
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i]
-    if (node.path === path) {
-      tree[i] = fn(node)
-      break
-    }
-    if (node.children) {
-      node.children = mapTree(path, node.children, fn)
-    }
-  }
-  return [...tree]
-}
-
+/** 文件名称双链找path */
 export function findPathInTree(name, data) {
   const current = data.find((item) => name === item.name)
   if (current) {
     return current.path
   }
   return null
-}
-
-export function findPathTree(path, tree) {
-  let inTree = false
-  for (let i = 0; i < tree.length; i++) {
-    const node = tree[i]
-    if (node.path === path) {
-      inTree = true
-      break
-    }
-    if (node.children) {
-      inTree = findPathTree(path, node.children)
-    }
-  }
-  return inTree
 }
 
 export function sortFile(array) {

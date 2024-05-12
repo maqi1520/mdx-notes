@@ -11,8 +11,6 @@ import React, {
 } from 'react'
 import {
   isMdFile,
-  mapTree,
-  findPathTree,
   sortFile,
   renamePath,
   getCurrentFolderName,
@@ -79,6 +77,13 @@ const FileTree = forwardRef(
     const [data, setData] = useState([])
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
     const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
+    const reloadTree = () => {
+      setCount(count + 1)
+    }
+    const [action, setAction] = useState({
+      path: '',
+      type: '',
+    })
 
     const openMd = async (file, content) => {
       if (!content) {
@@ -106,7 +111,7 @@ title: ${file}
           }
         }
         await writeTextFile(filePath, content)
-        setCount((p) => p + 1)
+        reloadTree()
       }
       onSelect(filePath)
       setSelectedKeys([filePath])
@@ -163,7 +168,7 @@ title: ${file}
           const fileName = 'Untitled_' + new Date().valueOf() + '.md'
           await writeTextFile(dirPath + '/' + fileName, '')
           setSelectedKeys([dirPath + '/' + fileName])
-          setCount((p) => p + 1)
+          reloadTree()
           onSelect(dirPath + '/' + fileName)
         } else {
           message(t('Please set the working directory'), {
@@ -227,6 +232,17 @@ title: ${file}
       })
     }, [dirPath, count])
 
+    const fileExists = async () => {
+      await message(t('File already exists'), {
+        title: t('Prompt'),
+        type: 'error',
+      })
+      setAction({
+        path: '',
+        type: '',
+      })
+    }
+
     useImperativeHandle(
       ref,
       () => ({
@@ -238,7 +254,7 @@ title: ${file}
         setScrollLine,
         openMd,
         createOrOpenDailyNote,
-        reload: () => setCount((p) => p + 1),
+        reload: reloadTree,
       }),
       []
     )
@@ -263,53 +279,96 @@ title: ${file}
     const onBlur = async (e) => {
       let name = e.target.value.trim()
       if (name === '') {
-        setCount(count + 1)
-        return
-      }
-
-      const path = e.target.dataset.path
-      const type = e.target.dataset.type
-      const isDir = e.target.dataset.dir === 'true'
-      if (!isDir && !isMdFile(name)) {
-        name = name + '.md'
-      }
-      const newPath = renamePath(path, name)
-      //  重命名文件名不变
-      if (type === 'rename' && path === newPath) {
-        setCount(count + 1)
-        return
-      }
-
-      if (findPathTree(newPath, data)) {
-        await message(t('File already exists'), {
-          title: t('Prompt'),
-          type: 'error',
+        setAction({
+          path: '',
+          type: '',
         })
-        setCount(count + 1)
         return
       }
-      if (type === 'rename') {
-        await renameFile(path, newPath)
-        const newSelectedKeys = selectedKeys.filter((k) => k !== path)
-        newSelectedKeys.push(newPath)
-        setSelectedKeys(newSelectedKeys)
-        if (selectedPath === path) {
+
+      const { type, path } = action
+
+      const actionObj = {
+        rename: async () => {
+          const isDir = e.target.dataset.dir === 'true'
+          if (!isDir && !isMdFile(name)) {
+            name = name + '.md'
+          }
+          const newPath = renamePath(path, name)
+          //  重命名文件名不变
+          if (path === newPath) {
+            setAction({
+              path: '',
+              type: '',
+            })
+            return
+          }
+          if (await exists(newPath)) {
+            await fileExists()
+            return
+          }
+          await renameFile(path, newPath)
+          reloadTree()
+          setAction({
+            path: '',
+            type: '',
+          })
           onSelect(newPath)
-        }
-      } else {
-        if (isDir) {
+        },
+        createDir: async () => {
+          const newPath = path + '/' + name
+          if (await exists(newPath)) {
+            await fileExists()
+            return
+          }
           await createDir(newPath, { recursive: true })
-        } else {
+          reloadTree()
+          setAction({
+            path: '',
+            type: '',
+          })
+        },
+        createFile: async () => {
+          if (!isMdFile(name)) {
+            name = name + '.md'
+          }
+          const newPath = path + '/' + name
+
+          if (await exists(newPath)) {
+            await fileExists()
+            return
+          }
           await writeTextFile(newPath, '')
           onSelect(newPath)
-        }
+          reloadTree()
+          setAction({
+            path: '',
+            type: '',
+          })
+        },
       }
-      setCount(count + 1)
+      //执行动作
+      actionObj[type]()
     }
 
     const treeData = useMemo(() => {
-      const loop = (data) => {
-        return sortFile(data)
+      const renterInput = (item, title) => (
+        <input
+          ref={refInput}
+          onBlur={onBlur}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13 || e.code === 'Escape') {
+              onBlur(e)
+            }
+          }}
+          data-dir={!item.isLeaf}
+          onClick={(e) => e.stopPropagation()}
+          className="h-[30px] mt-0 border-2 border-sky-500 w-[160px] bg-white text-black px-1 outline-none"
+          defaultValue={title}
+        />
+      )
+      const loop = (data, parent) => {
+        const result = sortFile(data)
           .map((item) => {
             if (item.name.startsWith('.')) {
               return false
@@ -317,34 +376,15 @@ title: ${file}
             const strTitle = !/^Untitled_\d{13}\.md$/.test(item.name)
               ? item.name
               : t('Untitled.md')
-
             let title = <span className="select-none">{strTitle}</span>
-
-            if (item.input) {
-              title = (
-                <input
-                  ref={refInput}
-                  onBlur={onBlur}
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13 || e.code === 'Escape') {
-                      onBlur(e)
-                    }
-                  }}
-                  data-name={item.name}
-                  data-type={item.input}
-                  data-path={item.path}
-                  data-dir={!!item.children}
-                  onClick={(e) => e.stopPropagation()}
-                  className="h-[30px] mt-0 border-2 border-sky-500 w-[160px] bg-white text-black px-1 outline-none"
-                  defaultValue={strTitle}
-                />
-              )
+            if (action.type === 'rename' && item.path === action.path) {
+              title = renterInput(item, strTitle)
             }
             if (item.children) {
               return {
                 title,
                 key: item.path,
-                children: loop(item.children),
+                children: loop(item.children, item),
               }
             }
             if (isMdFile(item.path)) {
@@ -357,10 +397,24 @@ title: ${file}
             return false
           })
           .filter(Boolean)
+        if (
+          (action.type === 'createDir' || action.type === 'createFile') &&
+          parent.path === action.path
+        ) {
+          return [
+            {
+              isLeaf: action.type === 'createFile',
+              title: renterInput({ path: parent.path }, ''),
+              key: parent.path,
+            },
+            ...result,
+          ]
+        }
+        return result
       }
 
-      return loop(data)
-    }, [searchValue, selectedPath, data])
+      return loop(data, { key: dirPath, title: 'root', path: dirPath })
+    }, [searchValue, selectedPath, data, action])
 
     const menuRef = useRef()
     const [selectedKeys, setSelectedKeys] = useState([selectedPath])
@@ -394,26 +448,13 @@ title: ${file}
     const handleCreateDir = () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
-      let newData
-      if (path === dirPath) {
-        newData = [
-          ...data,
-          { name: '', path: `${path}/.md`, input: true, children: [] },
-        ]
-      } else {
-        newData = mapTree(path, data, (node) => {
-          return {
-            ...node,
-            children: [
-              { name: '', path: `${path}/.md`, input: true, children: [] },
-              ...node.children,
-            ],
-          }
-        })
+      if (!expandedKeys.includes(path)) {
+        setExpandedKeys([...expandedKeys, path])
       }
-
-      setData(newData)
-      setExpandedKeys((prev) => [...prev, `${path}/.md`])
+      setAction({
+        path,
+        type: 'createDir',
+      })
       setTimeout(() => {
         if (refInput.current) {
           refInput.current.setSelectionRange(0, 8)
@@ -423,22 +464,13 @@ title: ${file}
     const handleCreate = () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
-      let newData
-      if (path === dirPath) {
-        newData = [...data, { name: '', path: `${path}/.md`, input: true }]
-      } else {
-        newData = mapTree(path, data, (node) => {
-          return {
-            ...node,
-            children: [
-              { name: '', path: `${path}/.md`, input: true },
-              ...node.children,
-            ],
-          }
-        })
+      if (!expandedKeys.includes(path)) {
+        setExpandedKeys([...expandedKeys, path])
       }
-      setExpandedKeys((prev) => [...prev, `${path}`])
-      setData(newData)
+      setAction({
+        path,
+        type: 'createFile',
+      })
       setTimeout(() => {
         if (refInput.current) {
           refInput.current.setSelectionRange(0, 8)
@@ -452,20 +484,17 @@ title: ${file}
       if (!path || path === dirPath) {
         return
       }
-      const newData = mapTree(path, data, (item) => {
-        return {
-          ...item,
-          input: 'rename',
-        }
+      setAction({
+        path,
+        type: 'rename',
       })
-      setData(newData)
       setTimeout(() => {
         if (refInput.current) {
           const value = refInput.current.value
           refInput.current.setSelectionRange(0, value.split('.md')[0].length)
         }
-      }, 100)
-    }, [selectedKeys, data, dirPath])
+      }, 300)
+    }, [selectedKeys, dirPath])
 
     const handleOpenFinder = async () => {
       setMenuStyle({ display: 'none' })
@@ -475,7 +504,7 @@ title: ${file}
 
     const handleRefresh = async () => {
       setMenuStyle({ display: 'none' })
-      setCount(count + 1)
+      reloadTree()
     }
     const handleDelete = useCallback(async () => {
       setMenuStyle({ display: 'none' })
@@ -499,7 +528,7 @@ title: ${file}
             recursive: true,
           })
         }
-        setCount((count) => count + 1)
+        reloadTree()
       }
     }, [selectedKeys, dirPath])
 
