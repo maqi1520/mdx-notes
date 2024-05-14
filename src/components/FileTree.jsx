@@ -49,6 +49,7 @@ import {
   FolderPlusIcon,
   ListTreeIcon,
   ListIcon,
+  XCircleIcon,
 } from 'lucide-react'
 import dayjs from 'dayjs'
 
@@ -72,6 +73,7 @@ const FileTree = forwardRef(
     const [count, setCount] = useState(0)
     const [searchValue, setSearchValue] = useState('')
 
+    const searchInputRef = useRef()
     const refInput = useRef([])
     const [searchList, setSearchList] = useState([])
     const [data, setData] = useState([])
@@ -583,15 +585,27 @@ title: ${file}
             <input
               className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
               aria-label="search"
+              ref={searchInputRef}
               onKeyDown={onChange}
             />
+            {searchValue && (
+              <XCircleIcon
+                onClick={() => {
+                  setSearchValue('')
+                  searchInputRef.current.value = ''
+                }}
+                className="w-4 h-4 cursor-pointer flex-none text-slate-300 dark:text-slate-400"
+              />
+            )}
           </div>
-          <span
-            onClick={() => setShowToc(!showToc)}
-            className="pl-2 cursor-pointer text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-          >
-            {showToc ? <ListIcon /> : <ListTreeIcon />}
-          </span>
+          {!searchValue && (
+            <span
+              onClick={() => setShowToc(!showToc)}
+              className="pl-2 cursor-pointer text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
+            >
+              {showToc ? <ListIcon /> : <ListTreeIcon />}
+            </span>
+          )}
         </div>
         <SearchList
           value={searchList}

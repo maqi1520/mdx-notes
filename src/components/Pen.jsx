@@ -156,6 +156,19 @@ export default function Pen() {
       })
     }
   }
+  useEffect(() => {
+    window.webViewFocus = async () => {
+      if (filePath) {
+        const res = await readTextFile(filePath)
+        if (res !== editorRef.current.documents.html.getModel().getValue()) {
+          setTimeout(() => {
+            editorRef.current.documents.html.getModel().setValue(res)
+          }, 10)
+        }
+      }
+    }
+  }, [filePath])
+
   const handleScroll = (line) => {
     editorRef.current.editor.revealLine(line)
   }

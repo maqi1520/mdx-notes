@@ -16,6 +16,14 @@ fn main() {
         .on_menu_event(menu_event_handle)
         .invoke_handler(tauri::generate_handler![folder::show_in_folder])
         .on_window_event(|event| {
+            if let tauri::WindowEvent::Focused(focus) = event.event() {
+                //println!("Focused: {}", focus);
+                if *focus {
+                    let js_code = "webViewFocus();";
+                    event.window().eval(js_code).unwrap();
+                }
+            }
+
             if let tauri::WindowEvent::CloseRequested { api, .. } = event.event() {
                 #[cfg(target_os = "macos")]
                 {
