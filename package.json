@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build && next export",
     "start": "next start",
     "build:icon": "tauri icon ./src-tauri/app-logo.png",
