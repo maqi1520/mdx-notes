@@ -156,36 +156,6 @@
 .markdown-body .task-list-item {
   list-style: none;
 }
-.markdown-body .task-list-item input[type='checkbox'] {
-  position: relative;
-}
-.markdown-body .task-list-item input[type='checkbox']::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: white;
-  border: 1px solid #f07c82;
-  border-radius: 3px;
-  box-sizing: border-box;
-  z-index: 1;
-}
-.markdown-body .task-list-item input[type='checkbox']:checked::after {
-  content: '✓';
-  position: absolute;
-  top: -5px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 0;
-  height: 0;
-  color: #f33b1f;
-  font-size: 16px;
-  font-weight: bold;
-  z-index: 2;
-}
 .markdown-body table {
   display: inline-block !important;
   font-size: 14px;

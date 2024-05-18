@@ -1,4 +1,4 @@
-import tailwind from '!!raw-loader!./tailwind-blue.css'
+import defaultSkin from '!!raw-loader!./default.css'
 import juejin from '!!raw-loader!./juejin.css'
 import vgreen from '!!raw-loader!./v-green.css'
 import vuepress from '!!raw-loader!./vuepress.css'
@@ -13,8 +13,8 @@ import { t } from '@/utils/i18n'
 
 export const themes = {
   default: {
-    name: t('SkyBlue'),
-    css: tailwind,
+    name: t('default'),
+    css: defaultSkin,
   },
   juejin: {
     name: t('JueJin'),

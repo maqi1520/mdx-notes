@@ -400,34 +400,7 @@ const Preview = forwardRef(
                     .markdown-body{
                       overflow-x:hidden;
                     }
-                    .darkmode-background {
-                        background: #fff;
-                        position: fixed;
-                        pointer-events: none;
-                        z-index: -10;
-                        width: 100%;
-                        height: 100%;
-                        top: 0;
-                        left: 0;
-                    }
-                    .darkmode-layer {
-                      width: 100%;
-                      height: 100%;
-                      top: 0;
-                      left: 0;
-                      position: fixed;
-                      pointer-events: none;
-                      background: #fff;
-                      transition: all 0.3s ease;
-                      mix-blend-mode: difference;
-                      display:none;
-                    }
-                    .darkmode--activated .darkmode-layer{
-                      display:block
-                    }
-                    body.darkmode--activated img, body.darkmode--activated .darkmode-ignore {
-                      isolation: isolate;
-                    }
+                    
                     </style>
                     <style type="text/css" media="print">
                     @page {
@@ -444,10 +417,10 @@ const Preview = forwardRef(
                     var hasCss = false
                     window.addEventListener('message', (e) => {
                       if(e.data.theme==='dark'){
-                        document.body.classList.add('darkmode--activated')
+                        document.body.classList.add('dark')
                       }
                       if(e.data.theme==='light'){
-                        document.body.classList.remove('darkmode--activated')
+                        document.body.classList.remove('dark')
                       }
                      
                       if (typeof e.data.line  !== 'undefined') {
@@ -514,8 +487,6 @@ const Preview = forwardRef(
                     </script>
                   </head>
                   <body>
-                    <div class="darkmode-background"></div>
-                   <div class="darkmode-layer"></div>
                     <div id="root"></div>
                     <script>
                   //  var previewEl = document
