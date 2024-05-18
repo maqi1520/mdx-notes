@@ -73,7 +73,11 @@ export const CopyBtn = ({
 
     const inlineHtml = inlineCSS(html, css)
     copyHtml(
-      inlineHtml.replace(/<div/g, '<section').replace(/<\/div>/g, '</section>')
+      inlineHtml
+        .replace(/<div/g, '<section')
+        .replace(/<\/div>/g, '</section>')
+        //暗黑皮肤颜色变量在微信不生效
+        .replace(/var\(--weui-BG-0\)/g, '#ededed')
     )
 
     setState({ state: 'copied' })

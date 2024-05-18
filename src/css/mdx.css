@@ -193,6 +193,24 @@ input[type='checkbox']:checked {
 pre {
   overflow-x: auto;
 }
+/*引用*/
+.markdown-body blockquote {
+  background-color: var(--weui-BG-0);
+  padding: 1px 16px;
+  margin: 16px 0;
+  border-radius: 5px;
+}
+/*行内代码*/
+.markdown-body p code,
+.markdown-body li code {
+  font-size: 14px;
+  word-break: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  background-color: var(--weui-BG-0);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+}
 
 /**
  * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
@@ -249,4 +267,61 @@ pre {
 }
 .materialLight .highlight-line {
   background-color: rgba(55, 65, 81, 0.2); /* Set highlight bg color */
+}
+
+.callout {
+  border-radius: 5px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border-left: 4px solid #10aeff;
+  background-color: rgba(16, 174, 255, 0.1);
+}
+
+.callout-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #10aeff;
+  display: flex;
+  align-items: start;
+}
+.callout-title svg {
+  margin-right: 8px;
+}
+.callout-content {
+  line-height: 1.5;
+}
+
+.callout-success {
+  background-color: rgba(6, 174, 86, 0.1);
+  border-left: 4px solid #3eb575;
+}
+.callout-success .callout-title {
+  color: #3eb575;
+}
+
+.callout-warning {
+  background-color: rgba(250, 157, 59, 0.1);
+  border-left: 4px solid #fa9d3b;
+}
+
+.callout-warning .callout-title {
+  color: #fa9d3b;
+}
+
+.callout-error {
+  background-color: rgba(250, 81, 81, 0.1);
+  border-left: 4px solid #fa5151;
+}
+
+.callout-error .callout-title {
+  color: #fa5151;
+}
+
+.callout-tip {
+  background-color: rgba(0, 191, 188, 0.1);
+  border-left: 4px solid rgb(0, 191, 188);
+}
+
+.callout-tip .callout-title {
+  color: rgb(0, 191, 188);
 }

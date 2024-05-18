@@ -1,8 +1,33 @@
+body {
+  --weui-BG-0: #ededed;
+  --weui-BG-2: #fff;
+  --weui-FG-0: rgba(0, 0, 0, 0.9);
+  --weui-FG-HALF: rgba(0, 0, 0, 0.9);
+  --weui-FG-1: rgba(0, 0, 0, 0.55);
+  --weui-FG-3: rgba(0, 0, 0, 0.1);
+  --weui-BRAND: #07c160;
+  --weui-LINK: #576b95;
+}
+
+body.dark {
+  --weui-BG-0: #111;
+  --weui-BG-2: #191919;
+  --weui-FG-0: rgba(255, 255, 255, 0.8);
+  --weui-FG-HALF: rgba(255, 255, 255, 0.6);
+  --weui-FG-1: rgba(255, 255, 255, 0.5);
+  --weui-FG-3: rgba(255, 255, 255, 0.1);
+  --weui-BRAND: #07c160;
+  --weui-LINK: #7d90a9;
+}
+
+body {
+  color: var(--weui-FG-HALF);
+  background-color: var(--weui-BG-2);
+}
 /*默认样式，最佳实践*/
 
 /*全局属性*/
 .markdown-body {
-  color: rgb(30 41 59);
   word-spacing: 0px;
   letter-spacing: 0px;
   word-break: break-word;
@@ -14,7 +39,6 @@
 .markdown-body p {
   margin-top: 16px;
   margin-bottom: 16px;
-  color: rgb(30 41 59);
 }
 
 /*标题*/
@@ -28,15 +52,13 @@
   margin-bottom: 15px;
   padding: 0px;
   font-weight: bold;
-  color: rgb(17 24 39);
+  color: var(--weui-FG-0);
 }
 .markdown-body h1 {
   font-size: 24px;
 }
 .markdown-body h2 {
   font-size: 22px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgb(236 236 236 / 50%);
 }
 .markdown-body h3 {
   font-size: 20px;
@@ -48,7 +70,7 @@
   font-size: 16px;
 }
 .markdown-body h6 {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /*列表*/
@@ -57,7 +79,6 @@
   margin-top: 8px;
   margin-bottom: 8px;
   padding-left: 25px;
-  color: rgb(30 41 59);
 }
 .markdown-body ul {
   list-style-type: disc;
@@ -75,62 +96,51 @@
   margin-bottom: 5px;
   line-height: 26px;
   text-align: left;
-  color: rgb(30 41 59);
   font-weight: 500;
 }
 
 /*引用*/
 .markdown-body blockquote {
-  background-color: #f0f9ff;
-  border-left: 4px solid #0fa4e9;
-  padding: 1px 23px;
-  margin: 22px 0;
+  background-color: var(--weui-BG-0);
+  border-left: 4px solid var(--weui-BRAND);
+  color: var(--weui-FG-HALF);
+  padding: 1px 16px;
+  margin: 16px 0;
+  border-radius: 5px;
 }
 
-.markdown-body blockquote h2,
-.markdown-body blockquote h3,
-.markdown-body blockquote h4,
-.markdown-body blockquote strong {
-  color: rgb(30 41 59);
-}
 .markdown-body blockquote p {
-  color: rgb(30 41 59);
   line-height: 26px;
+  color: var(--weui-FG-HALF);
 }
 
 /*链接*/
 .markdown-body a,
 .markdown-body .link {
-  padding: 2px 4px;
   text-decoration: none;
-  color: rgb(14 165 233);
+  color: var(--weui-LINK);
   word-wrap: break-word;
   font-weight: 600;
-  border-bottom: 1px solid rgb(14 165 233);
 }
 
 /*加粗*/
 .markdown-body strong {
   font-weight: bold;
-  color: rgb(17 24 39);
 }
 
 /*斜体*/
 .markdown-body em {
   font-style: italic;
-  color: rgb(17 24 39);
 }
 
 /*加粗斜体*/
 .markdown-body em strong {
   font-weight: bold;
-  color: rgb(17 24 39);
 }
 
 /*删除线*/
 .markdown-body del {
   font-style: italic;
-  color: rgb(30 41 59);
 }
 
 /*分隔线*/
@@ -140,7 +150,7 @@
   margin-top: 10px;
   margin-bottom: 10px;
   border: none;
-  border-top: 1px solid rgb(236 236 236 / 50%);
+  border-top: 1px solid var(--weui-FG-3);
 }
 
 /*行内代码*/
@@ -151,8 +161,8 @@
   padding: 2px 4px;
   border-radius: 4px;
   margin: 0 2px;
-  color: rgb(14 165 233);
-  background-color: rgb(15 164 233 / 8%);
+  color: var(--weui-BRAND);
+  background-color: var(--weui-BG-0);
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
 }
 
@@ -177,8 +187,8 @@
 .markdown-body img {
   display: block;
   max-width: 100%;
-  border-radius: 8px;
-  box-shadow: rgb(0 0 0 / 20%) 0px 0px 4px;
+  border-radius: 4px;
+  box-shadow: var(--weui-FG-1) 0px 0px 4px;
 }
 .qrcode-block img {
   border-radius: 0;
@@ -197,7 +207,7 @@
 .markdown-body figcaption {
   margin-top: 5px;
   text-align: center;
-  color: rgb(100, 116, 139);
+  color: var(--weui-LINK);
   font-size: 14px;
 }
 
@@ -211,13 +221,8 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-spacing: 0;
-  border: 1px solid rgb(236 236 236 / 50%);
+  border: 1px solid var(--weui-FG-3);
   border-collapse: collapse;
-}
-.markdown-body head {
-  border-bottom-width: 1px;
-  border-bottom-color: rgb(236 236 236 / 50%);
-  color: #334155;
 }
 
 .markdown-body table tr {
@@ -227,14 +232,15 @@
 .markdown-body table tr th,
 .markdown-body table tr td {
   border: 0;
-  border-bottom: 1px solid rgb(236 236 236 / 50%);
+  border-bottom: 1px solid var(--weui-FG-3);
   font-size: 16px;
   padding: 10px;
   text-align: left;
 }
 
 .markdown-body table tr th {
-  color: rgb(17 24 39);
+  color: var(--weui-FG-0);
+  background-color: var(--weui-BG-0);
   font-weight: bold;
 }
 

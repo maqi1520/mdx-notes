@@ -7,6 +7,7 @@ import { getParentPath } from '@/components/utils/file-tree-util'
 
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'
+import Blockquote from './Blockquote'
 
 // 判断是否为 windows 路径
 function isWindowsPath(path) {
@@ -50,6 +51,7 @@ export const MDXComponents = {
       </span>
     )
   },
+  blockquote: Blockquote,
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
