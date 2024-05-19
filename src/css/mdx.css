@@ -283,12 +283,17 @@ pre {
   color: #10aeff;
   display: flex;
   align-items: start;
+  text-transform: capitalize;
 }
 .callout-title svg {
   margin-right: 8px;
 }
 .callout-content {
   line-height: 1.5;
+}
+
+.markdown-body .callout-content p {
+  margin: 0;
 }
 
 .callout-success {

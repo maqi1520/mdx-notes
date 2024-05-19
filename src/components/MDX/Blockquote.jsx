@@ -3,53 +3,97 @@ import {
   PencilIcon,
   ZapIcon,
   AlertTriangleIcon,
-  CheckCircle2Icon,
+  XIcon,
+  BugIcon,
+  HelpCircleIcon,
+  CheckIcon,
   FlameIcon,
+  CheckCircleIcon,
+  ClipboardListIcon,
+  InfoIcon,
+  ListIcon,
+  QuoteIcon,
 } from 'lucide-react'
 
 const iconMap = {
-  warning: <AlertTriangleIcon />,
-  error: <ZapIcon />,
-  tip: <FlameIcon />,
   note: <PencilIcon />,
-  success: <CheckCircle2Icon />,
+  abstract: <ClipboardListIcon />,
+  summary: <ClipboardListIcon />,
+  info: <InfoIcon />,
+  todo: <CheckCircleIcon />,
+  tip: <FlameIcon />,
+  hint: <FlameIcon />,
+  important: <FlameIcon />,
+  success: <CheckIcon />,
+  check: <CheckIcon />,
+  done: <CheckIcon />,
+  question: <HelpCircleIcon />,
+  help: <HelpCircleIcon />,
+  faq: <HelpCircleIcon />,
+  warning: <AlertTriangleIcon />,
+  attention: <AlertTriangleIcon />,
+  caution: <AlertTriangleIcon />,
+  failure: <XIcon />,
+  missing: <XIcon />,
+  fail: <XIcon />,
+  danger: <ZapIcon />,
+  error: <ZapIcon />,
+  bug: <BugIcon />,
+  example: <ListIcon />,
+  quote: <QuoteIcon />,
+  cite: <QuoteIcon />,
+}
+
+const classMap = {
+  tip: ['tip', 'hint', 'important'],
+  error: ['error', 'failure', 'missing', 'fail', 'bug'],
+  warning: ['warning', 'attention', 'caution'],
+  success: ['success', 'done', 'summary', 'abstract'],
 }
 
 export default function Blockquote({ children, ...other }) {
-  const text = children[1]?.props.children || ''
-  const calloutRegex = /\[!(\w+)\](?:\s*(.*))?(\n([\s\S]*?)(?=\n\[!|\n?$))?/
+  let blockChildren = children[1]?.props.children || ''
+  let text = ''
+  let blockChildrenOther
+  if (Array.isArray(blockChildren) && typeof blockChildren[0] === 'string') {
+    text = blockChildren[0]
+    blockChildrenOther = blockChildren.slice(1)
+  } else if (typeof blockChildren === 'string') {
+    text = blockChildren
+  }
+
+  const calloutRegex = /\[!(\w+)\](?:[ \t]*(.*))?(\n([\s\S]*?)(?=\n\[!|\n?$))?/
   const match = calloutRegex.exec(text)
   if (match !== null) {
-    const [fullMatch, type, title, nextLine = '', content = ''] = match
-    const t = type.toLocaleLowerCase()
-    const texts = content.split('\n')
+    const [fullMatch, type, title = '', nextLine = '', content = ''] = match
+    const calloutType = type.toLocaleLowerCase()
+    if (calloutType) {
+      let className = 'info'
 
-    return (
-      <section {...other} className={`callout callout-${t}`}>
-        {title && (
+      for (const key in classMap) {
+        if (classMap[key].includes(calloutType)) {
+          className = key
+          break
+        }
+      }
+      return (
+        <section {...other} className={`callout callout-${className}`}>
           <section className="callout-title">
-            {iconMap[t] || <PencilIcon />} {title}
+            {iconMap[calloutType] || <PencilIcon />}
+            {title || calloutType}
           </section>
-        )}
-        {content && (
-          <section className="callout-content">
-            {texts.map((p, index) => (
-              <section key={index}>{p}</section>
-            ))}
-          </section>
-        )}
-      </section>
-    )
-  }
-  const texts = text.split('\n')
 
-  return (
-    <blockquote {...other}>
-      {text === '' ? (
-        <p style={{ overflow: 'hidden' }}></p>
-      ) : (
-        texts.map((p, index) => <p key={index}>{p}</p>)
-      )}
-    </blockquote>
-  )
+          <section className="callout-content">
+            <p>
+              {content}
+              {blockChildrenOther}
+            </p>
+            {children.slice(2)}
+          </section>
+        </section>
+      )
+    }
+  }
+
+  return <blockquote {...other}>{children}</blockquote>
 }
