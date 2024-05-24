@@ -7,6 +7,10 @@ import { writeTextFile } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/button'
 import { CopyIcon, Loader2 } from 'lucide-react'
+import { store } from '../monaco/data'
+import { baseCss, codeThemes } from '../css/mdx'
+import { themes as builtInThemes } from '../css/markdown-body'
+import { getFrontMatter } from '../hooks/compileMdx'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -35,13 +39,7 @@ function toDataURL(src, outputFormat) {
   })
 }
 
-export const CopyBtn = ({
-  editorRef,
-  previewRef,
-  htmlRef,
-  baseCss,
-  callback,
-}) => {
+export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
   const [{ state }, setState] = useState({
     state: 'idle',
     errorText: undefined,
@@ -49,7 +47,19 @@ export const CopyBtn = ({
 
   const handleClick = async () => {
     setState({ state: 'loading' })
-    const css = baseCss + editorRef.current.getValue('css')
+    const themes = {
+      ...builtInThemes,
+      ...store.pluginThemes,
+    }
+
+    const frontMatter = getFrontMatter(editorRef.current.getValue('html'))
+    const fileThemeName = frontMatter.theme
+    const css =
+      baseCss + themes[fileThemeName]
+        ? themes[fileThemeName].css
+        : themes[theme.markdownTheme].css +
+          codeThemes[theme.codeTheme].css +
+          editorRef.current.getValue('css')
 
     //将image url 转换为 base64
 
@@ -109,7 +119,6 @@ export const CopyBtn = ({
       if (filePath) {
         await writeTextFile(filePath, doc)
       }
-      callback(filePath)
     }
   }
   const handleExport = async () => {
@@ -130,7 +139,6 @@ export const CopyBtn = ({
       if (filePath) {
         await writeTextFile(filePath, md)
       }
-      callback(filePath)
     }
   }
   useEffect(() => {

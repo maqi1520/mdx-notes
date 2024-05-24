@@ -26,17 +26,14 @@ import { type } from '@tauri-apps/api/os'
 import {
   exists,
   createDir,
-  readDir,
   removeFile,
   renameFile,
   writeTextFile,
   readTextFile,
   removeDir,
-  BaseDirectory,
 } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { tauri } from '@tauri-apps/api'
-import initial from '@/utils/initial/'
 import { open as openLink } from '@tauri-apps/api/shell'
 import { store } from '../monaco/data'
 import Tree from './Tree'
@@ -58,7 +55,19 @@ async function show_in_folder(path) {
 }
 
 const FileTree = forwardRef(
-  ({ onSelect, selectedPath, showFileTree, setShowPPT, onScroll }, ref) => {
+  (
+    {
+      onSelect,
+      selectedPath,
+      showFileTree,
+      setShowPPT,
+      onScroll,
+      fileTreeData,
+      dirPath,
+      setDirPath,
+    },
+    ref
+  ) => {
     const [isMac, setIsMac] = useState(false)
     useLayoutEffect(() => {
       async function init() {
@@ -76,9 +85,7 @@ const FileTree = forwardRef(
     const searchInputRef = useRef()
     const refInput = useRef([])
     const [searchList, setSearchList] = useState([])
-    const [data, setData] = useState([])
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
-    const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
     const reloadTree = () => {
       setCount(count + 1)
     }
@@ -161,7 +168,7 @@ title: ${file}
       return () => {
         window.removeEventListener('message', handleMessage)
       }
-    }, [data])
+    }, [fileTreeData])
 
     useEffect(() => {
       // 新建快捷键
@@ -181,59 +188,6 @@ title: ${file}
       }
     }, [dirPath])
 
-    useEffect(() => {
-      exists(dirPath).then(async (res) => {
-        if (!res) {
-          const documentDirPath = await documentDir()
-          const path = await resolve(documentDirPath, 'mdx-editor')
-
-          if (!(await exists(path))) {
-            await createDir('mdx-editor', {
-              dir: BaseDirectory.Document,
-              recursive: true,
-            })
-
-            for (const key in initial) {
-              const content = initial[key]
-              await writeTextFile(path + `/${key}.md`, content)
-            }
-
-            setDirPath(path)
-          }
-        }
-      })
-    }, [])
-
-    useEffect(() => {
-      exists(dirPath).then(async (res) => {
-        if (res) {
-          readDir(dirPath, { recursive: true }).then((entries) => {
-            if (entries) {
-              store.mdFiles = []
-              const generateList = (data) => {
-                for (let i = 0; i < data.length; i++) {
-                  const node = data[i]
-                  if (isMdFile(node.name)) {
-                    store.mdFiles.push({
-                      name: node.name.split('.md')[0],
-                      path: node.path,
-                    })
-                  }
-                  if (node.children) {
-                    generateList(node.children)
-                  }
-                }
-              }
-
-              generateList(entries)
-
-              setData(entries)
-            }
-          })
-        }
-      })
-    }, [dirPath, count])
-
     const fileExists = async () => {
       await message(t('File already exists'), {
         title: t('Prompt'),
@@ -248,10 +202,7 @@ title: ${file}
     useImperativeHandle(
       ref,
       () => ({
-        setDirPath: (path) => {
-          setDirPath(path)
-          setExpandedKeys([])
-        },
+        setExpandedKeys,
         setToc,
         setScrollLine,
         openMd,
@@ -415,8 +366,8 @@ title: ${file}
         return result
       }
 
-      return loop(data, { key: dirPath, title: 'root', path: dirPath })
-    }, [searchValue, selectedPath, data, action])
+      return loop(fileTreeData, { key: dirPath, title: 'root', path: dirPath })
+    }, [searchValue, selectedPath, fileTreeData, action])
 
     const menuRef = useRef()
     const [selectedKeys, setSelectedKeys] = useState([selectedPath])

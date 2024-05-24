@@ -8,7 +8,6 @@ export default function Editor({
   initialContent = {},
   onChange,
   onScroll,
-  worker,
   activeTab,
   editorRef: inRef,
 }) {
@@ -21,7 +20,6 @@ export default function Editor({
       container: editorContainerRef.current,
       initialContent,
       onChange,
-      worker,
       onScroll,
     })
 

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
-import { Editor } from './Editor'
+import Editor from './EditorDesktop'
 import SplitPane from 'react-split-pane'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
@@ -19,16 +19,14 @@ import { Share } from './Share'
 import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
-import { themes } from '../css/markdown-body'
-import { compileMdx } from '../hooks/compileMdx'
+import { store } from '../monaco/data'
+import { themes as builtInThemes } from '../css/markdown-body'
+import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
 import { confirm } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
-import { listen } from '@tauri-apps/api/event'
 import FileTree from './FileTree'
 import { t } from '@/utils/i18n'
-import { getDefaultContent } from '../utils/getDefaultContent'
-import { get } from '../utils/database'
 import { sizeToObject } from '../utils/size'
 import {
   PenSquare,
@@ -44,33 +42,16 @@ const TAB_BAR_HEIGHT = 40
 const RESIZER_SIZE = 1
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
-export default function Pen() {
+export default function Pen({
+  dirPath,
+  setDirPath,
+  fileTreeData,
+  filePath,
+  setFilePath,
+}) {
   const router = useRouter()
   const query = router.query
   const [initialContent, setContent] = useState({})
-  useEffect(() => {
-    const getData = async () => {
-      let content
-      if (query.id) {
-        try {
-          content = await get(query.id)
-          setContent(content)
-          setFilePath('')
-          return
-        } catch (error) {
-          console.log(error)
-          content = getDefaultContent()
-        }
-      }
-
-      content = getDefaultContent()
-      if (filePath) {
-        content.html = await readTextFile(filePath)
-      }
-      setContent(content)
-    }
-    getData()
-  }, [query])
 
   const initialLayout = ['vertical', 'horizontal', 'preview'].includes(
     query.layout
@@ -102,7 +83,7 @@ export default function Pen() {
   )
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
-  const [showFileTree, setShowFileTree] = useState(false)
+  const [showFileTree, setShowFileTree] = useLocalStorage('showFileTree', false)
   const [fileTreeSize, setFileTreeSize] = useLocalStorage('file-tree-size', 250)
   const [theme, setTheme] = useLocalStorage('editor-theme', {
     markdownTheme: 'default',
@@ -128,7 +109,6 @@ export default function Pen() {
   }, [initialActiveTab])
 
   const refFileTree = useRef()
-  const [filePath, setFilePath] = useLocalStorage('filePath')
   const readMarkdown = async (path) => {
     if (/\.mdx?$/.test(path)) {
       if (dirty) {
@@ -141,21 +121,23 @@ export default function Pen() {
         )
         if (!confirmed) return
       }
-      setFilePath(path)
-      if (query.id) {
-        router.replace('/')
-        return
-      }
 
       readTextFile(path).then((res) => {
+        console.log('res', res)
+
         setTimeout(() => {
-          editorRef.current.documents.html.getModel().setValue(res)
-          editorRef.current.editor.revealLine(1)
-          inject({ scrollTop: true })
+          if (editorRef.current) {
+            editorRef.current.documents.html.getModel().setValue(res)
+            editorRef.current.editor.revealLine(1)
+            inject({ scrollTop: true })
+          } else {
+            setContent((prev) => ({ ...prev, html: res }))
+          }
         }, 10)
       })
     }
   }
+
   useEffect(() => {
     window.webViewFocus = async () => {
       if (filePath) {
@@ -167,21 +149,12 @@ export default function Pen() {
         }
       }
     }
+    readMarkdown(filePath)
   }, [filePath])
 
   const handleScroll = (line) => {
     editorRef.current.editor.revealLine(line)
   }
-  const handleDrop = useCallback(async () => {
-    listen('tauri://file-drop', async (event) => {
-      refFileTree.current.setDirPath(event.payload[0])
-      readMarkdown(event.payload[0])
-    })
-  }, [])
-
-  useEffect(() => {
-    handleDrop()
-  }, [handleDrop])
 
   useEffect(() => {
     if (dirty) {
@@ -208,6 +181,19 @@ export default function Pen() {
     }
     cancelSetError()
     setIsLoading(true)
+    const themes = {
+      ...builtInThemes,
+      ...store.pluginThemes,
+    }
+    const frontMatter = getFrontMatter(content.html)
+    const fileThemeName = frontMatter.theme
+    let codeTheme = codeThemes[theme.codeTheme].css
+    let markdownTheme = themes[theme.markdownTheme].css
+    console.log(themes)
+    if (themes[fileThemeName]) {
+      markdownTheme = themes[fileThemeName].css
+    }
+
     compileMdx(
       content.config,
       content.html,
@@ -228,16 +214,13 @@ export default function Pen() {
           //编译后的html保存到ref 中
           htmlRef.current = html
           inject({
-            css:
-              baseCss +
-              themes[theme.markdownTheme].css +
-              codeThemes[theme.codeTheme].css +
-              css,
+            css: baseCss + markdownTheme + codeTheme + css,
             html,
             codeTheme: theme.codeTheme,
           })
         }
       }
+
       refFileTree.current.setToc(toc)
       setWordCount(Count(content.html || ''))
       setIsLoading(false)
@@ -398,10 +381,6 @@ export default function Pen() {
     router.push('/slide')
   }, [])
 
-  const createOrOpenDailyNote = async () => {
-    refFileTree.current.createOrOpenDailyNote()
-  }
-
   // useEffect(() => {
   //   const handleMessage = (e) => {
   //     if (e.data.event === 'preview-scroll') {
@@ -423,10 +402,13 @@ export default function Pen() {
       onChange={setFileTreeSize}
     >
       <FileTree
+        dirPath={dirPath}
+        setDirPath={setDirPath}
+        fileTreeData={fileTreeData}
         onScroll={handleScroll}
         showFileTree={showFileTree}
         selectedPath={filePath}
-        onSelect={readMarkdown}
+        onSelect={setFilePath}
         ref={refFileTree}
         setShowPPT={handleShowPPT}
       />
@@ -435,7 +417,7 @@ export default function Pen() {
           logo={
             <LogoHome
               isActive={showFileTree}
-              onClick={() => setShowFileTree((v) => !v)}
+              onClick={() => setShowFileTree(!showFileTree)}
             />
           }
           rightbtn={
@@ -443,7 +425,7 @@ export default function Pen() {
               <ThemeDropdown
                 value={theme}
                 onChange={setTheme}
-                themes={themes}
+                themes={builtInThemes}
                 codeThemes={codeThemes}
               />
 
@@ -523,20 +505,15 @@ export default function Pen() {
               activeTab={activeTab}
             />
             <CopyBtn
+              theme={theme}
               htmlRef={htmlRef}
-              baseCss={
-                baseCss +
-                themes[theme.markdownTheme].css +
-                codeThemes[theme.codeTheme].css
-              }
               editorRef={editorRef}
               previewRef={previewRef}
-              callback={(path) => {
-                setFilePath(path)
-                refFileTree.current.reload()
-              }}
             />
-            <Button onClick={createOrOpenDailyNote} size="sm">
+            <Button
+              onClick={() => refFileTree.current.createOrOpenDailyNote()}
+              size="sm"
+            >
               <Pencil className="w-4 h-4 mr-1" />
               {t('journal')}
             </Button>
