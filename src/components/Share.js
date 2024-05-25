@@ -10,13 +10,10 @@ const HOSTNAME = 'https://editor.runjs.cool'
 
 export function Share({
   initialPath,
-  editorRef,
-  dirty,
+  resultRef,
   layout,
   responsiveSize,
-  activeTab,
   onShareStart,
-  onShareComplete,
 }) {
   const [{ state, path, errorText }, setState] = useState({
     state: 'disabled',
@@ -36,6 +33,7 @@ export function Share({
     let current = true
     if (state === 'loading') {
       if (onShareStart) onShareStart()
+      const { markdownTheme, jsx, md, frontMatter = {} } = resultRef.current
       window
         .fetch(process.env.NEXT_PUBLIC_API_URL + '/api/share', {
           method: 'POST',
@@ -43,9 +41,10 @@ export function Share({
             'content-type': 'application/json',
           },
           body: JSON.stringify({
-            html: editorRef.current.getValue('html'),
-            css: editorRef.current.getValue('css'),
-            config: editorRef.current.getValue('config'),
+            title: frontMatter.title || 'Untitled',
+            html: md,
+            css: markdownTheme,
+            config: jsx,
           }),
         })
         .then((res) => {
@@ -55,17 +54,9 @@ export function Share({
         .then((res) => res.json())
         .then((res) => {
           if (current) {
-            const localPath = `/${getLayoutQueryString({
-              id: res.id,
+            const newPath = `/post?id=${res.id}${getLayoutQueryString({
               layout,
               responsiveSize,
-              file: activeTab,
-            })}`
-
-            const newPath = `/${res.id}${getLayoutQueryString({
-              layout,
-              responsiveSize,
-              file: activeTab,
             })}`
 
             writeText(HOSTNAME + newPath)
@@ -79,7 +70,6 @@ export function Share({
                   setState({ state: 'disabled', path: newPath })
                 }
               })
-            if (onShareComplete) onShareComplete(localPath)
           }
         })
         .catch((error) => {
@@ -128,7 +118,7 @@ export function Share({
     return () => {
       current = false
     }
-  }, [state, path, editorRef, onShareStart, onShareComplete])
+  }, [state, path, onShareStart])
 
   return (
     <div className="flex items-center space-x-2 min-w-0">

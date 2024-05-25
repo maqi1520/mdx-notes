@@ -7,10 +7,6 @@ import { writeTextFile } from '@tauri-apps/api/fs'
 import { t } from '@/utils/i18n'
 import { Button } from '@/components/ui/button'
 import { CopyIcon, Loader2 } from 'lucide-react'
-import { store } from '../monaco/data'
-import { baseCss, codeThemes } from '../css/mdx'
-import { themes as builtInThemes } from '../css/markdown-body'
-import { getFrontMatter } from '../hooks/compileMdx'
 
 function inlineCSS(html, css) {
   return juice.inlineContent(html, css, {
@@ -39,7 +35,7 @@ function toDataURL(src, outputFormat) {
   })
 }
 
-export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
+export const CopyBtn = ({ previewRef, resultRef }) => {
   const [{ state }, setState] = useState({
     state: 'idle',
     errorText: undefined,
@@ -47,23 +43,12 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
 
   const handleClick = async () => {
     setState({ state: 'loading' })
-    const themes = {
-      ...builtInThemes,
-      ...store.pluginThemes,
-    }
 
-    const frontMatter = getFrontMatter(editorRef.current.getValue('html'))
-    const fileThemeName = frontMatter.theme
-    const css =
-      baseCss + themes[fileThemeName]
-        ? themes[fileThemeName].css
-        : themes[theme.markdownTheme].css +
-          codeThemes[theme.codeTheme].css +
-          editorRef.current.getValue('css')
+    const { html, css } = resultRef.current
 
     //将image url 转换为 base64
 
-    const $ = cheerio.load(htmlRef.current, null, false)
+    const $ = cheerio.load(html, null, false)
 
     $('p,section,div').each((index, element) => {
       const $element = $(element)
@@ -79,9 +64,9 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
         item.attribs.src = dataUrl
       }
     }
-    const html = $.html()
+    const htm = $.html()
 
-    const inlineHtml = inlineCSS(html, css)
+    const inlineHtml = inlineCSS(htm, css)
     copyHtml(
       inlineHtml
         .replace(/<div/g, '<section')
@@ -96,13 +81,9 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
     }, 3000)
   }
   const handleExportHtml = async () => {
-    const css = baseCss + editorRef.current.getValue('css')
-    const html = htmlRef.current
-    let md = editorRef.current.getValue('html')
+    const { html, css, frontMatter = {} } = resultRef.current
 
-    const title = md
-      ? md.split('\n')[0].replace('# ', '').slice(0, 50)
-      : 'MDX Editor'
+    const title = frontMatter.title || 'MDX Editor'
     if (html) {
       const doc = makeDoc(title, html, css)
       const filePath = await save({
@@ -122,9 +103,9 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
     }
   }
   const handleExport = async () => {
-    let md = editorRef.current.getValue('html')
+    const { frontMatter = {}, md } = resultRef.current
     if (md) {
-      const title = md.split('\n')[0].replace('# ', '').slice(0, 50)
+      const title = frontMatter.title || 'MDX Editor'
       const filePath = await save({
         title: t('Save'),
         filters: [
@@ -147,7 +128,7 @@ export const CopyBtn = ({ editorRef, previewRef, htmlRef, theme }) => {
     window.handleExportHtml = handleExportHtml
   }, [])
   const handleExportPDF = () => {
-    let md = editorRef.current.getValue('html')
+    const { md } = resultRef.current
     if (md) {
       previewRef.current.contentWindow.postMessage(
         {

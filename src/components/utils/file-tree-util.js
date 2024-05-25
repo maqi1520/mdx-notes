@@ -1,3 +1,5 @@
+import { convertFileSrc } from '@tauri-apps/api/tauri'
+
 export const getParentKey = (path, tree) => {
   let parentKey
   for (let i = 0; i < tree.length; i++) {
@@ -15,6 +17,10 @@ export const getParentKey = (path, tree) => {
 
 export function isMdFile(path) {
   return /\.mdx?$/.test(path)
+}
+
+export function isImageFile(path) {
+  return /\.(png|gif|jpg|jpeg|webp|bmp)$/.test(path)
 }
 
 /** 文件名称双链找path */
@@ -133,4 +139,31 @@ export function getParentPath(filePath) {
   const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
   const parentPath = filePath.replace(lastPart, '')
   return parentPath
+}
+
+// 判断是否为 windows 路径
+function isWindowsPath(path) {
+  return /^[a-zA-Z]:\\/.test(path)
+}
+
+export function convertSrc(src) {
+  const isRemote = /^https?:\/\/|^data:image\//.test(src)
+  if (isRemote) {
+    return src
+  }
+  const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
+  if (isWindowsPath(src)) {
+    return convertFileSrc('') + src
+  }
+  // 相对路径
+  if (/^\.?\//.test(src)) {
+    return (
+      convertFileSrc('') +
+      `${baseUrl}${src.startsWith('./') ? src.slice(1) : src}`
+    )
+  }
+  // 相对当前文件路径
+  const filePath = JSON.parse(localStorage.getItem('filePath'))
+  const filePathStr = getParentPath(filePath)
+  return convertFileSrc('') + `${filePathStr}${src}`
 }

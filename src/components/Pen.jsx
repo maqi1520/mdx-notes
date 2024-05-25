@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
-import Editor from './EditorDesktop'
+import Editor from './Editor'
 import SplitPane from 'react-split-pane'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
@@ -13,6 +13,7 @@ import Slide from './Slide'
 import MarkMap from './MarkMap'
 import { ErrorOverlay } from './ErrorOverlay'
 import Header from './Header'
+import ImagePreview from './ImagePreview'
 import { Button } from '@/components/ui/button'
 import { LogoHome } from './Logo'
 import { Share } from './Share'
@@ -23,8 +24,8 @@ import { store } from '../monaco/data'
 import { themes as builtInThemes } from '../css/markdown-body'
 import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
-import { confirm } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
+import { resolve } from '@tauri-apps/api/path'
 import FileTree from './FileTree'
 import { t } from '@/utils/i18n'
 import { sizeToObject } from '../utils/size'
@@ -36,6 +37,7 @@ import {
   Square,
 } from 'lucide-react'
 import clsx from 'clsx'
+import { isMdFile, isImageFile } from './utils/file-tree-util'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -45,13 +47,12 @@ const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 export default function Pen({
   dirPath,
   setDirPath,
-  fileTreeData,
   filePath,
   setFilePath,
+  defaultValue,
 }) {
   const router = useRouter()
   const query = router.query
-  const [initialContent, setContent] = useState({})
 
   const initialLayout = ['vertical', 'horizontal', 'preview'].includes(
     query.layout
@@ -59,18 +60,12 @@ export default function Pen({
     ? query.layout
     : 'vertical'
   const initialResponsiveSize = sizeToObject(query.size)
-  const initialActiveTab = ['html', 'css', 'config'].includes(query.file)
-    ? query.file
-    : 'html'
 
-  const htmlRef = useRef()
+  const resultRef = useRef()
   const previewRef = useRef()
   const [size, setSize] = useState({ percentage: 0.5, layout: initialLayout })
   const [resizing, setResizing] = useState(false)
-  const [activeTab, setActiveTab] = useState(initialActiveTab)
-  const [activePane, setActivePane] = useState(
-    initialLayout === 'preview' ? 'preview' : 'editor'
-  )
+
   const isLg = useMedia('(min-width: 1024px)')
   const [dirty, setDirty] = useState(false) //是否修改过
   const [renderEditor, setRenderEditor] = useState(false)
@@ -104,56 +99,27 @@ export default function Pen({
     setResponsiveDesignMode(Boolean(initialResponsiveSize))
     setResponsiveSize(initialResponsiveSize || DEFAULT_RESPONSIVE_SIZE)
   }, [initialResponsiveSize])
-  useEffect(() => {
-    setActiveTab(initialActiveTab)
-  }, [initialActiveTab])
 
   const refFileTree = useRef()
-  const readMarkdown = async (path) => {
-    if (/\.mdx?$/.test(path)) {
-      if (dirty) {
-        const confirmed = await confirm(
-          t("If you don't save, your changes will be lost"),
-          {
-            title: t('The current file is not saved'),
-            type: 'warning',
-          }
-        )
-        if (!confirmed) return
-      }
-
-      readTextFile(path).then((res) => {
-        console.log('res', res)
-
-        setTimeout(() => {
-          if (editorRef.current) {
-            editorRef.current.documents.html.getModel().setValue(res)
-            editorRef.current.editor.revealLine(1)
-            inject({ scrollTop: true })
-          } else {
-            setContent((prev) => ({ ...prev, html: res }))
-          }
-        }, 10)
-      })
-    }
-  }
 
   useEffect(() => {
     window.webViewFocus = async () => {
       if (filePath) {
         const res = await readTextFile(filePath)
-        if (res !== editorRef.current.documents.html.getModel().getValue()) {
+        if (res !== editorRef.current.getModel().getValue()) {
           setTimeout(() => {
-            editorRef.current.documents.html.getModel().setValue(res)
+            editorRef.current.getModel().setValue(res)
           }, 10)
         }
       }
     }
-    readMarkdown(filePath)
+    if (isMdFile(filePath)) {
+      inject({ scrollTop: true })
+    }
   }, [filePath])
 
   const handleScroll = (line) => {
-    editorRef.current.editor.revealLine(line)
+    editorRef.current.revealLine(line)
   }
 
   useEffect(() => {
@@ -174,91 +140,103 @@ export default function Pen({
   }, [])
 
   async function compileNow(content) {
-    localStorage.setItem('content', JSON.stringify(content))
-    if (slideRef.current) {
-      slideRef.current.setState(content)
-      return
-    }
-    cancelSetError()
-    setIsLoading(true)
-    const themes = {
-      ...builtInThemes,
-      ...store.pluginThemes,
-    }
-    const frontMatter = getFrontMatter(content.html)
-    const fileThemeName = frontMatter.theme
-    let codeTheme = codeThemes[theme.codeTheme].css
-    let markdownTheme = themes[theme.markdownTheme].css
-    console.log(themes)
-    if (themes[fileThemeName]) {
-      markdownTheme = themes[fileThemeName].css
-    }
-
-    compileMdx(
-      content.config,
-      content.html,
-      theme.isMac,
-      'markdown-body',
-      theme.formatMarkdown,
-      theme.raw
-    ).then((res) => {
-      if (res.err) {
-        setError(res.err)
-      } else {
-        setErrorImmediate()
+    console.log('compile', filePath)
+    if (isMdFile(filePath)) {
+      localStorage.setItem('content', JSON.stringify(content))
+      if (slideRef.current) {
+        slideRef.current.setState(content)
+        return
       }
-      const { html, toc } = res
-      if (html) {
-        const { css } = content
-        if (css || html) {
-          //编译后的html保存到ref 中
-          htmlRef.current = html
-          inject({
-            css: baseCss + markdownTheme + codeTheme + css,
-            html,
-            codeTheme: theme.codeTheme,
-          })
+      cancelSetError()
+      setIsLoading(true)
+      const themes = {
+        ...builtInThemes,
+        ...store.pluginThemes,
+      }
+      const frontMatter = getFrontMatter(content)
+      const fileThemeName = frontMatter.theme
+      let codeTheme = codeThemes[theme.codeTheme].css
+      let markdownTheme = themes[theme.markdownTheme].css
+      let jsx = ''
+      if (fileThemeName) {
+        try {
+          const cssPath = await resolve(
+            dirPath,
+            `plugins/themes/${fileThemeName}.css`
+          )
+          markdownTheme = await readTextFile(cssPath)
+          const jsPath = await resolve(
+            dirPath,
+            `plugins/themes/${fileThemeName}.js`
+          )
+          jsx = await readTextFile(jsPath)
+        } catch (error) {
+          console.log(error)
         }
       }
+      console.log(jsx)
 
-      refFileTree.current.setToc(toc)
-      setWordCount(Count(content.html || ''))
-      setIsLoading(false)
-    })
+      compileMdx(
+        jsx,
+        content,
+        theme.isMac,
+        'markdown-body',
+        theme.formatMarkdown,
+        theme.raw
+      ).then((res) => {
+        if (res.err) {
+          setError(res.err)
+        } else {
+          setErrorImmediate()
+        }
+        const { html, toc } = res
+        if (html) {
+          if (html) {
+            const result = {
+              md: content,
+              markdownTheme,
+              jsx,
+              frontMatter,
+              css: baseCss + markdownTheme + codeTheme,
+              html,
+              codeTheme: theme.codeTheme,
+            }
+            //编译后的结果保存到ref 中
+            resultRef.current = result
+            inject(result)
+          }
+        }
+
+        refFileTree.current.setToc(toc)
+        setWordCount(Count(content || ''))
+        setIsLoading(false)
+      })
+    }
   }
 
-  const compile = useCallback(
-    debounce((content) => {
-      compileNow(content)
+  // 切换文件的时候渲染
+  useEffect(() => {
+    compileNow(defaultValue)
+  }, [defaultValue])
+
+  const onChange = useCallback(
+    debounce((value) => {
+      compileNow(value)
       if (filePath) {
-        writeTextFile(filePath, content.html).then(() => {
-          setDirty(false)
-        })
+        console.log('write', filePath)
+        writeTextFile(filePath, value)
+          .then(() => {
+            setDirty(false)
+          })
+          .catch((err) => {
+            console.log(err)
+            setDirty(true)
+          })
       } else {
         setDirty(true)
       }
-    }, 200),
-    [theme, filePath]
-  )
-
-  useEffect(() => {
-    setDirty(false)
-    compileNow({
-      html: initialContent.html,
-      css: initialContent.css,
-      config: initialContent.config,
-    })
-  }, [initialContent])
-
-  const onChange = useCallback(
-    (document, content) => {
-      compile({
-        html: content.html,
-        css: content.css,
-        config: content.config,
-      })
-    },
-    [compile]
+    }, 500),
+    [filePath]
   )
 
   useIsomorphicLayoutEffect(() => {
@@ -295,11 +273,7 @@ export default function Pen({
           }
         }
 
-        const newSize =
-          (isLg && size.layout !== 'preview') ||
-          (!isLg && activePane === 'editor')
-            ? windowSize
-            : 0
+        const newSize = isLg && size.layout !== 'preview' ? windowSize : 0
 
         return {
           ...size,
@@ -314,17 +288,15 @@ export default function Pen({
     return () => {
       window.removeEventListener('resize', updateSize)
     }
-  }, [isLg, size.layout, activePane, showFileTree, fileTreeSize])
+  }, [isLg, size.layout, showFileTree, fileTreeSize])
 
   useEffect(() => {
     if (isLg) {
       if (size.layout !== 'preview') {
         setRenderEditor(true)
       }
-    } else if (activePane === 'editor') {
-      setRenderEditor(true)
     }
-  }, [activePane, isLg, size.layout])
+  }, [isLg, size.layout])
 
   useEffect(() => {
     if (resizing) {
@@ -363,19 +335,15 @@ export default function Pen({
 
   useEffect(() => {
     if (editorRef.current) {
-      compileNow({
-        html: editorRef.current.getValue('html'),
-        css: editorRef.current.getValue('css'),
-        config: editorRef.current.getValue('config'),
-      })
+      compileNow(editorRef.current.getModel().getValue())
     }
   }, [theme])
 
   const handleShowPPT = useCallback(() => {
     const slideContent = {
-      html: editorRef.current.getValue('html'),
-      css: editorRef.current.getValue('css'),
-      config: editorRef.current.getValue('config'),
+      html: editorRef.current.getModel().getValue(),
+      css: '',
+      config: '',
     }
     localStorage.setItem('slide', JSON.stringify(slideContent))
     router.push('/slide')
@@ -404,7 +372,6 @@ export default function Pen({
       <FileTree
         dirPath={dirPath}
         setDirPath={setDirPath}
-        fileTreeData={fileTreeData}
         onScroll={handleScroll}
         showFileTree={showFileTree}
         selectedPath={filePath}
@@ -412,196 +379,188 @@ export default function Pen({
         ref={refFileTree}
         setShowPPT={handleShowPPT}
       />
-      <div className="h-full flex flex-col">
-        <Header
-          logo={
-            <LogoHome
-              isActive={showFileTree}
-              onClick={() => setShowFileTree(!showFileTree)}
-            />
-          }
-          rightbtn={
-            <>
-              <ThemeDropdown
-                value={theme}
-                onChange={setTheme}
-                themes={builtInThemes}
-                codeThemes={codeThemes}
+      {isImageFile(filePath) ? (
+        <ImagePreview path={filePath} />
+      ) : (
+        <div className="h-full flex flex-col">
+          <Header
+            logo={
+              <LogoHome
+                isActive={showFileTree}
+                onClick={() => setShowFileTree(!showFileTree)}
               />
-
-              <div className="hidden lg:flex items-center ml-2 rounded-md shadow-sm border dark:bg-gray-800 dark:shadow-highlight/4">
-                <Button
-                  className="border-0 rounded-none"
-                  size="icon"
-                  variant="outline"
-                  onClick={() =>
-                    setSize((size) => ({ ...size, layout: 'vertical' }))
-                  }
-                >
-                  <Columns
-                    className={clsx('w-5 h-5', {
-                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
-                        size.layout === 'vertical',
-                    })}
-                  />
-                </Button>
-                <Button
-                  className="border-0 rounded-none"
-                  size="icon"
-                  variant="outline"
-                  onClick={() =>
-                    setSize((size) => ({
-                      ...size,
-                      layout: 'editor',
-                    }))
-                  }
-                >
-                  <PenSquare
-                    className={clsx('w-5 h-5', {
-                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
-                        size.layout === 'editor',
-                    })}
-                  />
-                </Button>
-                <Button
-                  className="border-0 rounded-none"
-                  size="icon"
-                  variant="outline"
-                  onClick={() =>
-                    setSize((size) => ({ ...size, layout: 'preview' }))
-                  }
-                >
-                  <Square
-                    className={clsx('w-5 h-5', {
-                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
-                        size.layout === 'preview',
-                    })}
-                  />
-                </Button>
-                <Button
-                  className="border-0 rounded-none"
-                  size="icon"
-                  variant="outline"
-                  onClick={() => setResponsiveDesignMode(!responsiveDesignMode)}
-                >
-                  <MonitorSmartphone
-                    className={clsx('w-5 h-5', {
-                      'stroke-primary fill-sky-100 dark:fill-sky-400/50':
-                        responsiveDesignMode,
-                    })}
-                  />
-                </Button>
-              </div>
-            </>
-          }
-        >
-          <div className="hidden sm:flex space-x-2">
-            <Share
-              editorRef={editorRef}
-              dirty
-              initialPath={query.id ? `/${query.id}` : undefined}
-              layout={size.layout}
-              responsiveSize={responsiveDesignMode ? responsiveSize : undefined}
-              activeTab={activeTab}
-            />
-            <CopyBtn
-              theme={theme}
-              htmlRef={htmlRef}
-              editorRef={editorRef}
-              previewRef={previewRef}
-            />
-            <Button
-              onClick={() => refFileTree.current.createOrOpenDailyNote()}
-              size="sm"
-            >
-              <Pencil className="w-4 h-4 mr-1" />
-              {t('journal')}
-            </Button>
-          </div>
-        </Header>
-        <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
-          {initialContent && typeof size.current !== 'undefined' ? (
-            <>
-              {(!isLg || size.layout !== 'preview') && (
-                <TabBar
-                  width={
-                    size.layout === 'vertical' && isLg ? size.current : '100%'
-                  }
-                  isLoading={isLoading}
-                  dirty={dirty}
-                  wordCount={wordCount}
-                  showPreviewTab={!isLg}
-                  activeTab={
-                    isLg || activePane === 'editor' ? activeTab : 'preview'
-                  }
-                  onChange={(tab) => {
-                    if (tab === 'preview') {
-                      setActivePane('preview')
-                    } else {
-                      setActivePane('editor')
-                      setActiveTab(tab)
-                    }
-                  }}
+            }
+            rightbtn={
+              <>
+                <ThemeDropdown
+                  value={theme}
+                  onChange={setTheme}
+                  themes={builtInThemes}
+                  codeThemes={codeThemes}
                 />
-              )}
-              <SplitPane
-                split={size.layout === 'horizontal' ? 'horizontal' : 'vertical'}
-                minSize={size.min}
-                maxSize={size.max}
-                size={size.current}
-                onChange={updateCurrentSize}
-                paneStyle={{ marginTop: -1 }}
-                pane1Style={{ display: 'flex', flexDirection: 'column' }}
-                onDragStarted={() => setResizing(true)}
-                onDragFinished={() => setResizing(false)}
-                allowResize={isLg && size.layout !== 'preview'}
-                resizerClassName={
-                  isLg && size.layout !== 'preview'
-                    ? 'Resizer'
-                    : 'Resizer-collapsed'
+
+                <div className="hidden lg:flex items-center ml-2 rounded-md shadow-sm border dark:bg-gray-800 dark:shadow-highlight/4">
+                  <Button
+                    className="border-0 rounded-none"
+                    size="icon"
+                    variant="outline"
+                    onClick={() =>
+                      setSize((size) => ({ ...size, layout: 'vertical' }))
+                    }
+                  >
+                    <Columns
+                      className={clsx('w-5 h-5', {
+                        'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                          size.layout === 'vertical',
+                      })}
+                    />
+                  </Button>
+                  <Button
+                    className="border-0 rounded-none"
+                    size="icon"
+                    variant="outline"
+                    onClick={() =>
+                      setSize((size) => ({
+                        ...size,
+                        layout: 'editor',
+                      }))
+                    }
+                  >
+                    <PenSquare
+                      className={clsx('w-5 h-5', {
+                        'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                          size.layout === 'editor',
+                      })}
+                    />
+                  </Button>
+                  <Button
+                    className="border-0 rounded-none"
+                    size="icon"
+                    variant="outline"
+                    onClick={() =>
+                      setSize((size) => ({ ...size, layout: 'preview' }))
+                    }
+                  >
+                    <Square
+                      className={clsx('w-5 h-5', {
+                        'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                          size.layout === 'preview',
+                      })}
+                    />
+                  </Button>
+                  <Button
+                    className="border-0 rounded-none"
+                    size="icon"
+                    variant="outline"
+                    onClick={() =>
+                      setResponsiveDesignMode(!responsiveDesignMode)
+                    }
+                  >
+                    <MonitorSmartphone
+                      className={clsx('w-5 h-5', {
+                        'stroke-primary fill-sky-100 dark:fill-sky-400/50':
+                          responsiveDesignMode,
+                      })}
+                    />
+                  </Button>
+                </div>
+              </>
+            }
+          >
+            <div className="hidden sm:flex space-x-2">
+              <Share
+                resultRef={resultRef}
+                layout={size.layout}
+                responsiveSize={
+                  responsiveDesignMode ? responsiveSize : undefined
                 }
+              />
+              <CopyBtn resultRef={resultRef} previewRef={previewRef} />
+              <Button
+                onClick={() => refFileTree.current.createOrOpenDailyNote()}
+                size="sm"
               >
-                <div className="border-t border-gray-200 dark:border-white/10 mt-12 flex-auto flex">
-                  {renderEditor && (
-                    <Editor
-                      editorRef={(ref) => (editorRef.current = ref)}
-                      initialContent={initialContent}
-                      onChange={onChange}
-                      onScroll={(line) => {
-                        inject({ line })
-                        refFileTree.current.setScrollLine(line)
-                      }}
-                      activeTab={activeTab}
-                    />
-                  )}
-                </div>
-                <div className="absolute inset-0 w-full md:h-full top-12 lg:top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-slate-950">
-                  {theme.view === 'ppt' ? (
-                    <Slide ref={slideRef} />
-                  ) : theme.view === 'MindMap' ? (
-                    <MarkMap ref={slideRef} />
-                  ) : (
-                    <Preview
-                      ref={previewRef}
-                      responsiveDesignMode={
-                        size.layout !== 'editor' && isLg && responsiveDesignMode
-                      }
-                      responsiveSize={responsiveSize}
-                      onChangeResponsiveSize={setResponsiveSize}
-                      iframeClassName={resizing ? 'pointer-events-none' : ''}
-                    />
-                  )}
-                  <ErrorOverlay
-                    value={theme}
-                    onChange={setTheme}
-                    error={error}
+                <Pencil className="w-4 h-4 mr-1" />
+                {t('journal')}
+              </Button>
+            </div>
+          </Header>
+          <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
+            {typeof size.current !== 'undefined' ? (
+              <>
+                {(!isLg || size.layout !== 'preview') && (
+                  <TabBar
+                    width={
+                      size.layout === 'vertical' && isLg ? size.current : '100%'
+                    }
+                    isLoading={isLoading}
+                    dirty={dirty}
+                    wordCount={wordCount}
                   />
-                </div>
-              </SplitPane>
-            </>
-          ) : null}
-        </main>
-      </div>
+                )}
+                <SplitPane
+                  split={
+                    size.layout === 'horizontal' ? 'horizontal' : 'vertical'
+                  }
+                  minSize={size.min}
+                  maxSize={size.max}
+                  size={size.current}
+                  onChange={updateCurrentSize}
+                  paneStyle={{ marginTop: -1 }}
+                  pane1Style={{ display: 'flex', flexDirection: 'column' }}
+                  onDragStarted={() => setResizing(true)}
+                  onDragFinished={() => setResizing(false)}
+                  allowResize={isLg && size.layout !== 'preview'}
+                  resizerClassName={
+                    isLg && size.layout !== 'preview'
+                      ? 'Resizer'
+                      : 'Resizer-collapsed'
+                  }
+                >
+                  <div className="border-t border-gray-200 dark:border-white/10 flex-auto flex">
+                    {renderEditor && (
+                      <Editor
+                        onMount={(ref) => (editorRef.current = ref)}
+                        defaultValue={defaultValue}
+                        onChange={onChange}
+                        onScroll={(line) => {
+                          inject({ line })
+                          refFileTree.current.setScrollLine(line)
+                        }}
+                        path={filePath}
+                      />
+                    )}
+                  </div>
+                  <div className="absolute inset-0 w-full md:h-full top-0 border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-slate-950">
+                    {theme.view === 'ppt' ? (
+                      <Slide ref={slideRef} />
+                    ) : theme.view === 'MindMap' ? (
+                      <MarkMap ref={slideRef} />
+                    ) : (
+                      <Preview
+                        ref={previewRef}
+                        responsiveDesignMode={
+                          size.layout !== 'editor' &&
+                          isLg &&
+                          responsiveDesignMode
+                        }
+                        responsiveSize={responsiveSize}
+                        onChangeResponsiveSize={setResponsiveSize}
+                        iframeClassName={resizing ? 'pointer-events-none' : ''}
+                      />
+                    )}
+                    <ErrorOverlay
+                      value={theme}
+                      onChange={setTheme}
+                      error={error}
+                    />
+                  </div>
+                </SplitPane>
+              </>
+            ) : null}
+          </main>
+        </div>
+      )}
     </SplitPane>
   )
 }

@@ -10,7 +10,6 @@ export function getLayoutQueryString({ layout, responsiveSize, file, id }) {
   return Object.keys(params)
     .filter((key) => params[key])
     .reduce((acc, key, i) => {
-      if (i === 0) return `?${key}=${params[key]}`
       return `${acc}&${key}=${params[key]}`
     }, '')
 }

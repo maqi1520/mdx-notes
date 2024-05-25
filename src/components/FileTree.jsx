@@ -25,6 +25,7 @@ import { appWindow } from '@tauri-apps/api/window'
 import { type } from '@tauri-apps/api/os'
 import {
   exists,
+  readDir,
   createDir,
   removeFile,
   renameFile,
@@ -62,7 +63,6 @@ const FileTree = forwardRef(
       showFileTree,
       setShowPPT,
       onScroll,
-      fileTreeData,
       dirPath,
       setDirPath,
     },
@@ -79,16 +79,44 @@ const FileTree = forwardRef(
     const [scrollLine, setScrollLine] = useState(1)
     const [toc, setToc] = useState([])
     const [showToc, setShowToc] = useState(false)
-    const [count, setCount] = useState(0)
     const [searchValue, setSearchValue] = useState('')
 
     const searchInputRef = useRef()
     const refInput = useRef([])
     const [searchList, setSearchList] = useState([])
     const [expandedKeys, setExpandedKeys] = useLocalStorage('expandedKeys', [])
-    const reloadTree = () => {
-      setCount(count + 1)
+    const [fileTreeData, setTreeData] = useState([])
+
+    const reloadTree = async () => {
+      const res = await exists(dirPath)
+      if (res) {
+        const entries = await readDir(dirPath, { recursive: true })
+        if (entries) {
+          store.mdFiles = []
+          const generateList = (data) => {
+            for (let i = 0; i < data.length; i++) {
+              const node = data[i]
+              if (isMdFile(node.name)) {
+                store.mdFiles.push({
+                  name: node.name.split('.md')[0],
+                  path: node.path,
+                })
+              }
+              if (node.children) {
+                generateList(node.children)
+              }
+            }
+          }
+
+          generateList(entries)
+
+          setTreeData(entries)
+        }
+      }
     }
+    useEffect(() => {
+      reloadTree()
+    }, [dirPath])
     const [action, setAction] = useState({
       path: '',
       type: '',
@@ -282,7 +310,7 @@ title: ${file}
           })
         },
         createFile: async () => {
-          if (!isMdFile(name)) {
+          if (!/\.(md|css|js)/.test(name)) {
             name = name + '.md'
           }
           const newPath = path + '/' + name
@@ -340,7 +368,7 @@ title: ${file}
                 children: loop(item.children, item),
               }
             }
-            if (isMdFile(item.path)) {
+            if (item.path) {
               return {
                 isLeaf: true,
                 title,
@@ -602,9 +630,7 @@ title: ${file}
                 expandedKeys={expandedKeys}
                 setExpandedKeys={setExpandedKeys}
                 onSelect={(key) => {
-                  if (isMdFile(key)) {
-                    onSelect(key)
-                  }
+                  onSelect(key)
                 }}
                 selectedPath={selectedPath}
                 treeData={treeData}

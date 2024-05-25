@@ -1,54 +1,16 @@
 import clsx from 'clsx'
 import { t } from '@/utils/i18n'
 
-export function TabBar({
-  errorMessage,
-  wordCount,
-  activeTab,
-  width,
-  isLoading,
-  showPreviewTab,
-  dirty,
-  onChange,
-}) {
+export function TabBar({ errorMessage, wordCount, width, isLoading, dirty }) {
   return (
     <div
-      className="flex items-center flex-none pl-5 pr-4 sm:pl-6 absolute z-10 top-0 left-0 -mb-px antialiased"
+      className="flex items-center absolute z-10 bottom-0 left-0  antialiased  group px-6 py-[10px]  leading-6 bg-white font-semibold focus:outline-none text-gray-700 hover:text-gray-900 dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white justify-between border-t border-b-gray-900/10 dark:bg-gradient-to-b dark:from-[#242F41] dark:to-gray-800 dark:shadow-highlight/4  dark:border-white/[0.06]"
       style={{
         width,
-        fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"',
       }}
     >
-      <div className="flex space-x-5">
-        <TabButton
-          isActive={activeTab === 'html'}
-          onClick={() => onChange('html')}
-        >
-          MDX
-        </TabButton>
-        <TabButton
-          isActive={activeTab === 'css'}
-          onClick={() => onChange('css')}
-        >
-          CSS
-        </TabButton>
-        <TabButton
-          isActive={activeTab === 'config'}
-          onClick={() => onChange('config')}
-        >
-          Config
-        </TabButton>
-        {showPreviewTab && (
-          <TabButton
-            isActive={activeTab === 'preview'}
-            onClick={() => onChange('preview')}
-          >
-            Preview
-          </TabButton>
-        )}
-      </div>
       {isLoading ? (
-        <p className="ml-auto">
+        <p className="mr-auto">
           <span className="sr-only">Loading</span>
           <svg fill="none" viewBox="0 0 24 24" className="w-4 h-4 animate-spin">
             <circle
@@ -67,8 +29,8 @@ export function TabBar({
           </svg>
         </p>
       ) : (
-        <span className="ml-auto text-gray-700 flex items-center dark:text-gray-300">
-          <span className="font-mono">{t('Words')}:</span>
+        <span className="mr-auto text-xs text-gray-700 flex items-center dark:text-gray-300">
+          <span>{t('Words')}:</span>
           <strong className="ml-1">{wordCount}</strong>
           <span
             className={clsx(
@@ -80,30 +42,5 @@ export function TabBar({
       )}
       {errorMessage}
     </div>
-  )
-}
-
-function TabButton({ isActive, onClick, children }) {
-  return (
-    <button
-      type="button"
-      className={clsx(
-        'relative flex py-3 text-sm leading-6 font-semibold focus:outline-none',
-        {
-          'text-sky-500': isActive,
-          'text-gray-700 hover:text-gray-900 focus:text-gray-900 dark:text-gray-300 dark:hover:text-white':
-            !isActive,
-        }
-      )}
-      onClick={onClick}
-    >
-      <span
-        className={clsx(
-          'absolute bottom-0 inset-x-0 bg-sky-500 h-0.5 rounded-full transition-opacity duration-150',
-          { 'opacity-0': !isActive }
-        )}
-      />
-      {children}
-    </button>
   )
 }
