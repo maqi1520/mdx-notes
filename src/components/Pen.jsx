@@ -495,6 +495,7 @@ export default function Pen({
                     }
                     isLoading={isLoading}
                     dirty={dirty}
+                    resultRef={resultRef}
                     wordCount={wordCount}
                   />
                 )}

@@ -1,7 +1,15 @@
 import clsx from 'clsx'
 import { t } from '@/utils/i18n'
 
-export function TabBar({ errorMessage, wordCount, width, isLoading, dirty }) {
+export function TabBar({
+  errorMessage,
+  resultRef,
+  wordCount,
+  width,
+  isLoading,
+  dirty,
+}) {
+  const { md = '' } = resultRef.current || {}
   return (
     <div
       className="flex items-center absolute z-10 bottom-0 left-0  antialiased  group px-6 py-[10px]  leading-6 bg-white font-semibold focus:outline-none text-gray-700 hover:text-gray-900 dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white justify-between border-t border-b-gray-900/10 dark:bg-gradient-to-b dark:from-[#242F41] dark:to-gray-800 dark:shadow-highlight/4  dark:border-white/[0.06]"
@@ -30,7 +38,9 @@ export function TabBar({ errorMessage, wordCount, width, isLoading, dirty }) {
         </p>
       ) : (
         <span className="mr-auto text-xs text-gray-700 flex items-center dark:text-gray-300">
-          <span>{t('Words')}:</span>
+          <span>{t('Characters')}:</span>
+          <strong className="ml-1">{md.length}</strong>
+          <span className="ml-4">{t('Words')}:</span>
           <strong className="ml-1">{wordCount}</strong>
           <span
             className={clsx(
