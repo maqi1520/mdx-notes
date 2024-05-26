@@ -20,8 +20,7 @@ import { Share } from './Share'
 import { CopyBtn } from './Copy'
 import ThemeDropdown from './ThemeDropdown'
 import { TabBar } from './TabBar'
-import { store } from '../monaco/data'
-import { themes as builtInThemes } from '../css/markdown-body'
+import { themes } from '../css/markdown-body'
 import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
@@ -149,10 +148,6 @@ export default function Pen({
       }
       cancelSetError()
       setIsLoading(true)
-      const themes = {
-        ...builtInThemes,
-        ...store.pluginThemes,
-      }
       const frontMatter = getFrontMatter(content)
       const fileThemeName = frontMatter.theme
       let codeTheme = codeThemes[theme.codeTheme].css
@@ -174,7 +169,6 @@ export default function Pen({
           console.log(error)
         }
       }
-      console.log(jsx)
 
       compileMdx(
         jsx,
@@ -339,11 +333,32 @@ export default function Pen({
     }
   }, [theme])
 
-  const handleShowPPT = useCallback(() => {
+  const handleShowPPT = useCallback(async () => {
+    const md = editorRef.current.getModel().getValue()
+    const frontMatter = getFrontMatter(md)
+    const fileThemeName = frontMatter.theme
+    let markdownTheme = ''
+    let jsx = ''
+    if (fileThemeName) {
+      try {
+        const cssPath = await resolve(
+          dirPath,
+          `plugins/themes/${fileThemeName}.css`
+        )
+        markdownTheme = await readTextFile(cssPath)
+        const jsPath = await resolve(
+          dirPath,
+          `plugins/themes/${fileThemeName}.js`
+        )
+        jsx = await readTextFile(jsPath)
+      } catch (error) {
+        console.log(error)
+      }
+    }
     const slideContent = {
-      html: editorRef.current.getModel().getValue(),
-      css: '',
-      config: '',
+      html: md,
+      css: markdownTheme,
+      config: jsx,
     }
     localStorage.setItem('slide', JSON.stringify(slideContent))
     router.push('/slide')
@@ -395,7 +410,7 @@ export default function Pen({
                 <ThemeDropdown
                   value={theme}
                   onChange={setTheme}
-                  themes={builtInThemes}
+                  themes={themes}
                   codeThemes={codeThemes}
                 />
 
