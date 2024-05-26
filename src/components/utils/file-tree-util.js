@@ -18,9 +18,19 @@ export const getParentKey = (path, tree) => {
 export function isMdFile(path) {
   return /\.mdx?$/.test(path)
 }
+export function isJsFile(path) {
+  return /\.js?$/.test(path)
+}
+export function isCssFile(path) {
+  return /\.css?$/.test(path)
+}
 
 export function isImageFile(path) {
   return /\.(png|gif|jpg|jpeg|webp|bmp)$/.test(path)
+}
+
+export function supportFile(path) {
+  return /\.(png|gif|jpg|jpeg|webp|bmp|js|css|mdx?)$/.test(path)
 }
 
 /** 文件名称双链找path */

@@ -36,7 +36,12 @@ import {
   Square,
 } from 'lucide-react'
 import clsx from 'clsx'
-import { isMdFile, isImageFile } from './utils/file-tree-util'
+import {
+  isMdFile,
+  isImageFile,
+  isJsFile,
+  isCssFile,
+} from './utils/file-tree-util'
 
 const HEADER_HEIGHT = 60 - 1
 const TAB_BAR_HEIGHT = 40
@@ -115,6 +120,9 @@ export default function Pen({
     if (isMdFile(filePath)) {
       inject({ scrollTop: true })
     }
+    return () => {
+      window.webViewFocus = () => {}
+    }
   }, [filePath])
 
   const handleScroll = (line) => {
@@ -140,72 +148,90 @@ export default function Pen({
 
   async function compileNow(content) {
     console.log('compile', filePath)
+    let md = resultRef.current?.md || ''
     if (isMdFile(filePath)) {
-      localStorage.setItem('content', JSON.stringify(content))
-      if (slideRef.current) {
-        slideRef.current.setState(content)
-        return
-      }
-      cancelSetError()
-      setIsLoading(true)
-      const frontMatter = getFrontMatter(content)
-      const fileThemeName = frontMatter.theme
-      let codeTheme = codeThemes[theme.codeTheme].css
-      let markdownTheme = themes[theme.markdownTheme].css
-      let jsx = ''
-      if (fileThemeName) {
-        try {
+      md = content
+    }
+    console.log('md', md)
+
+    cancelSetError()
+    setIsLoading(true)
+    const frontMatter = getFrontMatter(md)
+    const fileThemeName = frontMatter.theme
+    let codeTheme = codeThemes[theme.codeTheme].css
+    let markdownTheme = themes[theme.markdownTheme].css
+    let jsx = ''
+    if (fileThemeName) {
+      try {
+        if (isCssFile(filePath)) {
+          markdownTheme = content
+        } else {
           const cssPath = await resolve(
             dirPath,
             `plugins/themes/${fileThemeName}.css`
           )
           markdownTheme = await readTextFile(cssPath)
+        }
+        if (isJsFile(filePath)) {
+          jsx = content
+        } else {
           const jsPath = await resolve(
             dirPath,
             `plugins/themes/${fileThemeName}.js`
           )
           jsx = await readTextFile(jsPath)
-        } catch (error) {
-          console.log(error)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (slideRef.current) {
+      slideRef.current.setState({
+        config: jsx,
+        html: md,
+        css: markdownTheme,
+      })
+      return
+    }
+
+    console.log('jsx', jsx)
+    console.log('css', markdownTheme)
+
+    compileMdx(
+      jsx,
+      md,
+      theme.isMac,
+      'markdown-body',
+      theme.formatMarkdown,
+      theme.raw
+    ).then((res) => {
+      if (res.err) {
+        setError(res.err)
+      } else {
+        setErrorImmediate()
+      }
+      const { html, toc } = res
+      if (html) {
+        if (html) {
+          const result = {
+            md,
+            markdownTheme,
+            jsx,
+            frontMatter,
+            css: baseCss + markdownTheme + codeTheme,
+            html,
+            codeTheme: theme.codeTheme,
+          }
+          //编译后的结果保存到ref 中
+          resultRef.current = result
+          inject(result)
         }
       }
 
-      compileMdx(
-        jsx,
-        content,
-        theme.isMac,
-        'markdown-body',
-        theme.formatMarkdown,
-        theme.raw
-      ).then((res) => {
-        if (res.err) {
-          setError(res.err)
-        } else {
-          setErrorImmediate()
-        }
-        const { html, toc } = res
-        if (html) {
-          if (html) {
-            const result = {
-              md: content,
-              markdownTheme,
-              jsx,
-              frontMatter,
-              css: baseCss + markdownTheme + codeTheme,
-              html,
-              codeTheme: theme.codeTheme,
-            }
-            //编译后的结果保存到ref 中
-            resultRef.current = result
-            inject(result)
-          }
-        }
-
-        refFileTree.current.setToc(toc)
-        setWordCount(Count(content || ''))
-        setIsLoading(false)
-      })
-    }
+      refFileTree.current.setToc(toc)
+      setWordCount(Count(md || ''))
+      setIsLoading(false)
+    })
   }
 
   // 切换文件的时候渲染
@@ -230,6 +256,16 @@ export default function Pen({
         setDirty(true)
       }
     }, 500),
+    [filePath]
+  )
+
+  const onScroll = useCallback(
+    (line) => {
+      if (isMdFile(filePath)) {
+        inject({ line })
+        refFileTree.current.setScrollLine(line)
+      }
+    },
     [filePath]
   )
 
@@ -539,10 +575,7 @@ export default function Pen({
                         onMount={(ref) => (editorRef.current = ref)}
                         defaultValue={defaultValue}
                         onChange={onChange}
-                        onScroll={(line) => {
-                          inject({ line })
-                          refFileTree.current.setScrollLine(line)
-                        }}
+                        onScroll={onScroll}
                         path={filePath}
                       />
                     )}

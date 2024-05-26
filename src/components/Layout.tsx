@@ -70,6 +70,7 @@ export default function Layout({ children }: Props) {
       setConfig(JSON.parse(localStorage.getItem('config') || '{}'))
     }
     ;(window as any).openSetting = () => setIsOpen(true)
+    ;(window as any).webViewFocus = () => {}
   }, [])
 
   return (

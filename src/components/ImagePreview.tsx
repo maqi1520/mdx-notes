@@ -7,7 +7,7 @@ type Props = {
 
 export default function ImagePreview({ path }: Props) {
   return (
-    <div className="h-full flex">
+    <div className="h-full flex overflow-auto">
       <div className="p-8 flex justify-center items-center m-auto">
         <img style={{ maxWidth: '100%' }} src={convertFileSrc('') + path} />
       </div>

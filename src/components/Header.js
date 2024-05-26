@@ -1,8 +1,7 @@
 import { Logo } from './Logo'
 import clsx from 'clsx'
-import Link from 'next/link'
 import { toggleTheme } from '../utils/theme'
-import { t } from '@/utils/i18n'
+import { open } from '@tauri-apps/api/shell'
 import { type } from '@tauri-apps/api/os'
 import React, { useLayoutEffect, useState } from 'react'
 import { LayoutTemplate, Sun, MoonStar } from 'lucide-react'
@@ -36,11 +35,14 @@ export default function Header({ children, logo, rightbtn }) {
         {rightbtn && (
           <div className="block mx-2 lg:mx-2 w-px h-6 bg-gray-200 dark:bg-gray-700" />
         )}
-        <Link href="/templates">
-          <Button size="icon" variant="outline">
-            <LayoutTemplate className="w-5 h-5" />
-          </Button>
-        </Link>
+
+        <Button
+          onClick={() => open('https://editor.runjs.cool/template')}
+          size="icon"
+          variant="outline"
+        >
+          <LayoutTemplate className="w-5 h-5" />
+        </Button>
 
         <Button
           className="ml-2"

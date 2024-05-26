@@ -11,6 +11,7 @@ import React, {
 } from 'react'
 import {
   isMdFile,
+  supportFile,
   sortFile,
   renamePath,
   getCurrentFolderName,
@@ -368,7 +369,7 @@ title: ${file}
                 children: loop(item.children, item),
               }
             }
-            if (item.path) {
+            if (item.path && supportFile(item.path)) {
               return {
                 isLeaf: true,
                 title,

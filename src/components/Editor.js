@@ -24,6 +24,7 @@ export default function Editor({
   const editorContainerRef = useRef()
   const editorRef = useRef()
   const subscriptionRef = useRef()
+  const scrollSubscriptionRef = useRef()
 
   useEffect(() => {
     const disposables = []
@@ -50,13 +51,6 @@ export default function Editor({
     addAction(editor)
 
     setupKeybindings(editor)
-
-    editor.onDidScrollChange((e) => {
-      if (!e.scrollTopChanged) return
-      const range = editor.getVisibleRanges()[0]
-      const line = range.startLineNumber
-      onScroll(line)
-    })
 
     editorRef.current = editor
 
@@ -110,6 +104,16 @@ export default function Editor({
       }
     )
   }, [onChange])
+
+  useEffect(() => {
+    scrollSubscriptionRef.current && scrollSubscriptionRef.current.dispose()
+    scrollSubscriptionRef.current = editorRef.current.onDidScrollChange((e) => {
+      if (!e.scrollTopChanged) return
+      const range = editorRef.current.getVisibleRanges()[0]
+      const line = range.startLineNumber
+      onScroll(line)
+    })
+  }, [onScroll])
 
   return (
     <div className="relative flex-auto">

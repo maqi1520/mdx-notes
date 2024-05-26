@@ -99,7 +99,10 @@ export function defineTheme() {
     base: 'vs',
     inherit: true,
     rules: [
-      { foreground: getColor('gray.800') },
+      {
+        foreground: getColor('gray.800'),
+        token: '',
+      },
       ...makeTheme({
         comment: 'gray.400',
         string: 'indigo.600',
@@ -150,7 +153,10 @@ export function defineTheme() {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      { foreground: getColor('gray.300') },
+      {
+        foreground: getColor('gray.300'),
+        token: '',
+      },
       ...makeTheme({
         comment: 'slate.400',
         string: 'sky.300',

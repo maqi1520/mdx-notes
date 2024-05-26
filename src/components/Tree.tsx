@@ -1,7 +1,8 @@
 import React from 'react'
 import clsx from 'clsx'
+import { isImageFile } from './utils/file-tree-util'
 
-import { FileText, ChevronRight } from 'lucide-react'
+import { FileText, ChevronRight, ImageIcon } from 'lucide-react'
 
 interface TreeItem {
   title: string
@@ -101,7 +102,11 @@ const TreeNode = ({
           onContextMenu={(e) => onRightClick(e, item.key)}
           onClick={() => onSelect(item.key)}
         >
-          <FileText className="mr-1 h-4 w-4 flex-none" />
+          {isImageFile(item.key) ? (
+            <ImageIcon className="mr-1 h-4 w-4 flex-none" />
+          ) : (
+            <FileText className="mr-1 h-4 w-4 flex-none" />
+          )}
           <div className="whitespace-nowrap flex-auto">{title}</div>
         </div>
       )}
