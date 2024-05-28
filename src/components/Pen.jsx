@@ -37,6 +37,7 @@ import {
 } from 'lucide-react'
 import clsx from 'clsx'
 import {
+  supportTextFile,
   isMdFile,
   isImageFile,
   isJsFile,
@@ -108,7 +109,7 @@ export default function Pen({
 
   useEffect(() => {
     window.webViewFocus = async () => {
-      if (filePath) {
+      if (filePath && supportTextFile(filePath) && editorRef.current) {
         const res = await readTextFile(filePath)
         if (res !== editorRef.current.getModel().getValue()) {
           setTimeout(() => {
@@ -128,19 +129,6 @@ export default function Pen({
   const handleScroll = (line) => {
     editorRef.current.revealLine(line)
   }
-
-  useEffect(() => {
-    if (dirty) {
-      function handleUnload(e) {
-        e.preventDefault()
-        e.returnValue = ''
-      }
-      window.addEventListener('beforeunload', handleUnload)
-      return () => {
-        window.removeEventListener('beforeunload', handleUnload)
-      }
-    }
-  }, [dirty])
 
   const inject = useCallback(async (content) => {
     previewRef.current && previewRef.current.setState(content)
@@ -163,7 +151,7 @@ export default function Pen({
     let jsx = ''
     if (fileThemeName) {
       try {
-        if (isCssFile(filePath)) {
+        if (isCssFile(filePath) && filePath.includes(`${fileThemeName}.css`)) {
           markdownTheme = content
         } else {
           const cssPath = await resolve(
@@ -172,7 +160,11 @@ export default function Pen({
           )
           markdownTheme = await readTextFile(cssPath)
         }
-        if (isJsFile(filePath)) {
+      } catch (error) {
+        console.log(error)
+      }
+      try {
+        if (isJsFile(filePath) && filePath.includes(`${fileThemeName}.js`)) {
           jsx = content
         } else {
           const jsPath = await resolve(

@@ -29,6 +29,10 @@ export function isImageFile(path) {
   return /\.(png|gif|jpg|jpeg|webp|bmp)$/.test(path)
 }
 
+export function supportTextFile(path) {
+  return /\.(js|css|mdx?)$/.test(path)
+}
+
 export function supportFile(path) {
   return /\.(png|gif|jpg|jpeg|webp|bmp|js|css|mdx?)$/.test(path)
 }

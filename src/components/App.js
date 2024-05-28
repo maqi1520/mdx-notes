@@ -4,7 +4,6 @@ import Pen from './Pen'
 import {
   exists,
   createDir,
-  readDir,
   writeTextFile,
   readTextFile,
   BaseDirectory,
@@ -12,20 +11,22 @@ import {
 import initial from '@/utils/initial/'
 import { documentDir, resolve } from '@tauri-apps/api/path'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
-import { isMdFile } from './utils/file-tree-util'
+import { supportTextFile, isMdFile } from './utils/file-tree-util'
 import { listen } from '@tauri-apps/api/event'
 import { useEffectOnce } from 'react-use'
 
 export default function Main(props) {
   const [loading, setLoading] = useState(true)
   const [dirPath, setDirPath] = useLocalStorage('dir-path', '')
-  const [filePath, setFilePath] = useLocalStorage('filePath')
+  const [filePath, setFilePath] = useLocalStorage('filePath', '')
   const [defaultValue, setDefaultValue] = useState('')
 
   useEffectOnce(() => {
     async function load() {
-      const res = await readTextFile(filePath)
-      setDefaultValue(res)
+      if (supportTextFile(filePath)) {
+        const res = await readTextFile(filePath)
+        setDefaultValue(res)
+      }
     }
     load()
   })
@@ -47,9 +48,8 @@ export default function Main(props) {
             const content = initial[key]
             await writeTextFile(path + `/${key}.md`, content)
           }
-
-          setDirPath(path)
         }
+        setDirPath(path)
       }
       setLoading(false)
     }
