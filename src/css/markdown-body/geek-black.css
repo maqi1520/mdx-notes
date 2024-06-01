@@ -90,8 +90,8 @@
   color: #212122;
   font-size: 18px;
 }
-.markdown-body li code,
-.markdown-body p code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   word-break: break-word;
   border-radius: 2px;
