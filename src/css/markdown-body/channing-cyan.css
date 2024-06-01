@@ -206,8 +206,8 @@
 .markdown-body del {
   color: #4dd0e1;
 }
-.markdown-body li code,
-.markdown-body p code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   word-break: break-word;
   border-radius: 2px;
   overflow-x: auto;

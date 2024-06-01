@@ -201,13 +201,14 @@ pre {
   border-radius: 5px;
 }
 /*行内代码*/
-.markdown-body p code,
-.markdown-body li code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   font-size: 14px;
   word-break: break-word;
   padding: 2px 4px;
   border-radius: 4px;
   margin: 0 2px;
+  color: var(--weui-BRAND);
   background-color: var(--weui-BG-0);
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
 }

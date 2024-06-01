@@ -64,8 +64,8 @@
   margin: 16px 0;
 }
 
-.markdown-body p code,
-.markdown-body li code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   font-family: -apple-system, -apple-system-body, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, Arial, PingFang SC, '思源黑体 CN', '思源黑体', 'JetBrains Mono',
     'Fira Code', Menlo, 'Ubuntu Mono', Consolas, sans-serif;
@@ -105,6 +105,10 @@
 .markdown-body a:active {
   border-bottom: 2px solid #f33b1f;
   color: #ac1f18;
+}
+.markdown-body p {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 .markdown-body blockquote {
   color: #3d3d3d;

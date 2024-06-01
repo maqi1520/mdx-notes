@@ -62,8 +62,8 @@
   margin-top: 32px;
   margin-bottom: 32px;
 }
-.markdown-body li code,
-.markdown-body p code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   padding: 0.2em 0.5em;
   font-weight: bold;
   font-family: -apple-system-font, BlinkMacSystemFont, 'Helvetica Neue',

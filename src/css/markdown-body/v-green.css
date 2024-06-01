@@ -74,8 +74,8 @@
   margin-top: 32px;
   margin-bottom: 32px;
 }
-.markdown-body p code,
-.markdown-body li code {
+.markdown-body p code:not(pre code),
+.markdown-body li code:not(pre code) {
   font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
   word-break: break-word;
   overflow-x: auto;
