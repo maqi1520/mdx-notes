@@ -503,7 +503,7 @@ title: ${file}
         }
       )
       if (confirmed) {
-        if (isMdFile(path)) {
+        if (supportFile(path)) {
           await removeFile(path)
         } else {
           removeDir(path, {
