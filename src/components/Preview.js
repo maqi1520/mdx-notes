@@ -9,6 +9,7 @@ import {
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import clsx from 'clsx'
 import { getPointerPosition } from '../utils/getPointerPosition'
+import { useTheme } from 'next-themes'
 
 export const Preview = forwardRef(function Page(
   {
@@ -21,13 +22,23 @@ export const Preview = forwardRef(function Page(
 ) {
   const iframeRef = useRef()
   const dataRef = useRef()
+  const { theme } = useTheme()
+
+  useEffect(() => {
+    iframeRef.current.contentWindow.postMessage(
+      {
+        theme,
+      },
+      '*'
+    )
+  }, [theme])
 
   useImperativeHandle(
     ref,
     () => ({
       setState: (content) => {
         //首次加载 postMessage 会失败，先存到 ref 中
-        dataRef.current = content
+        dataRef.current = { ...content, theme }
         iframeRef.current.contentWindow.postMessage(content, '*')
       },
     }),
@@ -400,6 +411,12 @@ export const Preview = forwardRef(function Page(
                     var hasHtml = false
                     var hasCss = false
                     window.addEventListener('message', (e) => {
+                      if(e.data.theme==='dark'){
+                        document.body.classList.add('dark')
+                      }
+                      if(e.data.theme==='light'){
+                        document.body.classList.remove('dark')
+                      }
                       if (typeof e.data.line  !== 'undefined') {
                         var previewEl = document.documentElement
                         const el = previewEl.querySelector('[data-line="'+e.data.line+'"]');

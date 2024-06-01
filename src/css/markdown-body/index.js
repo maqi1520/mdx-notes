@@ -1,3 +1,4 @@
+import defaultSkin from '!!raw-loader!./default.css'
 import tailwind from '!!raw-loader!./tailwind-blue.css'
 import juejin from '!!raw-loader!./juejin.css'
 import vgreen from '!!raw-loader!./v-green.css'
@@ -12,6 +13,10 @@ import geekBlack from '!!raw-loader!./geek-black.css'
 
 export const themes = {
   default: {
+    name: '默认',
+    css: defaultSkin,
+  },
+  skyblue: {
     name: '天空蓝',
     css: tailwind,
   },
