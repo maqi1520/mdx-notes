@@ -5,6 +5,7 @@ import React from 'react'
 
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'
+import Blockquote from './Blockquote'
 
 export const MDXComponents = {
   wrapper: (props) => (
@@ -29,6 +30,7 @@ export const MDXComponents = {
       </span>
     )
   },
+  blockquote: Blockquote,
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
