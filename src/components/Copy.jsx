@@ -57,6 +57,33 @@ export const CopyBtn = ({ previewRef, resultRef }) => {
       }
     })
 
+    $('svg use').each((index, element) => {
+      const $element = $(element)
+      if ($element.attr('href')) {
+        const clone = $($element.attr('href')).clone()
+        clone.removeAttr('id')
+        clone.attr('transform', $element.attr('transform'))
+        $element.parent().append(clone)
+        $element.remove()
+      }
+    })
+    $('mjx-container svg').each((index, element) => {
+      const $element = $(element)
+      $element.attr(
+        'style',
+        `width: ${$element.attr('width')}; height: ${$element.attr(
+          'height'
+        )}; ${$element.attr('style')}`
+      )
+      $element.removeAttr('width')
+      $element.removeAttr('height')
+    })
+
+    $('svg defs').each((index, element) => {
+      const $element = $(element)
+      $element.remove()
+    })
+
     for (let index = 0; index < $('img').length; index++) {
       const item = $('img')[index]
       if (item.attribs.src.includes('/api/qrcode')) {
