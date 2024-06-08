@@ -1,5 +1,4 @@
 import mdxcss from '!!raw-loader!./mdx.css'
-import katex from '!!raw-loader!katex/dist/katex.css'
 import prism from '!!raw-loader!prismjs/themes/prism.css'
 import tomorrow from '!!raw-loader!prismjs/themes/prism-tomorrow.css'
 import twilight from '!!raw-loader!prismjs/themes/prism-twilight.css'
@@ -15,7 +14,7 @@ import a11yDark from '!!raw-loader!prism-themes/themes/prism-a11y-dark.css'
 import colDarkCold from '!!raw-loader!prism-themes/themes/prism-coldark-cold.css'
 import okaidia from '!!raw-loader!./prism-okaidia.css'
 
-export const baseCss = mdxcss + katex
+export const baseCss = mdxcss
 
 export const codeThemes = {
   materialLight: {

@@ -34,6 +34,9 @@ export const MDXComponents = {
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
+    if (!props.alt) {
+      return <img {...props} />
+    }
     return (
       <figure>
         <img {...props} />

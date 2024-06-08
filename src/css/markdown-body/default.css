@@ -4,6 +4,7 @@ body {
   --weui-FG-0: rgba(0, 0, 0, 0.9);
   --weui-FG-HALF: rgba(0, 0, 0, 0.9);
   --weui-FG-1: rgba(0, 0, 0, 0.55);
+  --weui-FG-2: rgba(0, 0, 0, 0.3);
   --weui-FG-3: rgba(0, 0, 0, 0.1);
   --weui-BRAND: #07c160;
   --weui-LINK: #576b95;
@@ -15,6 +16,7 @@ body.dark {
   --weui-FG-0: rgba(255, 255, 255, 0.8);
   --weui-FG-HALF: rgba(255, 255, 255, 0.6);
   --weui-FG-1: rgba(255, 255, 255, 0.5);
+  --weui-FG-2: rgba(255, 255, 255, 0.3);
   --weui-FG-3: rgba(255, 255, 255, 0.1);
   --weui-BRAND: #07c160;
   --weui-LINK: #7d90a9;
@@ -32,7 +34,6 @@ body {
   letter-spacing: 0px;
   word-break: break-word;
   word-wrap: break-word;
-  text-align: left;
 }
 
 /*段落*/
@@ -175,7 +176,7 @@ body {
 
 .markdown-body pre > code {
   min-width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   word-break: normal;
   display: block;
   flex: none;
@@ -188,7 +189,6 @@ body {
   display: block;
   max-width: 100%;
   border-radius: 4px;
-  box-shadow: var(--weui-FG-1) 0px 0px 4px;
 }
 .qrcode-block img {
   border-radius: 0;
@@ -198,7 +198,6 @@ body {
 /*图片*/
 .markdown-body figure {
   margin: 0;
-  padding: 0 5px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -207,7 +206,7 @@ body {
 .markdown-body figcaption {
   margin-top: 5px;
   text-align: center;
-  color: var(--weui-LINK);
+  color: var(--weui-FG-2);
   font-size: 14px;
 }
 

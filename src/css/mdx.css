@@ -45,7 +45,7 @@ input[type='checkbox']:checked {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
   height: 30px;
   line-height: 30px;
 }
@@ -124,8 +124,9 @@ input[type='checkbox']:checked {
   flex-shrink: 0;
 }
 .markdown-body {
-  line-height: 2em;
-  padding: 0 12px;
+  line-height: 1.75;
+  font-size: 16px;
+  padding: 0 8px;
 }
 
 /*表格*/

@@ -357,7 +357,8 @@ export const Preview = forwardRef(function Page(
                       text-align: justify;
                       font-size: 17px;
                       color: #333;
-                     
+                      background: #fff;
+                      padding:8px;                  
                     }
                     @media (max-width: 360px) {
                       body{

@@ -94,7 +94,7 @@
 
 .markdown-body pre > code {
   min-width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   word-break: normal;
   display: block;
   flex: none;
@@ -112,7 +112,7 @@
 }
 .markdown-body table {
   display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   width: auto;
   max-width: 100%;
   overflow: auto;

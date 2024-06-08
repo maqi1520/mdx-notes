@@ -48,11 +48,38 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
 
     const $ = cheerio.load(htmlRef.current, null, false)
 
-    $('p,section,div').each((index, element) => {
+    $('p').each((index, element) => {
       const $element = $(element)
       if ($element.html().trim() === '') {
         $element.remove()
       }
+    })
+
+    $('svg use').each((index, element) => {
+      const $element = $(element)
+      if ($element.attr('href')) {
+        const clone = $($element.attr('href')).clone()
+        clone.removeAttr('id')
+        clone.attr('transform', $element.attr('transform'))
+        $element.parent().append(clone)
+        $element.remove()
+      }
+    })
+    $('mjx-container svg').each((index, element) => {
+      const $element = $(element)
+      $element.attr(
+        'style',
+        `width: ${$element.attr('width')}; height: ${$element.attr(
+          'height'
+        )}; ${$element.attr('style')}`
+      )
+      $element.removeAttr('width')
+      $element.removeAttr('height')
+    })
+
+    $('svg defs').each((index, element) => {
+      const $element = $(element)
+      $element.remove()
     })
 
     for (let index = 0; index < $('img').length; index++) {
@@ -66,7 +93,11 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
 
     const inlineHtml = inlineCSS(html, css)
     copyHtml(
-      inlineHtml.replace(/<div/g, '<section').replace(/<\/div>/g, '</section>')
+      inlineHtml
+        .replace(/<div/g, '<section')
+        .replace(/<\/div>/g, '</section>')
+        //暗黑皮肤颜色变量在微信不生效
+        .replace(/var\(--weui-BG-0\)/g, '#ededed')
     )
 
     setState({ state: 'copied' })
@@ -80,7 +111,7 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
       const frontMatter = getFrontMatter(md)
       const title = frontMatter.title || 'Untitled'
 
-      download(title + '.mdx', md)
+      download(title + '.md', md)
     }
   }
   const handleExportPDF = () => {
