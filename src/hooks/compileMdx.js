@@ -7,7 +7,7 @@ import { VFileMessage } from 'vfile-message'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
+import rehypeMathjax from 'rehype-mathjax/svg'
 import rehypeRaw from 'rehype-raw'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeMermaid from 'rehype-mermaid'
@@ -88,7 +88,7 @@ export const compileMdx = async (
     rehypeAddLineNumbers,
     rehypeDivToSection,
     reHypeLinkFoot,
-    rehypeKatex,
+    rehypeMathjax,
     [rehypeMermaid, { strategy: 'img-svg' }],
     [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
     [rehypeCodeTitle, { isMac }],
