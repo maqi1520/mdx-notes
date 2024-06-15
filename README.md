@@ -176,4 +176,4 @@ sudo xattr -d com.apple.quarantine /Applications/MDX\ Editor.app/
 
 - [mdxjs playground](https://mdxjs.com/playground/)
 - [play.tailwindcss.com](https://play.tailwindcss.com/)
-- [mdnice.com](https://mdnice.com/)
+- [mdnice.com](https://editor.mdnice.com/)
