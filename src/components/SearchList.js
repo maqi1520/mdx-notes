@@ -55,8 +55,8 @@ export default function SearchList({
           <div className="font-medium text-xs text-slate-900 dark:text-slate-200">
             <HighlightedText text={item.name} searchValue={searchValue} />
           </div>
-          {item.content.slice(0, 3).map((text) => (
-            <div className="text-xs text-slate-400">
+          {item.content.slice(0, 3).map((text, index) => (
+            <div key={index} className="text-xs text-slate-400">
               <HighlightedText text={text} searchValue={searchValue} />
             </div>
           ))}
