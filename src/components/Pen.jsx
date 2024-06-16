@@ -203,21 +203,20 @@ export default function Pen({
         setErrorImmediate()
       }
       const { html, toc } = res
+
       if (html) {
-        if (html) {
-          const result = {
-            md,
-            markdownTheme,
-            jsx,
-            frontMatter,
-            css: baseCss + markdownTheme + codeTheme,
-            html,
-            codeTheme: theme.codeTheme,
-          }
-          //编译后的结果保存到ref 中
-          resultRef.current = result
-          inject(result)
+        const result = {
+          md,
+          markdownTheme,
+          jsx,
+          frontMatter,
+          css: baseCss + markdownTheme + codeTheme,
+          html,
+          codeTheme: theme.codeTheme,
         }
+        //编译后的结果保存到ref 中
+        resultRef.current = result
+        inject(result)
       }
 
       refFileTree.current.setToc(toc)
@@ -248,7 +247,7 @@ export default function Pen({
         setDirty(true)
       }
     }, 500),
-    [filePath]
+    [filePath, theme]
   )
 
   const onScroll = useCallback(
