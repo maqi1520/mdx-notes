@@ -53,10 +53,16 @@
   "Upload Picture": "Upload Picture",
   "journal": "Journal",
   "journal directory": "Journal directory",
-  "Command": "Command",
+  "Custom command": "Custom command",
   "Format markdown": "Format markdown",
   "template directory": "template directory",
   "The template file does not exist": "The template file does not exist",
   "Export PDF": "Export PDF",
+  "Export HTML": "Export HTML",
+  "Save as": "Save as",
+  "Clear storage": "Clear storage",
+  "Check update": "Check update",
+  "default": "default",
+  "Downloading": "Downloading",
   "Support HTML": "Support HTML"
 }

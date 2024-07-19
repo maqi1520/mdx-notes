@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { t } from '@/utils/i18n'
+import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 import {
   Select,
@@ -21,6 +21,7 @@ import {
 import { SettingsIcon } from 'lucide-react'
 
 export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
+  const { t } = useTranslation()
   const [open, onOpenChange] = useState(false)
   return (
     <Popover modal open={open} onOpenChange={onOpenChange}>

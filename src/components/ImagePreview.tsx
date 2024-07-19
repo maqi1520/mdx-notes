@@ -1,5 +1,5 @@
 import React from 'react'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { convertFileSrc } from '@tauri-apps/api/core'
 
 type Props = {
   path: string

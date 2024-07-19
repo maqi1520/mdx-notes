@@ -1,38 +1,24 @@
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
-import { writeText } from '@tauri-apps/api/clipboard'
-import { t } from '@/utils/i18n'
+import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { Button } from '@/components/ui/button'
 import { ShareIcon, LinkIcon, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const HOSTNAME = 'https://editor.runjs.cool'
 
-export function Share({
-  initialPath,
-  resultRef,
-  layout,
-  responsiveSize,
-  onShareStart,
-}) {
+export function Share({ resultRef, layout, responsiveSize }) {
+  const { t } = useTranslation()
   const [{ state, path, errorText }, setState] = useState({
-    state: 'disabled',
-    path: initialPath,
+    state: 'idle',
+    path: '',
     errorText: undefined,
   })
 
   useEffect(() => {
-    setState((current) =>
-      (current.state === 'idle' || current.state === 'disabled') && initialPath
-        ? { state: 'disabled', path: initialPath }
-        : { state: 'idle' }
-    )
-  }, [initialPath])
-
-  useEffect(() => {
     let current = true
     if (state === 'loading') {
-      if (onShareStart) onShareStart()
       const { markdownTheme, jsx, md, frontMatter = {} } = resultRef.current
       window
         .fetch(process.env.NEXT_PUBLIC_API_URL + '/api/share', {
@@ -107,18 +93,13 @@ export function Share({
         })
     } else if (state === 'copied') {
       window.setTimeout(() => {
-        // setState(({ state, path: currentPath }) =>
-        //   state === 'copied' && currentPath === path
-        //     ? { state: 'disabled', path: currentPath }
-        //     : { state, path: currentPath }
-        // )
         setState({ state: 'idle' })
       }, 3000)
     }
     return () => {
       current = false
     }
-  }, [state, path, onShareStart])
+  }, [state, path])
 
   return (
     <div className="flex items-center space-x-2 min-w-0">

@@ -2,11 +2,7 @@ import '../css/main.css'
 import 'prismjs/themes/prism-okaidia.css'
 import '../css/tiptap.css'
 import Head from 'next/head'
-
-import dynamic from 'next/dynamic'
-const Layout = dynamic(() => import('@/components/Layout'), {
-  ssr: false,
-})
+import Layout from '@/components/Layout'
 
 const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =

@@ -3,7 +3,6 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { onDidChangeTheme, getTheme } from '../utils/theme'
 import {
   getOrCreateModel,
-  noop,
   pathToLanguage,
   defineTheme,
   setupKeybindings,
@@ -11,12 +10,12 @@ import {
   registerDocumentFormattingEditProviders,
 } from '../monaco/getOrCreateModel'
 import { useUpdateEffect } from 'react-use'
-import { open } from '@tauri-apps/api/shell'
+import { open } from '@tauri-apps/plugin-shell'
 import { listenPaste } from '../monaco/pasteImage'
 
 export default function Editor({
-  onMount = noop,
-  defaultValue = '',
+  onMount,
+  value = '',
   path,
   onChange,
   onScroll,
@@ -33,7 +32,7 @@ export default function Editor({
     disposables.push(registerDocumentFormattingEditProviders())
 
     const language = pathToLanguage(path)
-    const defaultModel = getOrCreateModel(defaultValue, language, path)
+    const defaultModel = getOrCreateModel(value, language, path)
     const editor = monaco.editor.create(editorContainerRef.current, {
       model: defaultModel,
       fontFamily:
@@ -70,6 +69,15 @@ export default function Editor({
   }, [])
 
   useEffect(() => {
+    if (editorRef.current) {
+      if (value === editorRef.current.getValue()) {
+        return
+      }
+      editorRef.current.setValue(value)
+    }
+  }, [value])
+
+  useEffect(() => {
     function handleThemeChange(theme) {
       monaco.editor.setTheme(theme === 'dark' ? 'tw-dark' : 'tw-light')
     }
@@ -90,7 +98,7 @@ export default function Editor({
 
   useUpdateEffect(() => {
     const language = pathToLanguage(path)
-    const model = getOrCreateModel(defaultValue, language, path)
+    const model = getOrCreateModel(value, language, path)
     if (model !== editorRef.current?.getModel()) {
       editorRef.current.setModel(model)
     }

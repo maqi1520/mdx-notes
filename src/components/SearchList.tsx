@@ -1,6 +1,16 @@
 import React from 'react'
 
-const HighlightedText = ({ text, searchValue, maxLength = 30 }) => {
+interface HighlightedTextProps {
+  text: string
+  searchValue: string
+  maxLength?: number
+}
+
+const HighlightedText = ({
+  text,
+  searchValue,
+  maxLength = 30,
+}: HighlightedTextProps) => {
   const highlightKeyword = (text, keyword, maxLength) => {
     const caseInsensitiveRegex = new RegExp(keyword, 'gi')
     const match = caseInsensitiveRegex.exec(text)
@@ -35,12 +45,25 @@ const HighlightedText = ({ text, searchValue, maxLength = 30 }) => {
   return <div dangerouslySetInnerHTML={{ __html: highlightedResult }} />
 }
 
+interface SearchDataItem {
+  name: string
+  path: string
+  match_lines: string[]
+}
+
+interface Props {
+  value: SearchDataItem[]
+  searchValue: string
+  onSelect: (path: string) => void
+  children: React.ReactNode
+}
+
 export default function SearchList({
   value = [],
   searchValue,
   onSelect,
   children,
-}) {
+}: Props) {
   if (searchValue.trim() === '') {
     return children
   }
@@ -55,7 +78,7 @@ export default function SearchList({
           <div className="font-medium text-xs text-slate-900 dark:text-slate-200">
             <HighlightedText text={item.name} searchValue={searchValue} />
           </div>
-          {item.content.slice(0, 3).map((text, index) => (
+          {item.match_lines.map((text, index) => (
             <div key={index} className="text-xs text-slate-400">
               <HighlightedText text={text} searchValue={searchValue} />
             </div>

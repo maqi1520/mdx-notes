@@ -12,7 +12,7 @@ import colors from 'tailwindcss/colors'
 import dlv from 'dlv'
 import { t } from '@/utils/i18n'
 import { listenPaste } from './pasteImage'
-import { open } from '@tauri-apps/api/shell'
+import { open } from '@tauri-apps/plugin-shell'
 
 function toHex(d) {
   return Number(d).toString(16).padStart(2, '0')

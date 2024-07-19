@@ -1,14 +1,8 @@
 import clsx from 'clsx'
-import { t } from '@/utils/i18n'
+import { useTranslation } from 'react-i18next'
 
-export function TabBar({
-  errorMessage,
-  resultRef,
-  wordCount,
-  width,
-  isLoading,
-  dirty,
-}) {
+export function TabBar({ resultRef, wordCount, width, isLoading, dirty }) {
+  const { t } = useTranslation()
   const { md = '' } = resultRef.current || {}
   return (
     <div
@@ -50,7 +44,6 @@ export function TabBar({
           ></span>
         </span>
       )}
-      {errorMessage}
     </div>
   )
 }

@@ -57,3 +57,7 @@ export function makeDoc(title, html, css) {
   </body>
   </html>`
 }
+
+export function makePrintDoc(html, css) {
+  return `<style type="text/css" media="print">${css}</style>${html}`
+}

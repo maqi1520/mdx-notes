@@ -1,21 +1,13 @@
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-const path = require('path')
-
-const headers = [
-  {
-    key: 'Access-Control-Allow-Origin',
-    value: '*',
-  },
-]
 
 module.exports = {
-  async headers() {
-    return [
-      {
-        source: '/fonts/(.*)',
-        headers,
-      },
-    ]
+  // Ensure Next.js uses SSG instead of SSR
+  // https://nextjs.org/docs/pages/building-your-application/deploying/static-exports
+  output: 'export',
+  // Note: This feature is required to use the Next.js Image component in SSG mode.
+  // See https://nextjs.org/docs/messages/export-image-api for different workarounds.
+  images: {
+    unoptimized: true,
   },
   webpack: (config, { isServer, webpack, dev }) => {
     config.module.rules

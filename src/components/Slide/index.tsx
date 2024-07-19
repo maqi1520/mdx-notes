@@ -16,7 +16,23 @@ const theme = {
   isMac: true,
 }
 
-export default forwardRef(function Preview(props, ref) {
+interface SlideItem {
+  frontmatter: {
+    layout: string
+  }
+}
+
+export interface SlideRef {
+  setState: React.Dispatch<
+    React.SetStateAction<{
+      config: string
+      html: string
+      css: string
+    }>
+  >
+}
+
+export default forwardRef<SlideRef>(function Preview(props, ref) {
   const [state, setState] = useState({
     config: '',
     html: '',
@@ -31,7 +47,7 @@ export default forwardRef(function Preview(props, ref) {
     []
   )
   const { html: md, config: js, css } = state
-  const [parsed, setParsed] = useState({
+  const [parsed, setParsed] = useState<{ slides: SlideItem[] }>({
     slides: [],
   })
 

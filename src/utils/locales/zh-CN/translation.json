@@ -53,10 +53,16 @@
   "Upload Picture": "图床设置",
   "journal": "日记",
   "journal directory": "日记目录",
-  "Command": "命令",
+  "Custom command": "自定义命令",
   "Format markdown": "markdown 模式",
   "template directory": "日记模板路径",
   "The template file does not exist": "文件模板不存在",
-  "Export PDF": "Export PDF",
+  "Export HTML": "导出 HTML",
+  "Export PDF": "导出 PDF",
+  "Save as": "另存为",
+  "Clear storage": "清除缓存",
+  "Check update": "检查更新",
+  "default": "默认",
+  "Downloading": "下载中",
   "Support HTML": "支持HTML"
 }

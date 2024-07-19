@@ -3,122 +3,55 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:3001",
-    "distDir": "../out"
+    "frontendDist": "../out",
+    "devUrl": "http://localhost:3001"
   },
-  "package": {
-    "productName": "MDX Editor",
-    "version": "0.9.4"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "path": {
-        "all": true
-      },
-      "protocol": {
-        "all": true,
-        "assetScope": ["**"],
-        "asset": true
-      },
-      "globalShortcut": {
-        "all": true
-      },
-      "os": {
-        "all": true
-      },
-      "shell": {
-        "all": true,
-        "execute": true,
-        "sidecar": true,
-        "open": true
-      },
-      "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
-      },
-      "clipboard": {
-        "all": true,
-        "writeText": true,
-        "readText": true
-      },
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "maximize": true,
-        "minimize": true,
-        "setIcon": true,
-        "setIgnoreCursorEvents": true,
-        "setResizable": true,
-        "show": true,
-        "setFullscreen": true,
-        "startDragging": true,
-        "unmaximize": true,
-        "unminimize": true
-      },
-      "fs": {
-        "all": true,
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
-        "exists": true,
-        "scope": ["**"]
-      }
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "2023, Maqibin All Rights Reserved.",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "2023, Maqibin All Rights Reserved.",
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "editor.runjs.cool",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
-    },
-    "security": {
-      "csp": null
-    },
+    }
+  },
+  "productName": "MDX Editor",
+  "version": "0.9.5",
+  "identifier": "editor.runjs.cool",
+  "plugins": {
     "updater": {
-      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE5MzlGMDIwQkM5N0EzQ0YKUldUUG81ZThJUEE1R2Q1dVFGVmZuNW9KTmpneWE3MHJ6S1dINXRzRFFDWmtSVnRIdStPY2FBNXkK",
       "endpoints": [
         "https://github.com/maqi1520/mdx-editor/releases/latest/download/latest.json"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE5MzlGMDIwQkM5N0EzQ0YKUldUUG81ZThJUEE1R2Q1dVFGVmZuNW9KTmpneWE3MHJ6S1dINXRzRFFDWmtSVnRIdStPY2FBNXkK"
-    },
+      ]
+    }
+  },
+  "app": {
     "windows": [
       {
         "fullscreen": false,
@@ -127,8 +60,16 @@
         "title": "MDX Editor",
         "hiddenTitle": true,
         "width": 1200,
-        "titleBarStyle": "Overlay"
+        "titleBarStyle": "Overlay",
+        "dragDropEnabled": true
       }
-    ]
+    ],
+    "security": {
+      "assetProtocol": {
+        "scope": ["**"],
+        "enable": true
+      },
+      "csp": null
+    }
   }
 }

@@ -3,7 +3,7 @@ import { layout } from './Layouts'
 import { parse } from '@slidev/parser'
 import { themes } from '../../css/markdown-body'
 import { codeThemes, baseCss } from '../../css/mdx'
-import { appWindow } from '@tauri-apps/api/window'
+import { getCurrent } from '@tauri-apps/api/window'
 import { useRouter } from 'next/router'
 import { Context } from './Layouts/Context'
 
@@ -26,6 +26,7 @@ export default function Preview({ md, js, css }) {
   useEffect(() => {
     async function handle(event) {
       if (event.key === 'Escape') {
+        const appWindow = getCurrent()
         appWindow.setFullscreen(false)
         router.push('/')
       }

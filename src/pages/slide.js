@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
-import dynamic from 'next/dynamic'
-
-const Preview = dynamic(() => import('../components/Slide/Preview'), {
-  ssr: false,
-})
+import Preview from '../components/Slide/Preview'
 
 export default function Slide() {
   const [initialContent, setContent] = useState({})

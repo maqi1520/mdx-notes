@@ -1,5 +1,5 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { writeBinaryFile, createDir, exists } from '@tauri-apps/api/fs'
+import { writeFile, mkdir, exists } from '@tauri-apps/plugin-fs'
 import { resolve } from '@tauri-apps/api/path'
 
 const codeToUpload = {
@@ -11,16 +11,12 @@ const codeToUpload = {
     const dirPath = JSON.parse(localStorage.getItem('dir-path'))
     const path = await resolve(dirPath, 'img')
     if (!(await exists(path))) {
-      await createDir(path)
+      await mkdir(path)
     }
     if (dirPath.includes('/')) {
       fileName = `/img/${time}.png`
     }
-    await writeBinaryFile({
-      //当前工作目录
-      path: `${dirPath}${fileName}`,
-      contents,
-    })
+    await writeFile(`${dirPath}${fileName}`, contents)
     return `./img/${time}.png`
   },
   PicGo: async () => {

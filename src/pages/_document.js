@@ -25,7 +25,10 @@ export default class Document extends NextDocument {
           />
         </Head>
         <body className="w-full min-h-screen flex bg-white dark:bg-gray-900">
-          <Main />
+          <div id="print" className="hidden relative z-50 print:block" />
+          <div className="print:hidden w-full">
+            <Main />
+          </div>
           <NextScript />
         </body>
       </Html>

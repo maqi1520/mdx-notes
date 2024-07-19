@@ -7,14 +7,15 @@ import { FileText, ChevronRight, ImageIcon } from 'lucide-react'
 interface TreeItem {
   title: string
   key: string
-  isLeaf: boolean
+  is_file: boolean
+  is_directory: boolean
   children?: TreeItem[]
 }
 
 interface Props {
   treeData: TreeItem[]
   selectedPath: string
-  expandedKeys: string[]
+  expandedKeys?: string[]
   setExpandedKeys: (keys: string[]) => void
   onSelect: (key: string) => void
   onRightClick: (
@@ -43,7 +44,7 @@ const TreeNode = ({
   onSelect,
   onRightClick,
 }: TreeNodeProps) => {
-  const { title, children, isLeaf } = item
+  const { title, children, is_file, is_directory } = item
   const isExpanded = expandedKeys.includes(item.key)
   const toggleExpand = () => {
     if (isExpanded) {
@@ -55,7 +56,7 @@ const TreeNode = ({
 
   return (
     <li>
-      {!isLeaf ? (
+      {is_directory ? (
         <div className="pl-3">
           <div
             onContextMenu={(e) => onRightClick(e, item.key)}
@@ -91,7 +92,8 @@ const TreeNode = ({
             </ul>
           )}
         </div>
-      ) : (
+      ) : null}
+      {is_file && (
         <div
           className={clsx(
             'cursor-pointer border-l flex items-center pl-3 -ml-px',
@@ -117,13 +119,13 @@ const TreeNode = ({
 const Tree = ({
   treeData,
   selectedPath,
-  expandedKeys,
+  expandedKeys = [],
   setExpandedKeys,
   onSelect,
   onRightClick,
 }: Props) => {
   return (
-    <div className="text-sm">
+    <div className="text-sm pb-16">
       <ul className="space-y-2">
         {treeData.map((item, index) => (
           <TreeNode
