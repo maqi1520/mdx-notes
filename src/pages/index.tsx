@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 import {
   exists,
-  create,
   writeTextFile,
-  readTextFile,
+  mkdir,
   BaseDirectory,
 } from '@tauri-apps/plugin-fs'
-import initial from '@/utils/initial/'
+import initial from '@/utils/initial'
 import { documentDir, resolve } from '@tauri-apps/api/path'
 import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { isMdFile } from '@/components/utils/file-tree-util'
@@ -27,13 +26,20 @@ export default function Page() {
         const path = await resolve(documentDirPath, 'mdx-editor')
 
         if (!(await exists(path))) {
-          await create('mdx-editor', {
+          await mkdir('mdx-editor', {
+            baseDir: BaseDirectory.Document,
+          })
+          await mkdir('mdx-editor/plugins', {
+            baseDir: BaseDirectory.Document,
+          })
+          await mkdir('mdx-editor/plugins/themes', {
             baseDir: BaseDirectory.Document,
           })
 
           for (const key in initial) {
             const content = initial[key]
-            await writeTextFile(path + `/${key}.md`, content)
+
+            await writeTextFile(`${path}/${key}`, content)
           }
         }
         setDirPath(path)

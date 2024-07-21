@@ -1,0 +1,271 @@
+body {
+  --weui-BG-0: #ededed;
+  --weui-BG-2: #fff;
+  --weui-FG-0: rgba(0, 0, 0, 0.9);
+  --weui-FG-HALF: rgba(0, 0, 0, 0.9);
+  --weui-FG-1: rgba(0, 0, 0, 0.55);
+  --weui-FG-3: rgba(0, 0, 0, 0.1);
+  --weui-BRAND: #07c160;
+  --weui-LINK: #576b95;
+}
+
+body.dark {
+  --weui-BG-0: #111;
+  --weui-BG-2: #191919;
+  --weui-FG-0: rgba(255, 255, 255, 0.8);
+  --weui-FG-HALF: rgba(255, 255, 255, 0.6);
+  --weui-FG-1: rgba(255, 255, 255, 0.5);
+  --weui-FG-3: rgba(255, 255, 255, 0.1);
+  --weui-BRAND: #07c160;
+  --weui-LINK: #7d90a9;
+}
+
+body {
+  color: var(--weui-FG-HALF);
+  background-color: var(--weui-BG-2);
+}
+/*默认样式，最佳实践*/
+
+/*全局属性*/
+.markdown-body {
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+/*段落*/
+.markdown-body p {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+/*标题*/
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: var(--weui-FG-0);
+}
+.markdown-body h1 {
+  font-size: 24px;
+}
+.markdown-body h2 {
+  font-size: 22px;
+}
+.markdown-body h3 {
+  font-size: 20px;
+}
+.markdown-body h4 {
+  font-size: 18px;
+}
+.markdown-body h5 {
+  font-size: 16px;
+}
+.markdown-body h6 {
+  font-size: 14px;
+}
+
+/*列表*/
+.markdown-body ul,
+.markdown-body ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body ul ul {
+  list-style-type: square;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  font-weight: 500;
+}
+
+/*引用*/
+.markdown-body blockquote {
+  background-color: var(--weui-BG-0);
+  border-left: 4px solid var(--weui-BRAND);
+  color: var(--weui-FG-HALF);
+  padding: 1px 16px;
+  margin: 16px 0;
+  border-radius: 5px;
+}
+
+.markdown-body blockquote p {
+  line-height: 26px;
+  color: var(--weui-FG-HALF);
+}
+
+/*链接*/
+.markdown-body a,
+.markdown-body .link {
+  text-decoration: none;
+  color: var(--weui-BRAND);
+  word-wrap: break-word;
+}
+
+/*加粗*/
+.markdown-body strong {
+  font-weight: bold;
+}
+
+/*斜体*/
+.markdown-body em {
+  font-style: italic;
+}
+
+/*加粗斜体*/
+.markdown-body em strong {
+  font-weight: bold;
+}
+
+/*删除线*/
+.markdown-body del {
+  font-style: italic;
+}
+
+/*分隔线*/
+.markdown-body hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid var(--weui-FG-3);
+}
+
+/*行内代码*/
+.markdown-body p code,
+.markdown-body li code {
+  font-size: 14px;
+  word-break: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: var(--weui-BRAND);
+  background-color: var(--weui-BG-0);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+}
+
+.markdown-body pre {
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  overflow: auto;
+  position: relative;
+  line-height: 1.75;
+}
+
+.markdown-body pre > code {
+  min-width: 100%;
+  font-size: 12px;
+  word-break: normal;
+  display: block;
+  flex: none;
+  padding: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/*图片*/
+.markdown-body img {
+  display: block;
+  max-width: 100%;
+}
+.qrcode-block img {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/*图片*/
+.markdown-body figure {
+  margin: 0;
+  padding: 0 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+.markdown-body figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: var(--weui-LINK);
+  font-size: 14px;
+}
+
+/*表格*/
+.markdown-body table {
+  width: auto;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-spacing: 0;
+  border: 1px solid var(--weui-FG-3);
+  border-collapse: collapse;
+}
+
+.markdown-body table tr {
+  border: 0;
+}
+
+.markdown-body table tr th,
+.markdown-body table tr td {
+  border: 0;
+  border-bottom: 1px solid var(--weui-FG-3);
+  font-size: 16px;
+  padding: 10px;
+  text-align: left;
+}
+
+.markdown-body table tr th {
+  color: var(--weui-FG-0);
+  background-color: var(--weui-BG-0);
+  font-weight: bold;
+}
+
+.markdown-body sub,
+sup {
+  line-height: 0;
+}
+
+.markdown-body .contains-task-list {
+  padding-left: 0;
+}
+.markdown-body .task-list-item {
+  list-style: none;
+}
+
+.snowfall {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.snowfall-bar {
+  flex-basis: 0;
+  flex-grow: 1;
+  margin: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  font-size: 10px;
+  color: #eff6ff;
+}

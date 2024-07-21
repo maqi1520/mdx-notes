@@ -1,3 +1,8 @@
+---
+title: What Can MDX Do?
+theme: custom
+---
+
 ## MDX 能干什么？
 
 它能够让我们在 markdown 中写 JSX

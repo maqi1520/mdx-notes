@@ -156,7 +156,7 @@ export default function Pen({
   async function compileNow(content) {
     console.log('compile', filePath)
     let md = resultRef.current?.md || ''
-    if (isMdFile(filePath)) {
+    if (isMdFile(filePath) || !filePath) {
       md = content
     }
     console.log('md', md)

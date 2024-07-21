@@ -1,3 +1,8 @@
+---
+title: What Can MDX Do?
+theme: custom
+---
+
 ## What Can MDX Do?
 
 It allows us to write JSX in markdown.
