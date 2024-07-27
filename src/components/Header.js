@@ -12,8 +12,8 @@ export default function Header({ children, logo }) {
     <div
       data-tauri-drag-region
       className={clsx(
-        'relative z-20 flex-none pb-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center justify-between antialiased select-none',
-        isMacOS ? 'pt-6' : 'pt-3'
+        'sticky top-0 z-20 flex-none pb-3 px-5 flex items-center justify-between antialiased select-none border-b dark:shadow-lg',
+        isMacOS ? 'pt-6' : 'pt-4'
       )}
       style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
     >
@@ -22,9 +22,7 @@ export default function Header({ children, logo }) {
       </div>
       <div className="flex items-center space-x-2">
         {children}
-
         <div className="block mx-2 w-px h-6 bg-gray-200 dark:bg-gray-700" />
-
         <Button size="icon" onClick={toggleTheme} variant="outline">
           <Sun className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 hidden dark:block" />
           <MoonStar className="w-5 h-5 stroke-primary fill-sky-100 dark:fill-sky-400/50 dark:hidden" />

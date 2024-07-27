@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { getLayoutQueryString } from '../utils/getLayoutQueryString'
-import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { Button } from '@/components/ui/button'
 import { ShareIcon, LinkIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -45,7 +44,7 @@ export function Share({ resultRef, layout, responsiveSize }) {
               responsiveSize,
             })}`
 
-            writeText(HOSTNAME + newPath)
+            clipboardWriteText(HOSTNAME + newPath)
               .then(() => {
                 if (current) {
                   setState({ state: 'copied', path: newPath })

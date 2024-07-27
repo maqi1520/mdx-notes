@@ -10,8 +10,8 @@ import {
   registerDocumentFormattingEditProviders,
 } from '../monaco/getOrCreateModel'
 import { useUpdateEffect } from 'react-use'
-import { open } from '@tauri-apps/plugin-shell'
 import { listenPaste } from '../monaco/pasteImage'
+import { openLink } from '@/lib/bindings'
 
 export default function Editor({
   onMount,
@@ -58,9 +58,7 @@ export default function Editor({
 
     disposables.push(editor)
 
-    window.open = (url) => {
-      open(url)
-    }
+    window.open = openLink
     onMount(editor)
 
     return () => {

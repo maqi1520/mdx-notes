@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Preview from '../components/Slide/Preview'
 
 export default function Slide() {
-  const [initialContent, setContent] = useState({})
+  const [initialContent, setContent] = useState<{
+    html?: string
+    config?: string
+    css?: string
+  }>({})
   useEffect(() => {
     try {
-      const data = JSON.parse(localStorage.getItem('slide'))
+      const data = JSON.parse(localStorage.getItem('slide') ?? '{}')
 
       if (data) {
         console.log(data)

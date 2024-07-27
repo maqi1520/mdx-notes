@@ -1,7 +1,9 @@
 import React, { useLayoutEffect, useState } from 'react'
 import SettingModal from './SettingModal'
 import { useLocalStorage } from 'react-use'
-import { type } from '@tauri-apps/plugin-os'
+import { getMacOS } from '@/lib/bindings'
+import { Toaster } from '@/components/ui/toaster'
+import { Confirm } from './ui/confirm'
 
 type Props = {
   children: React.ReactNode
@@ -44,8 +46,8 @@ export default function Layout({ children }: Props) {
 
   let [open, setOpen] = useState(false)
   useLayoutEffect(() => {
-    type().then((os) => {
-      setIsMacOS(os === 'macos')
+    getMacOS().then((res: boolean) => {
+      setIsMacOS(res)
     })
   }, [])
 
@@ -60,6 +62,8 @@ export default function Layout({ children }: Props) {
       }}
     >
       {children}
+      <Toaster />
+      <Confirm />
       <SettingModal />
     </Context.Provider>
   )

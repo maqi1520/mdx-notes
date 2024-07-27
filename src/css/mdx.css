@@ -124,8 +124,8 @@ input[type='checkbox']:checked {
   flex-shrink: 0;
 }
 .markdown-body {
-  line-height: 2em;
-  padding: 0 12px;
+  line-height: 1.6;
+  padding: 0 8px;
 }
 
 /*表格*/
@@ -185,6 +185,7 @@ input[type='checkbox']:checked {
 
 .markdown-body code {
   max-width: unset !important;
+  line-height: 1.6;
 }
 
 .markdown-body pre[class*='language-'] {

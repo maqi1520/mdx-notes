@@ -18,20 +18,23 @@ import {
   findPathInTree,
 } from './utils/file-tree-util'
 
-import { confirm, message, open } from '@tauri-apps/plugin-dialog'
-import { documentDir, resolve } from '@tauri-apps/api/path'
-import { getCurrent } from '@tauri-apps/api/window'
+import { useToast } from '@/components/ui/use-toast'
+import { useTranslation } from 'react-i18next'
 import {
+  fullScreen,
+  openLink,
+  searchKeywordInDir,
+  readDir,
+  showInFlower,
+  chooseDir,
+  resolve,
   exists,
   mkdir,
   rename,
   writeTextFile,
   readTextFile,
   remove,
-} from '@tauri-apps/plugin-fs'
-import { useTranslation } from 'react-i18next'
-import { invoke } from '@tauri-apps/api/core'
-import { open as openLink } from '@tauri-apps/plugin-shell'
+} from '@/lib/bindings'
 import Tree from './Tree'
 import SearchList from './SearchList'
 import TocList from './TocList'
@@ -48,6 +51,7 @@ import dayjs from 'dayjs'
 import { useLocalStorage } from 'react-use'
 import { Context } from './Layout'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { useConfirm } from './ui/confirm'
 
 interface FileNode {
   name: string
@@ -91,6 +95,8 @@ const FileTree = forwardRef<TreeRef, Props>(
     { onSelect, selectedPath, setShowPPT, onScroll, dirPath, setDirPath },
     ref
   ) => {
+    const { toast } = useToast()
+    const { confirm } = useConfirm()
     const { isMacOS } = useContext(Context)
     const { t } = useTranslation()
     const [scrollLine, setScrollLine] = useState(1)
@@ -108,12 +114,9 @@ const FileTree = forwardRef<TreeRef, Props>(
     const [fileTreeData, setTreeData] = useState<FileNode[]>([])
 
     const reloadTree = async () => {
-      const res = await exists(dirPath)
-      if (res) {
-        const result: FileNode = await invoke('read_dir', { path: dirPath })
-        if (result.children) {
-          setTreeData(result.children)
-        }
+      const result = await readDir<FileNode>(dirPath)
+      if (result.children) {
+        setTreeData(result.children)
       }
     }
     useEffect(() => {
@@ -174,8 +177,9 @@ title: ${file}
           const content = await readTextFile(filePath)
           openMd(fullPath, content.replace(/{{date}}/g, fileName))
         } catch (error) {
-          message(t('The template file does not exist'), {
-            title: t('Prompt'),
+          toast({
+            title: t('Error'),
+            description: t('The template file does not exist'),
           })
         }
       } else {
@@ -209,15 +213,17 @@ title: ${file}
         reloadTree()
         onSelect(dirPath + '/' + fileName)
       } else {
-        message(t('Please set the working directory'), {
+        toast({
           title: t('Prompt'),
+          description: t('Please set the working directory'),
         })
       }
     })
 
     const fileExists = async () => {
-      await message(t('File already exists'), {
+      toast({
         title: t('Prompt'),
+        description: t('File already exists'),
       })
       setAction({
         path: '',
@@ -247,10 +253,10 @@ title: ${file}
       if (e.keyCode !== 13) {
         return
       }
-      const result: SearchResultItem[] = await invoke('search_keyword_in_dir', {
-        keyword: value.trim(),
-        path: dirPath,
-      })
+      const result = await searchKeywordInDir<SearchResultItem[]>(
+        value.trim(),
+        dirPath
+      )
       console.log('search', result)
       setSearchList(result)
       setSearchValue(value)
@@ -490,7 +496,7 @@ title: ${file}
     const handleOpenFinder = async () => {
       setMenuStyle({ display: 'none' })
       const path = selectedKeys[0]
-      await invoke('show_in_folder', { path })
+      showInFlower(path)
     }
 
     const handleRefresh = async () => {
@@ -504,30 +510,27 @@ title: ${file}
         return
       }
       const name = getCurrentFolderName(path)
-      const confirmed = await confirm(
-        `${t('Are you sure you want to delete')}'${name}'?`,
-        {
-          title: t('Delete confirmation'),
-          kind: 'warning',
-        }
-      )
-      if (confirmed) {
-        if (supportFile(path)) {
-          await remove(path)
-        } else {
-          remove(path, {
-            recursive: true,
-          })
-        }
-        reloadTree()
-      }
+
+      confirm({
+        title: t('Delete confirmation'),
+        description: `${t('Are you sure you want to delete')} ${name}?`,
+        onOk: async () => {
+          if (supportFile(path)) {
+            await remove(path)
+          } else {
+            remove(path, {
+              recursive: true,
+            })
+          }
+          reloadTree()
+        },
+      })
     }, [selectedKeys, dirPath])
 
     const handlePPT = async () => {
       setMenuStyle({ display: 'none' })
       setShowPPT()
-      const appWindow = getCurrent()
-      await appWindow.setFullscreen(true)
+      fullScreen()
     }
 
     let menu: MenuItemProps[] = [
@@ -552,10 +555,7 @@ title: ${file}
       menu = dirItemMenu
     }
     const handleChooseDir = async () => {
-      const selected = await open({
-        directory: true,
-        defaultPath: await documentDir(),
-      })
+      const selected = await chooseDir()
       if (selected) {
         setDirPath(selected)
         setExpandedKeys([])
@@ -567,38 +567,40 @@ title: ${file}
         <div
           data-tauri-drag-region
           className={clsx(
-            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b border-gray-200 dark:border-gray-800 flex items-center flex-none',
-            isMacOS ? 'pt-7' : 'pt-4'
+            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b flex-none dark:shadow-highlight/4',
+            isMacOS ? 'pt-6' : 'pt-4'
           )}
         >
-          <div className="flex items-center w-full text-left px-2 h-8 mt-[2px] bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
-            <SearchIcon className="w-4 h-4 flex-none text-slate-300 dark:text-slate-400" />
-            <input
-              className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
-              aria-label="search"
-              ref={searchInputRef}
-              onKeyDown={onChange}
-            />
-            {searchValue && (
-              <XCircleIcon
-                onClick={() => {
-                  setSearchValue('')
-                  if (searchInputRef.current) {
-                    searchInputRef.current.value = ''
-                  }
-                }}
-                className="w-4 h-4 cursor-pointer flex-none text-slate-300 dark:text-slate-400"
+          <div className="h-9 flex items-center">
+            <div className="flex items-center w-full text-left px-2 h-8 mt-[2px] bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm rounded-lg text-slate-400 dark:bg-slate-800 dark:ring-0 dark:text-slate-300 dark:highlight-white/5 dark:hover:bg-slate-700">
+              <SearchIcon className="w-4 h-4 flex-none text-slate-300 dark:text-slate-400" />
+              <input
+                className="flex-auto bg-transparent w-full px-2 focus:ring-0 outline-none h-full border-0 text-slate-900 dark:text-slate-200"
+                aria-label="search"
+                ref={searchInputRef}
+                onKeyDown={onChange}
               />
+              {searchValue && (
+                <XCircleIcon
+                  onClick={() => {
+                    setSearchValue('')
+                    if (searchInputRef.current) {
+                      searchInputRef.current.value = ''
+                    }
+                  }}
+                  className="w-4 h-4 cursor-pointer flex-none text-slate-300 dark:text-slate-400"
+                />
+              )}
+            </div>
+            {!searchValue && (
+              <span
+                onClick={() => setShowToc(!showToc)}
+                className="pl-2 cursor-pointer text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
+              >
+                {showToc ? <ListIcon /> : <ListTreeIcon />}
+              </span>
             )}
           </div>
-          {!searchValue && (
-            <span
-              onClick={() => setShowToc(!showToc)}
-              className="pl-2 cursor-pointer text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
-            >
-              {showToc ? <ListIcon /> : <ListTreeIcon />}
-            </span>
-          )}
         </div>
         <SearchList
           value={searchList}

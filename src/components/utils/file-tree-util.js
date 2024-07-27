@@ -1,7 +1,3 @@
-import { convertFileSrc } from '@tauri-apps/api/core'
-
-import { readDir } from '@tauri-apps/plugin-fs'
-
 export const getParentKey = (path, tree) => {
   let parentKey
   for (let i = 0; i < tree.length; i++) {
@@ -124,41 +120,4 @@ export function getCurrentFolderName(filePath) {
   const parts = filePath.split(separator) // 将路径分割成数组
   const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
   return lastPart
-}
-
-//给定文件路径，获取当前文件的父级路径
-export function getParentPath(filePath) {
-  // 使用正则表达式匹配文件夹名
-  const separator = filePath.includes('/') ? '/' : '\\' // 检测路径分隔符
-  const parts = filePath.split(separator) // 将路径分割成数组
-  const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
-  const parentPath = filePath.replace(lastPart, '')
-  return parentPath
-}
-
-// 判断是否为 windows 路径
-function isWindowsPath(path) {
-  return /^[a-zA-Z]:\\/.test(path)
-}
-
-export function convertSrc(src) {
-  const isRemote = /^https?:\/\/|^data:image\//.test(src)
-  if (isRemote) {
-    return src
-  }
-  const baseUrl = JSON.parse(localStorage.getItem('dir-path'))
-  if (isWindowsPath(src)) {
-    return convertFileSrc('') + src
-  }
-  // 相对路径
-  if (/^\.?\//.test(src)) {
-    return (
-      convertFileSrc('') +
-      `${baseUrl}${src.startsWith('./') ? src.slice(1) : src}`
-    )
-  }
-  // 相对当前文件路径
-  const filePath = JSON.parse(localStorage.getItem('filePath'))
-  const filePathStr = getParentPath(filePath)
-  return convertFileSrc('') + `${filePathStr}${src}`
 }

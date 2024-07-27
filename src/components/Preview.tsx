@@ -404,6 +404,7 @@ const Preview = forwardRef<PreviewRef, Props>(
                       font-size: 17px;
                       color: #333;
                       background: #fff;
+                      padding:8px                   
                     }
                     @media (max-width: 360px) {
                       body{

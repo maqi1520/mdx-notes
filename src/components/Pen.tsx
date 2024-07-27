@@ -24,9 +24,6 @@ import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
-import { writeTextFile, readTextFile } from '@tauri-apps/plugin-fs'
-import { getCurrent } from '@tauri-apps/api/window'
-import { resolve } from '@tauri-apps/api/path'
 import FileTree, { TreeRef } from './FileTree'
 import {
   PenSquare,
@@ -43,15 +40,19 @@ import {
   isJsFile,
   isCssFile,
 } from './utils/file-tree-util'
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
 import MoreDropDown from './MoreDropdown'
+import Editor from './Editor'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-
-const Editor = dynamic(() => import('./Editor'), {
-  ssr: false,
-})
+import {
+  createDefaultDirPath,
+  listenDrop,
+  listenFocus,
+  resolve,
+  readTextFile,
+  writeTextFile,
+} from '@/lib/bindings'
 
 const defaultTheme = {
   formatMarkdown: false,
@@ -64,19 +65,9 @@ const defaultTheme = {
 
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
-interface Props {
-  dirPath: string
-  setDirPath: (path: string) => void
-  setFilePath: (path: string) => void
-  filePath: string
-}
-
-export default function Pen({
-  dirPath,
-  setDirPath,
-  filePath,
-  setFilePath,
-}: Props) {
+export default function Pen() {
+  const [dirPath = '', setDirPath] = useLocalStorage<string>('dir-path', '')
+  const [filePath = '', setFilePath] = useLocalStorage<string>('filePath', '')
   const { t } = useTranslation()
   const router = useRouter()
   const resultRef = useRef<{
@@ -118,10 +109,23 @@ export default function Pen({
   const refFileTree = useRef<TreeRef>(null)
 
   useEffect(() => {
+    //创建默认的目录文件
+    createDefaultDirPath(dirPath).then((path) => {
+      setDirPath(path)
+    })
+    // 监听文件的拖放
+    listenDrop((path) => {
+      if (isMdFile(path)) {
+        setFilePath(path)
+      } else {
+        setDirPath(path)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     // 窗口获取焦点，重新读取文件
-    const appWindow = getCurrent()
-    const unListen = appWindow.listen('tauri://focus', async () => {
-      console.log('Window has gained focus!')
+    const unListen = listenFocus(async () => {
       if (filePath && supportTextFile(filePath) && editorRef.current) {
         const res = await readTextFile(filePath)
         setFileText(res)
@@ -386,9 +390,9 @@ export default function Pen({
               />
               <MoreDropDown resultRef={resultRef} />
 
-              <div className="hidden lg:flex items-center ml-2 rounded-md shadow-sm border dark:bg-gray-800 dark:shadow-highlight/4">
+              <div className="hidden lg:flex items-center ml-2 rounded-md overflow-hidden border dark:bg-gray-800 dark:shadow-highlight/4">
                 <Button
-                  className="border-0 rounded-none"
+                  className="border-0 rounded-none h-[34px]"
                   size="icon"
                   variant="outline"
                   onClick={() => setLayout('vertical')}
@@ -401,7 +405,7 @@ export default function Pen({
                   />
                 </Button>
                 <Button
-                  className="border-0 rounded-none"
+                  className="border-0 rounded-none h-[34px]"
                   size="icon"
                   variant="outline"
                   onClick={() => setLayout('editor')}
@@ -414,7 +418,7 @@ export default function Pen({
                   />
                 </Button>
                 <Button
-                  className="border-0 rounded-none"
+                  className="border-0 rounded-none h-[34px]"
                   size="icon"
                   variant="outline"
                   onClick={() => setLayout('preview')}
@@ -427,7 +431,7 @@ export default function Pen({
                   />
                 </Button>
                 <Button
-                  className="border-0 rounded-none"
+                  className="border-0 rounded-none h-[34px]"
                   size="icon"
                   variant="outline"
                   onClick={() => setResponsiveDesignMode(!responsiveDesignMode)}
@@ -441,11 +445,11 @@ export default function Pen({
                 </Button>
               </div>
             </Header>
-            <main className="flex-auto relative border-t border-gray-200 dark:border-gray-800">
+            <main className="flex-auto relative">
               <ResizablePanelGroup direction={'horizontal'}>
                 {(layout === 'editor' || layout === 'vertical') && (
                   <ResizablePanel order={1}>
-                    <div className="relative h-full border-t border-gray-200 dark:border-white/10 flex-auto flex">
+                    <div className="relative h-full flex-auto flex">
                       <TabBar
                         width="100%"
                         isLoading={isLoading}
@@ -469,7 +473,7 @@ export default function Pen({
 
                 {(layout === 'preview' || layout === 'vertical') && (
                   <ResizablePanel order={2}>
-                    <div className="relative h-full border-t border-gray-200 dark:border-white/10 lg:border-0 bg-gray-50 dark:bg-slate-950">
+                    <div className="relative h-full bg-gray-50 dark:bg-slate-950">
                       {theme.view === 'ppt' ? (
                         <Slide ref={slideRef} />
                       ) : theme.view === 'MindMap' ? (

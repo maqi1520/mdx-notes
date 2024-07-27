@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable jsx-a11y/anchor-has-content */
 
 import React from 'react'
-import { convertSrc } from '@/components/utils/file-tree-util'
+import { convertSrc } from '@/lib/bindings'
 
 import { H1, H2, H3, H4 } from './Heading'
 import QRCodeBlock from './QRCodeBlock'

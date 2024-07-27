@@ -64,5 +64,7 @@
   "Check update": "检查更新",
   "default": "默认",
   "Downloading": "下载中",
+  "Continue": "确认",
+  "Cancel": "取消",
   "Support HTML": "支持HTML"
 }
