@@ -17,13 +17,11 @@ interface Config {
 }
 
 export const Context = React.createContext<{
-  isMacOS: boolean
   config: Config
   open: boolean
   setConfig: React.Dispatch<React.SetStateAction<Config>>
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }>({
-  isMacOS: false,
   config: {
     journalDir: '',
     journalTemplateDir: '',
@@ -36,7 +34,6 @@ export const Context = React.createContext<{
 })
 
 export default function Layout({ children }: Props) {
-  const [isMacOS, setIsMacOS] = useState(false)
   let [config, setConfig] = useLocalStorage<Config>('config', {
     journalDir: '',
     journalTemplateDir: '',
@@ -45,16 +42,10 @@ export default function Layout({ children }: Props) {
   })
 
   let [open, setOpen] = useState(false)
-  useLayoutEffect(() => {
-    getMacOS().then((res: boolean) => {
-      setIsMacOS(res)
-    })
-  }, [])
 
   return (
     <Context.Provider
       value={{
-        isMacOS,
         config: config!,
         setConfig,
         open,

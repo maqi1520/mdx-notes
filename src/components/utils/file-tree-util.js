@@ -121,3 +121,5 @@ export function getCurrentFolderName(filePath) {
   const lastPart = parts[parts.length - 1] // 获取路径中的最后一个部分
   return lastPart
 }
+
+export const isMacOS = navigator.userAgent.includes('Mac OS X')

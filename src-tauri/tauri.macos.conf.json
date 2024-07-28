@@ -1,0 +1,17 @@
+{
+  "app": {
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 780,
+        "resizable": true,
+        "title": "MDX Editor",
+        "hiddenTitle": true,
+        "width": 1200,
+        "titleBarStyle": "Overlay",
+        "dragDropEnabled": true,
+        "decorations": true
+      }
+    ]
+  }
+}

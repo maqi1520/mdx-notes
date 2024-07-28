@@ -65,7 +65,8 @@
         "hiddenTitle": true,
         "width": 1200,
         "titleBarStyle": "Overlay",
-        "dragDropEnabled": true
+        "dragDropEnabled": true,
+        "decorations": false
       }
     ],
     "security": {

@@ -7,7 +7,6 @@ import React, {
   useRef,
   memo,
   useMemo,
-  useContext,
 } from 'react'
 import {
   isMdFile,
@@ -16,6 +15,7 @@ import {
   renamePath,
   getCurrentFolderName,
   findPathInTree,
+  isMacOS,
 } from './utils/file-tree-util'
 
 import { useToast } from '@/components/ui/use-toast'
@@ -49,7 +49,6 @@ import {
 } from 'lucide-react'
 import dayjs from 'dayjs'
 import { useLocalStorage } from 'react-use'
-import { Context } from './Layout'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useConfirm } from './ui/confirm'
 
@@ -97,7 +96,6 @@ const FileTree = forwardRef<TreeRef, Props>(
   ) => {
     const { toast } = useToast()
     const { confirm } = useConfirm()
-    const { isMacOS } = useContext(Context)
     const { t } = useTranslation()
     const [scrollLine, setScrollLine] = useState(1)
     const [toc, setToc] = useState<string[]>([])
@@ -564,11 +562,15 @@ title: ${file}
 
     return (
       <div className="relative w-full overflow-auto h-screen flex flex-col">
+        {isMacOS ? (
+          <div data-tauri-drag-region className="h-6" />
+        ) : (
+          <div data-tauri-drag-region className="h-[30px]" />
+        )}
         <div
           data-tauri-drag-region
           className={clsx(
-            'px-4 pb-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b flex-none dark:shadow-highlight/4',
-            isMacOS ? 'pt-6' : 'pt-4'
+            'pb-3 px-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b flex-none dark:shadow-highlight/4'
           )}
         >
           <div className="h-9 flex items-center">
