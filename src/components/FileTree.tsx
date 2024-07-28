@@ -562,15 +562,12 @@ title: ${file}
 
     return (
       <div className="relative w-full overflow-auto h-screen flex flex-col">
-        {isMacOS ? (
-          <div data-tauri-drag-region className="h-6" />
-        ) : (
-          <div data-tauri-drag-region className="h-[30px]" />
-        )}
         <div
           data-tauri-drag-region
           className={clsx(
-            'pb-3 px-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b flex-none dark:shadow-highlight/4'
+            'pb-3 px-3 bg-white dark:bg-gray-900 sticky top-0 left-0 z-10 border-b flex-none dark:shadow-highlight/4',
+            isMacOS && 'pt-6',
+            !isMacOS && 'pt-[30px]'
           )}
         >
           <div className="h-9 flex items-center">

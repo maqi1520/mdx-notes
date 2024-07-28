@@ -54,7 +54,7 @@ export function MdiClose(props: SVGProps<SVGSVGElement>) {
 }
 export default function TitleBar() {
   if (isMacOS) {
-    return <div data-tauri-drag-region className="h-6" />
+    return null
   }
   return (
     <div

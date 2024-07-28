@@ -5,6 +5,7 @@ import React from 'react'
 import { Sun, MoonStar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import TopBar from './TopBar'
+import { isMacOS } from './utils/file-tree-util'
 
 export default function Header({ children, logo }) {
   return (
@@ -13,7 +14,8 @@ export default function Header({ children, logo }) {
       <div
         data-tauri-drag-region
         className={clsx(
-          'relative top-0 z-20 flex-none pb-3 px-5 flex items-center justify-between antialiased select-none border-b dark:shadow-lg'
+          'relative top-0 z-20 flex-none pb-3 px-5 flex items-center justify-between antialiased select-none border-b dark:shadow-lg',
+          isMacOS && 'pt-6'
         )}
         style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
       >
