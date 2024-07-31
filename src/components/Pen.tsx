@@ -24,14 +24,8 @@ import { TabBar } from './TabBar'
 import { themes } from '../css/markdown-body'
 import { compileMdx, getFrontMatter } from '../hooks/compileMdx'
 import { baseCss, codeThemes } from '../css/mdx'
-import FileTree, { TreeRef } from './FileTree'
-import {
-  PenSquare,
-  Pencil,
-  Columns,
-  MonitorSmartphone,
-  Square,
-} from 'lucide-react'
+import FileTree from './FileTree'
+import { PenSquare, Columns, MonitorSmartphone, Square } from 'lucide-react'
 import clsx from 'clsx'
 import {
   supportTextFile,
@@ -39,9 +33,9 @@ import {
   isImageFile,
   isJsFile,
   isCssFile,
+  findPathInTree,
 } from './utils/file-tree-util'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'react-i18next'
 import MoreDropDown from './MoreDropdown'
 import Editor from './Editor'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
@@ -52,7 +46,13 @@ import {
   resolve,
   readTextFile,
   writeTextFile,
+  openLink,
+  mkdir,
+  exists,
+  readDir,
 } from '@/lib/bindings'
+import { CompileResult, TreeRef, FileNode } from '@/utils/types'
+import JournalButton from './JournalButton'
 
 const defaultTheme = {
   formatMarkdown: false,
@@ -66,47 +66,39 @@ const defaultTheme = {
 const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen() {
+  const router = useRouter()
   const [dirPath = '', setDirPath] = useLocalStorage<string>('dir-path', '')
   const [filePath = '', setFilePath] = useLocalStorage<string>('filePath', '')
-  const { t } = useTranslation()
-  const router = useRouter()
-  const resultRef = useRef<{
-    md: string
-    markdownTheme: string
-    jsx: string
-    frontMatter: {}
-    css: string
-    html: string
-    codeTheme: string
-  }>()
-  const previewRef = useRef<PreviewRef>(null)
-
   const [layout = 'vertical', setLayout] = useLocalStorage('layout', 'vertical')
-  const [resizing, setResizing] = useState(false)
-
-  const isLg = useMedia('(min-width: 1024px)')
-  const [dirty, setDirty] = useState(false) //是否修改过
-  const [error, setError, setErrorImmediate, cancelSetError] =
-    useDebouncedState(undefined, 1000)
-  const slideRef = useRef<SlideRef>(null)
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>()
   const [responsiveDesignMode = false, setResponsiveDesignMode] =
     useLocalStorage('responsiveDesignMode', false)
-  const [fileText, setFileText] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [wordCount, setWordCount] = useState(0)
   const [showFileTree = false, setShowFileTree] = useLocalStorage(
     'showFileTree',
     false
   )
-
   const [theme = defaultTheme, setTheme] = useLocalStorage(
     'editor-theme',
     defaultTheme
   )
-  const [responsiveSize, setResponsiveSize] = useState(DEFAULT_RESPONSIVE_SIZE)
 
+  const resultRef = useRef<CompileResult>()
+  const previewRef = useRef<PreviewRef>(null)
   const refFileTree = useRef<TreeRef>(null)
+  const slideRef = useRef<SlideRef>(null)
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>()
+
+  const [resizing, setResizing] = useState(false)
+  const isLg = useMedia('(min-width: 1024px)')
+  const [dirty, setDirty] = useState(false) //是否修改过
+  const [error, setError, setErrorImmediate, cancelSetError] =
+    useDebouncedState(undefined, 1000)
+  //目录树
+  const [fileTreeData, setTreeData] = useState<FileNode[]>([])
+  //当前文件内容
+  const [fileText, setFileText] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [wordCount, setWordCount] = useState(0)
+  const [responsiveSize, setResponsiveSize] = useState(DEFAULT_RESPONSIVE_SIZE)
 
   useEffect(() => {
     //创建默认的目录文件
@@ -321,6 +313,64 @@ export default function Pen() {
     router.push('/slide')
   }, [])
 
+  const reloadTree = async () => {
+    const result = await readDir<FileNode>(dirPath)
+    if (result.children) {
+      setTreeData(result.children)
+    }
+  }
+  useEffect(() => {
+    reloadTree()
+  }, [dirPath])
+
+  const openMd = async (file: string, content?: string) => {
+    if (!content) {
+      content = `---
+title: ${file}
+---
+
+# ${file}
+
+`
+    }
+    const fileName = file.trim() + '.md'
+    const path = findPathInTree(fileName, fileTreeData)
+    if (path) {
+      setFilePath(path)
+      return
+    }
+    const filePath = await resolve(dirPath, fileName)
+    if (!(await exists(filePath))) {
+      if (file.includes('/')) {
+        const [dirName] = file.split('/')
+        const path = await resolve(dirPath, dirName)
+        if (!(await exists(path))) {
+          await mkdir(path)
+        }
+      }
+      await writeTextFile(filePath, content)
+      reloadTree()
+    }
+    setFilePath(filePath)
+  }
+
+  useEffect(() => {
+    const handleMessage = async (e) => {
+      if (e.data.event === 'open') {
+        const href = e.data.href
+        if (/^https?:\/\//.test(href)) {
+          await openLink(href)
+        } else {
+          openMd(decodeURIComponent(href), '')
+        }
+      }
+    }
+    window.addEventListener('message', handleMessage, false)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
+
   // useEffect(() => {
   //   const handleMessage = (e) => {
   //     if (e.data.event === 'preview-scroll') {
@@ -337,6 +387,8 @@ export default function Pen() {
         <>
           <ResizablePanel order={1} minSize={15} maxSize={40} defaultSize={20}>
             <FileTree
+              reloadTree={reloadTree}
+              fileTreeData={fileTreeData}
               dirPath={dirPath}
               setDirPath={setDirPath}
               onScroll={handleScroll}
@@ -371,13 +423,7 @@ export default function Pen() {
                       }
                     />
                     <CopyBtn resultRef={resultRef} />
-                    <Button
-                      onClick={refFileTree.current?.createOrOpenDailyNote}
-                      size="sm"
-                    >
-                      <Pencil className="w-4 h-4 mr-1" />
-                      {t('journal')}
-                    </Button>
+                    <JournalButton openMd={openMd} />
                   </div>
                 </>
               }

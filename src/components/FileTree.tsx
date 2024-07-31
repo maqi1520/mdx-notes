@@ -14,7 +14,6 @@ import {
   sortFile,
   renamePath,
   getCurrentFolderName,
-  findPathInTree,
   isMacOS,
 } from './utils/file-tree-util'
 
@@ -22,17 +21,13 @@ import { useToast } from '@/components/ui/use-toast'
 import { useTranslation } from 'react-i18next'
 import {
   fullScreen,
-  openLink,
   searchKeywordInDir,
-  readDir,
   showInFlower,
   chooseDir,
-  resolve,
   exists,
   mkdir,
   rename,
   writeTextFile,
-  readTextFile,
   remove,
 } from '@/lib/bindings'
 import Tree from './Tree'
@@ -47,51 +42,39 @@ import {
   ListIcon,
   XCircleIcon,
 } from 'lucide-react'
-import dayjs from 'dayjs'
 import { useLocalStorage } from 'react-use'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useConfirm } from './ui/confirm'
-
-interface FileNode {
-  name: string
-  path: string
-  is_file: boolean
-  is_directory: boolean
-  children?: FileNode[] | null
-}
-
-interface SearchResultItem {
-  name: string
-  path: string
-  match_lines: string[]
-}
-
-interface MenuItemProps {
-  name: string
-  extra?: string
-  event: () => void
-}
+import {
+  FileNode,
+  MenuItemProps,
+  SearchResultItem,
+  TreeRef,
+} from '@/utils/types'
 
 interface Props {
   onSelect: (path: string) => void
   selectedPath: string
   setShowPPT: () => void
+  reloadTree: () => void
   onScroll: (scrollLine: number) => void
   dirPath: string
   setDirPath: (path: string) => void
-}
-
-export interface TreeRef {
-  setToc: React.Dispatch<React.SetStateAction<string[]>>
-  setScrollLine: React.Dispatch<React.SetStateAction<number>>
-  openMd: (file: string, content?: string) => Promise<void>
-  createOrOpenDailyNote: () => Promise<void>
-  reload: () => Promise<void>
+  fileTreeData: FileNode[]
 }
 
 const FileTree = forwardRef<TreeRef, Props>(
   (
-    { onSelect, selectedPath, setShowPPT, onScroll, dirPath, setDirPath },
+    {
+      onSelect,
+      selectedPath,
+      setShowPPT,
+      reloadTree,
+      fileTreeData,
+      onScroll,
+      dirPath,
+      setDirPath,
+    },
     ref
   ) => {
     const { toast } = useToast()
@@ -109,99 +92,16 @@ const FileTree = forwardRef<TreeRef, Props>(
       'expandedKeys',
       []
     )
-    const [fileTreeData, setTreeData] = useState<FileNode[]>([])
 
-    const reloadTree = async () => {
-      const result = await readDir<FileNode>(dirPath)
-      if (result.children) {
-        setTreeData(result.children)
-      }
-    }
+    // 选中当前文件
     useEffect(() => {
-      reloadTree()
-    }, [dirPath])
+      setSelectedKeys([selectedPath])
+    }, [selectedPath])
+
     const [action, setAction] = useState({
       path: '',
       type: '',
     })
-
-    const openMd = async (file: string, content?: string) => {
-      if (!content) {
-        content = `---
-title: ${file}
----
-
-# ${file}
-
-`
-      }
-      const fileName = file.trim() + '.md'
-      const path = findPathInTree(fileName, fileTreeData)
-      if (path) {
-        onSelect(path)
-        setSelectedKeys([path])
-        return
-      }
-      const filePath = await resolve(dirPath, fileName)
-      if (!(await exists(filePath))) {
-        if (file.includes('/')) {
-          const [dirName] = file.split('/')
-          const path = await resolve(dirPath, dirName)
-          if (!(await exists(path))) {
-            await mkdir(path)
-          }
-        }
-        await writeTextFile(filePath, content)
-        reloadTree()
-      }
-      onSelect(filePath)
-      setSelectedKeys([filePath])
-    }
-    const createOrOpenDailyNote = async () => {
-      const fileName = dayjs().format('YYYY-MM-DD')
-      const dirPath = JSON.parse(localStorage.getItem('dir-path') ?? '')
-      const config = JSON.parse(localStorage.getItem('config') ?? '{}')
-
-      const fullPath = config.journalDir
-        ? config.journalDir + '/' + fileName
-        : fileName
-      if (config.journalTemplateDir) {
-        const filePath = await resolve(
-          dirPath,
-          config.journalTemplateDir.trim()
-        )
-
-        try {
-          const content = await readTextFile(filePath)
-          openMd(fullPath, content.replace(/{{date}}/g, fileName))
-        } catch (error) {
-          toast({
-            title: t('Error'),
-            description: t('The template file does not exist'),
-          })
-        }
-      } else {
-        openMd(fullPath)
-      }
-    }
-
-    useEffect(() => {
-      const handleMessage = async (e) => {
-        if (e.data.event === 'open') {
-          const href = e.data.href
-          if (/^https?:\/\//.test(href)) {
-            await openLink(href)
-          } else {
-            openMd(decodeURIComponent(href), '')
-          }
-        }
-      }
-      window.addEventListener('message', handleMessage, false)
-      return () => {
-        window.removeEventListener('message', handleMessage)
-      }
-    }, [fileTreeData])
-
     // 新建快捷键
     useHotkeys('meta+n', async () => {
       if (dirPath) {
@@ -234,9 +134,6 @@ title: ${file}
       () => ({
         setToc,
         setScrollLine,
-        openMd,
-        createOrOpenDailyNote,
-        reload: reloadTree,
       }),
       []
     )
