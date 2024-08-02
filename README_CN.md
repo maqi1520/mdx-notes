@@ -1,4 +1,4 @@
-<h4 align="right"><a href="https://github.com/tw93/Pake/blob/master/README.md">English</a> | <strong>简体中文</strong></h4>
+<h4 align="right"><a href="https://github.com/maqi1520/mdx-editor/blob/tauri-app/README.md">English</a> | <strong>简体中文</strong></h4>
 
 <div align="center">
 <a href="https://editor.runjs.cool/">
@@ -94,6 +94,22 @@ yarn
 yarn tauri dev
 ```
 
+## 赞助作者
+
+<table>
+<tr>
+<td>支付宝</td>
+<td>微信</td>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/603e1826-4be7-49de-a65d-c415b52e434b" width="180" alt="支付宝赞赏码">
+</td>
+<td>
+<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/047b369a-0458-48bd-96a1-64dd2c06a6bd" width="190" alt="微信赞赏码"></td>
+</tr>
+</table>
+
 ## FAQ
 
 ### 1. macOS 系统安装完后显示「文件已损坏」或者安装完打开没有反应
@@ -160,4 +176,3 @@ sudo xattr -d com.apple.quarantine /Applications/MDX\ Editor.app/
 
 - [mdxjs playground](https://mdxjs.com/playground/)
 - [play.tailwindcss.com](https://play.tailwindcss.com/)
-- [mdnice.com](https://mdnice.com/)

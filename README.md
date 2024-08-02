@@ -1,4 +1,4 @@
-<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-editor/blob/main/README_CN.md">简体中文</a></h4>
+<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-editor/blob/tauri-app/README_CN.md">简体中文</a></h4>
 
 <div align="center">
 <a href="https://editor.runjs.cool/">
@@ -156,4 +156,3 @@ Deployed using the [Vercel Platform](https://vercel.com/import?utm_medium=defaul
 
 - [mdxjs playground](https://mdxjs.com/playground/)
 - [play.tailwindcss.com](https://play.tailwindcss.com/)
-- [mdnice.com](https://mdnice.com/)
