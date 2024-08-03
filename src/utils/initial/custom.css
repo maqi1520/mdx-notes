@@ -172,7 +172,7 @@ body {
 
 .markdown-body pre > code {
   min-width: 100%;
-  font-size: 12px;
+  font-size: 14px;
   word-break: normal;
   display: block;
   flex: none;
