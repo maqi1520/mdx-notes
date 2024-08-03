@@ -49,7 +49,7 @@ export const CopyBtn = ({ resultRef }) => {
 
     const $ = cheerio.load(html, null, false)
 
-    $('p,section,div').each((index, element) => {
+    $('p').each((index, element) => {
       const $element = $(element)
       if ($element.html().trim() === '') {
         $element.remove()
