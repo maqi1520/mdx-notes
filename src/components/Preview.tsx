@@ -470,10 +470,7 @@ const Preview = forwardRef<PreviewRef, Props>(
                         var previewEl = document.documentElement
                         const el = previewEl.querySelector('[data-line="'+e.data.line+'"]');
                         if(el){ 
-                          previewEl.scrollTo({
-                            top: el.offsetTop - el.parentNode.scrollTop,
-                            // behavior: 'smooth',
-                          });
+                           el.scrollIntoView({ block: 'start' });
                         }
                         return
                       }
