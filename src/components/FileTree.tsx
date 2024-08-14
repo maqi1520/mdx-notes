@@ -550,7 +550,7 @@ const FileTree = forwardRef<TreeRef, Props>(
             </div>
             <div className="w-full flex absolute bottom-0 left-0 z-10 justify-center items-center text-sm">
               <button
-                className="text-gray-500 text-xs leading-5 font-semibold bg-gray-100  py-2 hover:bg-gray-400/20 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
+                className="text-gray-500 text-xs leading-5 font-semibold bg-gray-50 py-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-950 dark:shadow-highlight/4 w-full border-t border-gray-200 dark:border-gray-800 flex  justify-center items-center"
                 onClick={handleChooseDir}
               >
                 <FolderPlusIcon className="w-4 h-4" />
