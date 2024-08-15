@@ -51,7 +51,7 @@ import {
   exists,
   readDir,
 } from '@/lib/bindings'
-import { CompileResult, TreeRef, FileNode } from '@/utils/types'
+import { CompileResult, FileNode, TocItem } from '@/utils/types'
 import JournalButton from './JournalButton'
 
 const defaultTheme = {
@@ -83,7 +83,6 @@ export default function Pen() {
 
   const resultRef = useRef<CompileResult>()
   const previewRef = useRef<PreviewRef>(null)
-  const refFileTree = useRef<TreeRef>(null)
   const slideRef = useRef<SlideRef>(null)
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>()
 
@@ -98,6 +97,8 @@ export default function Pen() {
   const [fileText, setFileText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [wordCount, setWordCount] = useState(0)
+  const [toc, setToc] = useState<TocItem[]>([])
+  const [scrollLine, setScrollLine] = useState(1)
   const [responsiveSize, setResponsiveSize] = useState(DEFAULT_RESPONSIVE_SIZE)
 
   useEffect(() => {
@@ -234,7 +235,7 @@ export default function Pen() {
         inject(result)
       }
 
-      refFileTree.current?.setToc(toc as string[])
+      setToc(toc as TocItem[])
       setWordCount(Count(md || ''))
       setIsLoading(false)
     })
@@ -264,7 +265,7 @@ export default function Pen() {
     (line) => {
       if (isMdFile(filePath)) {
         inject({ line })
-        refFileTree.current?.setScrollLine(line)
+        setScrollLine(line)
       }
     },
     [filePath]
@@ -394,8 +395,9 @@ title: ${file}
               onScroll={handleScroll}
               selectedPath={filePath}
               onSelect={setFilePath}
-              ref={refFileTree}
               setShowPPT={handleShowPPT}
+              toc={toc}
+              scrollLine={scrollLine}
             />
           </ResizablePanel>
           <ResizableHandle onDragging={(r) => setResizing(r)} />

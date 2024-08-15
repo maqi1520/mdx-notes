@@ -1,5 +1,14 @@
 import { cn } from '@/lib/utils'
 import React from 'react'
+import { TocItem } from '@/utils/types'
+
+interface Props {
+  toc: TocItem[]
+  scrollLine: number
+  children: React.ReactNode
+  showToc: boolean
+  onScroll: (line: number) => void
+}
 
 export default function TocList({
   toc = [],
@@ -7,7 +16,7 @@ export default function TocList({
   showToc,
   scrollLine,
   onScroll,
-}) {
+}: Props) {
   if (!showToc) {
     return children
   }

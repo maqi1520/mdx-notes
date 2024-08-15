@@ -41,7 +41,7 @@
     "hast-util-to-html": "^8.0.4",
     "i18next": "^23.4.6",
     "i18next-browser-languagedetector": "^8.0.0",
-    "lucide-react": "^0.293.0",
+    "lucide-react": "^0.427.0",
     "markmap-common": "^0.15.0",
     "markmap-lib": "^0.15.2",
     "markmap-toolbar": "^0.15.0",

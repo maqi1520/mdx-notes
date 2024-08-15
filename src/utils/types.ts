@@ -16,11 +16,6 @@ export interface FileNode {
   children?: FileNode[] | null
 }
 
-export interface TreeRef {
-  setToc: React.Dispatch<React.SetStateAction<string[]>>
-  setScrollLine: React.Dispatch<React.SetStateAction<number>>
-}
-
 export interface SearchResultItem {
   name: string
   path: string
@@ -31,4 +26,10 @@ export interface MenuItemProps {
   name: string
   extra?: string
   event: () => void
+}
+
+export interface TocItem {
+  line: number
+  value: string
+  depth: number
 }
