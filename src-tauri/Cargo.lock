@@ -4210,6 +4210,7 @@ dependencies = [
  "heck 0.5.0",
  "http",
  "http-range",
+ "image 0.24.9",
  "jni",
  "libc",
  "log",
@@ -4245,6 +4246,7 @@ dependencies = [
 name = "tauri-app"
 version = "0.0.0"
 dependencies = [
+ "rand 0.8.5",
  "serde",
  "serde_json",
  "tauri",

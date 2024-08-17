@@ -3,6 +3,7 @@
 
 mod file;
 mod folder;
+mod tray;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -26,6 +27,10 @@ fn main() {
             file::search_keyword_in_dir,
             greet
         ])
+        .setup(move |app| {
+            tray::create_tray(app.handle())?;
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
