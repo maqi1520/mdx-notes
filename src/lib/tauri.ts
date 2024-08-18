@@ -26,6 +26,7 @@ import { writeText } from '@tauri-apps/plugin-clipboard-manager'
 import { save } from '@tauri-apps/plugin-dialog'
 import { invoke } from '@tauri-apps/api/core'
 import { open as openDialog } from '@tauri-apps/plugin-dialog'
+import { getItem } from '@/utils/storage'
 
 /**
  * 监听文件拖放
@@ -102,7 +103,7 @@ export function convertSrc(src) {
   if (isRemote) {
     return src
   }
-  const baseUrl = JSON.parse(localStorage.getItem('dir-path') ?? '')
+  const baseUrl = getItem('dir-path') || ''
   if (isWindowsPath(src)) {
     return convertFileSrc('') + src
   }
@@ -114,7 +115,7 @@ export function convertSrc(src) {
     )
   }
   // 相对当前文件路径
-  const filePath = JSON.parse(localStorage.getItem('filePath') ?? '')
+  const filePath = getItem('filePath') || ''
   const filePathStr = getParentPath(filePath)
   return convertFileSrc('') + `${filePathStr}${src}`
 }
@@ -145,7 +146,7 @@ export const uploadImage = async (blob) => {
   const time = new Date().valueOf()
   let fileName = `\\img\\${time}.png`
 
-  const dirPath = JSON.parse(localStorage.getItem('dir-path') ?? '')
+  const dirPath = getItem('dir-path') || ''
   const path = await resolve(dirPath, 'img')
   if (!(await exists(path))) {
     await mkdir(path)

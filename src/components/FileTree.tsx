@@ -40,7 +40,6 @@ import {
   TableOfContentsIcon,
   XCircleIcon,
 } from 'lucide-react'
-import { useLocalStorage } from 'react-use'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useConfirm } from './ui/confirm'
 import {
@@ -49,6 +48,7 @@ import {
   SearchResultItem,
   TocItem,
 } from '@/utils/types'
+import { useStorage } from '@/utils/storage'
 
 interface Props {
   onSelect: (path: string) => void
@@ -84,7 +84,7 @@ const FileTree = ({
   const searchInputRef = useRef<HTMLInputElement>(null)
   const refInput = useRef<HTMLInputElement>(null)
   const [searchList, setSearchList] = useState<SearchResultItem[]>([])
-  const [expandedKeys, setExpandedKeys] = useLocalStorage<string[]>(
+  const [expandedKeys, setExpandedKeys] = useStorage<string[]>(
     'expandedKeys',
     []
   )

@@ -1,5 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { uploadImage } from '@/lib/bindings'
+import { getItem } from '@/utils/storage'
 
 const codeToUpload = {
   none: uploadImage,
@@ -31,7 +32,7 @@ export function listenPaste(editor) {
 
         if (matches) {
           const blob = items[i].getAsFile()
-          const config = JSON.parse(localStorage.getItem('config')) ?? {
+          const config = getItem('config') || {
             journalDir: '',
             journalTemplateDir: '',
             upload: 'none',

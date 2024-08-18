@@ -13,7 +13,7 @@ const theme = {
   isMac: true,
 }
 
-export default function Preview({ md, js, css }) {
+export default function Preview({ md = '', js = '', css = '' }) {
   const [current, setCurrent] = useState(0)
   const [parsed, setParsed] = useState({
     slides: [],

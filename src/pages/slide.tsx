@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Preview from '../components/Slide/Preview'
+import { getItem } from '@/utils/storage'
 
 export default function Slide() {
   const [initialContent, setContent] = useState<{
@@ -9,10 +10,9 @@ export default function Slide() {
   }>({})
   useEffect(() => {
     try {
-      const data = JSON.parse(localStorage.getItem('slide') ?? '{}')
+      const data = getItem('slide')
 
       if (data) {
-        console.log(data)
         setContent(data)
       }
     } catch (error) {}

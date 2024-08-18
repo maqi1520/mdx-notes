@@ -7,7 +7,6 @@ import {
 import { debounce } from 'debounce'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
-import useLocalStorage from 'react-use/lib/useLocalStorage'
 import { useDebouncedState } from '../hooks/useDebouncedState'
 import Preview, { PreviewRef } from './Preview'
 import Slide, { SlideRef } from './Slide'
@@ -53,6 +52,7 @@ import {
 } from '@/lib/bindings'
 import { CompileResult, FileNode, TocItem } from '@/utils/types'
 import JournalButton from './JournalButton'
+import { setItem, useStorage } from '@/utils/storage'
 
 const defaultTheme = {
   formatMarkdown: false,
@@ -67,16 +67,19 @@ const DEFAULT_RESPONSIVE_SIZE = { width: 360, height: 720 }
 
 export default function Pen() {
   const router = useRouter()
-  const [dirPath = '', setDirPath] = useLocalStorage<string>('dir-path', '')
-  const [filePath = '', setFilePath] = useLocalStorage<string>('filePath', '')
-  const [layout = 'vertical', setLayout] = useLocalStorage('layout', 'vertical')
+  const [dirPath = '', setDirPath] = useStorage<string>('dir-path', '')
+  const [filePath = '', setFilePath] = useStorage<string>('filePath', '')
+  const [layout = 'vertical', setLayout] = useStorage<string>(
+    'layout',
+    'vertical'
+  )
   const [responsiveDesignMode = false, setResponsiveDesignMode] =
-    useLocalStorage('responsiveDesignMode', false)
-  const [showFileTree = false, setShowFileTree] = useLocalStorage(
+    useStorage<boolean>('responsiveDesignMode', false)
+  const [showFileTree = false, setShowFileTree] = useStorage<boolean>(
     'showFileTree',
     false
   )
-  const [theme = defaultTheme, setTheme] = useLocalStorage(
+  const [theme = defaultTheme, setTheme] = useStorage(
     'editor-theme',
     defaultTheme
   )
@@ -310,9 +313,9 @@ export default function Pen() {
       css: markdownTheme,
       config: jsx,
     }
-    localStorage.setItem('slide', JSON.stringify(slideContent))
+    setItem('slide', slideContent)
     router.push('/slide')
-  }, [])
+  }, [dirPath])
 
   const reloadTree = async () => {
     const result = await readDir<FileNode>(dirPath)

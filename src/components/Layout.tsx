@@ -1,9 +1,8 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useState } from 'react'
 import SettingModal from './SettingModal'
-import { useLocalStorage } from 'react-use'
-import { getMacOS } from '@/lib/bindings'
 import { Toaster } from '@/components/ui/toaster'
 import { Confirm } from './ui/confirm'
+import { useStorage } from '@/utils/storage'
 
 type Props = {
   children: React.ReactNode
@@ -34,7 +33,7 @@ export const Context = React.createContext<{
 })
 
 export default function Layout({ children }: Props) {
-  let [config, setConfig] = useLocalStorage<Config>('config', {
+  let [config, setConfig] = useStorage<Config>('config', {
     journalDir: '',
     journalTemplateDir: '',
     upload: 'none',
