@@ -1,8 +1,9 @@
 use rand::Rng;
 use tauri::{
+    image::Image,
     menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, TrayIconBuilder, TrayIconEvent},
-    Emitter, Runtime,
+    Emitter, Manager, Runtime,
 };
 
 fn generate_random_string(length: usize) -> String {
@@ -20,14 +21,39 @@ fn generate_random_string(length: usize) -> String {
     result
 }
 
+fn create_window<R: Runtime>(app: &tauri::AppHandle<R>, label: String, path: String) {
+    // 创建新的 webview 窗口
+    let builder = tauri::WebviewWindowBuilder::new(app, label, tauri::WebviewUrl::App(path.into()))
+        .title("MDX editor")
+        .hidden_title(true)
+        .inner_size(1200.0, 780.0)
+        .center()
+        .resizable(true)
+        .visible(false)
+        .decorations(true);
+    #[cfg(target_os = "macos")]
+    {
+        builder
+            .title_bar_style(tauri::TitleBarStyle::Overlay)
+            .build()
+            .unwrap();
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
+        builder.decorations(true).build().unwrap();
+    }
+}
+
 pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
     // create menu
 
+    let main_window_i = MenuItem::with_id(app, "main", "Main window", true, None::<String>)?;
     let new_window_i = MenuItem::with_id(app, "new", "New window", true, None::<String>)?;
     let quit_i = PredefinedMenuItem::quit(app, Some("Quit"))?;
     let separator_i = PredefinedMenuItem::separator(app)?;
 
-    let menu = Menu::with_items(app, &[&new_window_i, &separator_i, &quit_i])?;
+    let menu = Menu::with_items(app, &[&main_window_i, &new_window_i, &separator_i, &quit_i])?;
 
     let _ = TrayIconBuilder::with_id("tray")
         .menu(&menu)
@@ -37,25 +63,26 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
                 let random_name = generate_random_string(10);
 
                 // create new webview window
-                tauri::WebviewWindowBuilder::new(
-                    app,
-                    random_name,
-                    tauri::WebviewUrl::App("/".into()),
-                )
-                .title("MDX editor")
-                .hidden_title(true)
-                .title_bar_style(tauri::TitleBarStyle::Overlay)
-                .inner_size(1200.0, 780.0)
-                .center()
-                .visible(false)
-                .build()
-                .unwrap();
+                create_window(app, random_name, '/'.to_string())
+            }
+            "main" => {
+                // 显示main 窗口
+                let app_handle = app.app_handle();
+                match app_handle.get_webview_window("main") {
+                    Some(window) => {
+                        window.show().unwrap();
+                        window.unminimize().unwrap();
+                        window.set_focus().unwrap();
+                    }
+                    None => create_window(app, "main".to_string(), '/'.to_string()),
+                }
             }
             "quit" => app.exit(0),
             _ => {}
         })
-        .tooltip("mdx")
-        .icon(app.default_window_icon().unwrap().clone())
+        .tooltip("MDX editor")
+        .icon_as_template(true)
+        .icon(Image::from_path("icons/social-square.png")?)
         .on_tray_icon_event(|tray, event| match event {
             TrayIconEvent::Click {
                 id: _,
