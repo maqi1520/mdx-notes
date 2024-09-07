@@ -25,7 +25,6 @@ fn create_window<R: Runtime>(app: &tauri::AppHandle<R>, label: String, path: Str
     // 创建新的 webview 窗口
     let builder = tauri::WebviewWindowBuilder::new(app, label, tauri::WebviewUrl::App(path.into()))
         .title("MDX editor")
-        .hidden_title(true)
         .inner_size(1200.0, 780.0)
         .center()
         .resizable(true)
@@ -34,6 +33,7 @@ fn create_window<R: Runtime>(app: &tauri::AppHandle<R>, label: String, path: Str
     #[cfg(target_os = "macos")]
     {
         builder
+            .hidden_title(true)
             .title_bar_style(tauri::TitleBarStyle::Overlay)
             .build()
             .unwrap();
