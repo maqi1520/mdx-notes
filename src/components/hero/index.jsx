@@ -5,7 +5,11 @@ import { codeThemes, baseCss } from '@/css/mdx'
 import { useDebouncedState } from '@/hooks/useDebouncedState'
 import { Preview } from '@/components/Preview'
 import { ErrorOverlay } from '@/components/ErrorOverlay'
-import TypeCode from './typeCode'
+
+import dynamic from 'next/dynamic'
+const TypeCode = dynamic(() => import('./typeCode'), {
+  ssr: false,
+})
 
 const theme = {
   markdownTheme: 'default',
@@ -74,8 +78,10 @@ export default function Hero({ children }) {
     text-decoration: none;
       } .rich_media_meta_text {
         font-style: normal;
-        color: rgba(0,0,0,.3);
-    }`
+    } .dark .qrcode-block{
+     border-color: #373737;
+     
+     }`
           inject({
             css:
               baseCss +
@@ -104,11 +110,11 @@ export default function Hero({ children }) {
       </div>
 
       <div className="mx-auto w-full h-[712px] md:w-[350px] bg-black rounded-[60px] overflow-hidden border-[14px] border-black relative ring ring-purple-400 shadow-xl">
-        <div className="relative bg-gray-50 h-full flex flex-col">
+        <div className="relative bg-gray-50 dark:bg-[#191919] h-full flex flex-col">
           <div className="absolute top-0 inset-x-0">
             <div className="mx-auto bg-black h-6 w-40 rounded-b-3xl"></div>
           </div>
-          <div className="pr-8 mt-2 flex justify-end space-x-1 text-black">
+          <div className="pr-8 mt-2 flex justify-end space-x-1 text-black dark:text-white">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -139,7 +145,7 @@ export default function Hero({ children }) {
               <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"></path>
             </svg>
           </div>
-          <div className="flex justify-between px-8 py-3 border-b border-b-gray-200 text-black">
+          <div className="flex justify-between px-8 py-3 border-b border-b-gray-200 dark:border-b-neutral-800 text-black dark:text-white">
             <svg
               className="w-8 h-8"
               fill="none"

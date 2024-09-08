@@ -59,3 +59,23 @@ export function GithubIcon(props) {
     </svg>
   )
 }
+
+export function GridIcon(props) {
+  return (
+    <svg {...props}>
+      <defs>
+        <pattern
+          id="grid-bg"
+          width="32"
+          height="32"
+          patternUnits="userSpaceOnUse"
+          x="100%"
+          patternTransform="translate(0 -1)"
+        >
+          <path d="M0 32V.5H32" fill="none" stroke="currentColor"></path>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-bg)"></rect>
+    </svg>
+  )
+}

@@ -1,0 +1,20 @@
+diff --git a/node_modules/mermaid-isomorphic/index.js b/node_modules/mermaid-isomorphic/index.js
+index b5eb120..9e9e193 100644
+--- a/node_modules/mermaid-isomorphic/index.js
++++ b/node_modules/mermaid-isomorphic/index.js
+@@ -1,6 +1,5 @@
+ import { createRequire } from 'node:module';
+ import { pathToFileURL } from 'node:url';
+-import { chromium } from 'playwright-core';
+ const require = createRequire(import.meta.url);
+ const html = String(new URL('index.html', import.meta.url));
+ const mermaidScript = { path: require.resolve('mermaid/dist/mermaid.js') };
+@@ -81,7 +80,7 @@ async function renderDiagrams({ diagrams, mermaidConfig, prefix, screenshot }) {
+  * @returns A function that renders Mermaid diagrams in the browser.
+  */
+ export function createMermaidRenderer(options = {}) {
+-    const { browser = chromium, launchOptions } = options;
++    const { browser, launchOptions } = options;
+     let browserPromise;
+     let count = 0;
+     return async (diagrams, renderOptions) => {

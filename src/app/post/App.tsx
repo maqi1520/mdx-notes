@@ -1,10 +1,11 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import Error from 'next/error'
 import { sizeToObject } from '@/utils/size'
-
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import { postData } from '@/utils/helpers'
+import dynamic from 'next/dynamic'
 const Pen = dynamic(() => import('@/components/Pen'), {
   ssr: false,
 })
@@ -21,50 +22,50 @@ interface Post {
 export default function App() {
   const [errorCode, setErrorCode] = useState(0)
   const [initialContent, setInitialContent] = useState<Post | null>()
-  const router = useRouter()
-  const { query } = router
-  const id = query.id as string
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+  const layout = searchParams.get('layout')
+  const size = searchParams.get('size')
+  const file = searchParams.get('file')
 
   useEffect(() => {
-    if (router.isReady) {
-      const fetchContent = async () => {
-        const content = localStorage.getItem('content')
-        if (id == 'demo' && content) {
-          setInitialContent(JSON.parse(content))
-          return
-        }
-        try {
-          const res = await postData({
-            url: '/api/auth/post_get',
-            data: {
-              id,
-            },
-          })
-          if (res) {
-            setInitialContent(res)
-          }
-        } catch (error) {
-          console.log(error)
-          setErrorCode(404)
-        }
+    const fetchContent = async () => {
+      const content = localStorage.getItem('content')
+      if (id == 'demo' && content) {
+        setInitialContent(JSON.parse(content))
+        return
       }
-      fetchContent()
+      try {
+        const res = await postData({
+          url: '/api/auth/post_get',
+          data: {
+            id,
+          },
+        })
+        if (res) {
+          setInitialContent(res)
+        }
+      } catch (error) {
+        console.log(error)
+        setErrorCode(404)
+      }
     }
-  }, [id, router.isReady])
+    fetchContent()
+  }, [id])
 
   const layoutProps = {
     initialLayout: ['vertical', 'horizontal', 'preview'].includes(
-      query.layout as string
+      layout as string
     )
-      ? query.layout
+      ? layout
       : 'vertical',
-    initialResponsiveSize: sizeToObject(query.size),
-    initialActiveTab: ['html', 'css', 'config'].includes(query.file as string)
-      ? query.file
+    initialResponsiveSize: sizeToObject(size),
+    initialActiveTab: ['html', 'css', 'config'].includes(file as string)
+      ? file
       : 'html',
   }
 
-  if (router.isReady && (!id || errorCode)) {
+  if (!id || errorCode) {
     return (
       <Error
         withDarkMode={true}

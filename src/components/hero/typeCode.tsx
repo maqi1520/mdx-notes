@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, memo } from 'react'
-
 import TypeIt from 'typeit'
 
 interface Props {
@@ -8,8 +7,8 @@ interface Props {
 }
 
 export default memo(function TypeCode({ pause, setCode }: Props) {
-  const ref = useRef<HTMLElement>(null)
-  const instanceRef = useRef<TypeIt>()
+  const ref = useRef<any>(null)
+  const instanceRef = useRef<any>(null)
   useEffect(() => {
     if (instanceRef.current || !ref.current) {
       return
@@ -34,7 +33,7 @@ export default memo(function TypeCode({ pause, setCode }: Props) {
       .break({ delay: 500 })
       .break({ delay: 500 })
       .type(
-        'mdx 是 markdown + jsx 的结合，即可以支持 markdown 语法也可以写自定义组件。'
+        'mdx 是 markdown + jsx 的结合，既可以支持 markdown 语法，也可以写自定义组件。'
       )
       .pause(500)
       .break({ delay: 500 })
@@ -100,7 +99,7 @@ export default memo(function TypeCode({ pause, setCode }: Props) {
       .go()
 
     return () => {
-      //instance.destroy()
+      instance.destroy()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

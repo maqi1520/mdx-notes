@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 
@@ -18,11 +20,8 @@ import {
 } from 'lucide-react'
 import { OpenAIIcon, WechatIcon } from '@/components/icons'
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
 import { useTemplates } from '@/hooks/useTemplates'
-const Hero = dynamic(() => import('@/components/hero'), {
-  ssr: false,
-})
+import Hero from '@/components/hero'
 
 const features = [
   {
