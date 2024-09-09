@@ -81,8 +81,11 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
             _ => {}
         })
         .tooltip("MDX editor")
-        .icon_as_template(true)
-        .icon(Image::from_path("icons/social-square.png")?)
+        .icon(if cfg!(target_os = "macos") {
+            Image::from_bytes(include_bytes!("../icons/appleTrayIcon.png"))
+        } else {
+            Image::from_bytes(include_bytes!("../icons/128x128.png"))
+        }?)
         .on_tray_icon_event(|tray, event| match event {
             TrayIconEvent::Click {
                 id: _,
@@ -92,15 +95,6 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
                 button_state: _,
             } => match button {
                 MouseButton::Left {} => {
-                    // let windows = tray.app_handle().webview_windows();
-                    // for (key, value) in windows {
-                    //     if key == "login" || key == "main" {
-                    //         value.show().unwrap();
-                    //         value.unminimize().unwrap();
-                    //         value.set_focus().unwrap();
-                    //     }
-                    // }
-
                     tray.app_handle().emit("tray_menu", position).unwrap();
                 }
                 MouseButton::Right {} => {}
