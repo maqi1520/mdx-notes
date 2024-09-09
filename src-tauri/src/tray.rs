@@ -29,19 +29,20 @@ fn create_window<R: Runtime>(app: &tauri::AppHandle<R>, label: String, path: Str
         .center()
         .resizable(true)
         .visible(false)
-        .decorations(true);
+        .decorations(false);
     #[cfg(target_os = "macos")]
     {
         builder
             .hidden_title(true)
             .title_bar_style(tauri::TitleBarStyle::Overlay)
+            .decorations(true)
             .build()
             .unwrap();
     }
 
     #[cfg(not(target_os = "macos"))]
     {
-        builder.decorations(true).build().unwrap();
+        builder.decorations(false).build().unwrap();
     }
 }
 
@@ -81,8 +82,12 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
             _ => {}
         })
         .tooltip("MDX editor")
+        .icon(if cfg!(target_os = "macos") {
+            Image::from_bytes(include_bytes!("../icons/appleTrayIcon.png"))
+        } else {
+            Image::from_bytes(include_bytes!("../icons/128x128.png"))
+        }?)
         .icon_as_template(true)
-        .icon(Image::from_path("icons/social-square.png")?)
         .on_tray_icon_event(|tray, event| match event {
             TrayIconEvent::Click {
                 id: _,
@@ -92,15 +97,6 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
                 button_state: _,
             } => match button {
                 MouseButton::Left {} => {
-                    // let windows = tray.app_handle().webview_windows();
-                    // for (key, value) in windows {
-                    //     if key == "login" || key == "main" {
-                    //         value.show().unwrap();
-                    //         value.unminimize().unwrap();
-                    //         value.set_focus().unwrap();
-                    //     }
-                    // }
-
                     tray.app_handle().emit("tray_menu", position).unwrap();
                 }
                 MouseButton::Right {} => {}
