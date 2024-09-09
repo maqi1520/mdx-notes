@@ -41,7 +41,7 @@
     }
   },
   "productName": "MDX Editor",
-  "version": "0.9.9",
+  "version": "0.9.12",
   "identifier": "editor.runjs.cool",
   "plugins": {
     "updater": {
