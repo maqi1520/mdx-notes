@@ -1,21 +1,21 @@
-<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-editor/blob/tauri-app/README_CN.md">简体中文</a></h4>
+<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-notes/blob/tauri-app/README_CN.md">简体中文</a></h4>
 
 <div align="center">
-<a href="https://editor.runjs.cool/">
+<a href="https://mdxnotes.com/">
 <img width="500" src="./public/social-card.jpg"/>
 </a>
 </div>
-<div align="center"> <a href="https://github.com/maqi1520/mdx-editor/actions">
-    <img src="https://github.com/maqi1520/mdx-editor/actions/workflows/release.yml/badge.svg" alt="">
+<div align="center"> <a href="https://github.com/maqi1520/mdx-notes/actions">
+    <img src="https://github.com/maqi1520/mdx-notes/actions/workflows/release.yml/badge.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases">
-    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-editor/total.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases">
+    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-notes/total.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases/latest">
-    <img src="https://img.shields.io/github/release/maqi1520/mdx-editor.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases/latest">
+    <img src="https://img.shields.io/github/release/maqi1520/mdx-notes.svg" alt="">
   </a>
 </div>
-<h1 align="center">MDX Editor</h1>
+<h1 align="center">MDX Notes</h1>
 
 > A versatile WeChat typesetting editor, also serving as a cross-platform Markdown note-taking software.
 
@@ -53,24 +53,24 @@ In addition to the web version's features, the desktop version includes:
     <td><img src="https://user-images.githubusercontent.com/9312044/262275149-3310abc1-5a6d-45cb-aa9a-3359381ec429.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/64b51328337a9f4db79fe677" >Subtle Green Card</a></td>
-    <td><a href="https://editor.runjs.cool/64c0fca121821b2af589cf6e">Early Summer Style</a></td>
+    <td><a href="https://mdxnotes.com/64b51328337a9f4db79fe677" >Subtle Green Card</a></td>
+    <td><a href="https://mdxnotes.com/64c0fca121821b2af589cf6e">Early Summer Style</a></td>
 </tr> 
 <tr>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275160-41c30692-b554-4da6-bcc7-3fb00169ed5d.png"/></td>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275117-fdf35fe4-0b70-45ad-995d-b6622586c6d8.png"/></td>
 </tr>
 <tr>
-  <td><a href="https://editor.runjs.cool/624688ccb6fe2900015728ac">Resume Template</a></td>
-  <td><a href="https://editor.runjs.cool/625550658cc5730001809f0c">Exquisite Code Diff Highlights</a></td>
+  <td><a href="https://mdxnotes.com/624688ccb6fe2900015728ac">Resume Template</a></td>
+  <td><a href="https://mdxnotes.com/625550658cc5730001809f0c">Exquisite Code Diff Highlights</a></td>
 </tr>
 <tr>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275165-766ff817-7c09-4288-b8dd-55d7424c2fd6.png"/></td>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275168-6dd4b05c-a604-4ab1-abe3-b2d2dc759d8e.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/6492ae0109e298c79055dfab">Generate Captivating QR Codes</a></td>
-    <td><a href="https://editor.runjs.cool/6492aa37f5cf3a54f14493a8">Travel Itinerary</a></td>
+    <td><a href="https://mdxnotes.com/6492ae0109e298c79055dfab">Generate Captivating QR Codes</a></td>
+    <td><a href="https://mdxnotes.com/6492aa37f5cf3a54f14493a8">Travel Itinerary</a></td>
 </tr> 
 </table>
 
@@ -94,7 +94,7 @@ yarn tauri dev
 
 ### 1. After installing on macOS, it shows "The file is damaged" or there is no response when opening it
 
-Because MDX Editor is not signed, it is blocked by macOS security checks.
+Because MDX Notes is not signed, it is blocked by macOS security checks.
 
 If you encounter the "The file is damaged" error after installation, follow these steps:
 
@@ -104,7 +104,7 @@ Trust the developer, and it will prompt you to enter your password:
 sudo spctl --master-disable
 ```
 
-Then allow MDX Editor:
+Then allow MDX Notes:
 
 ```bash
 xattr -cr /Applications/MDX\ Editor.app

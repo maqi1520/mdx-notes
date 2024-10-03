@@ -24,7 +24,7 @@ fn generate_random_string(length: usize) -> String {
 fn create_window<R: Runtime>(app: &tauri::AppHandle<R>, label: String, path: String) {
     // 创建新的 webview 窗口
     let builder = tauri::WebviewWindowBuilder::new(app, label, tauri::WebviewUrl::App(path.into()))
-        .title("MDX editor")
+        .title("MDX Notes")
         .inner_size(1200.0, 780.0)
         .center()
         .resizable(true)
@@ -81,7 +81,7 @@ pub fn create_tray<R: Runtime>(app: &tauri::AppHandle<R>) -> tauri::Result<()> {
             "quit" => app.exit(0),
             _ => {}
         })
-        .tooltip("MDX editor")
+        .tooltip("MDX Notes")
         .icon(if cfg!(target_os = "macos") {
             Image::from_bytes(include_bytes!("../icons/appleTrayIcon.png"))
         } else {

@@ -43,7 +43,7 @@ export default function MoreDropdown({ resultRef }: Props) {
   const handleExportHtml = async () => {
     const { html, css, frontMatter = {} } = resultRef.current
 
-    const title = frontMatter.title || 'MDX Editor'
+    const title = frontMatter.title || 'MDX Notes'
     if (html) {
       const doc = makeDoc(title, html, css)
 
@@ -53,7 +53,7 @@ export default function MoreDropdown({ resultRef }: Props) {
   const handleExport = async () => {
     const { frontMatter = {}, md } = resultRef.current
     if (md) {
-      const title = frontMatter.title || 'MDX Editor'
+      const title = frontMatter.title || 'MDX Notes'
       downloadFile(title + '.md', md)
     }
   }
@@ -70,7 +70,7 @@ export default function MoreDropdown({ resultRef }: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="print:hidden">
         <DropdownMenuItem
-          onClick={() => openLink('https://editor.runjs.cool/template')}
+          onClick={() => openLink('https://mdxnotes.com/template')}
         >
           {t('Templates')}
         </DropdownMenuItem>

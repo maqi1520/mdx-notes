@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ShareIcon, LinkIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-const HOSTNAME = 'https://editor.runjs.cool'
+const HOSTNAME = 'https://mdxnotes.com'
 
 export function Share({ resultRef, layout, responsiveSize }) {
   const { t } = useTranslation()

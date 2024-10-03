@@ -1,5 +1,5 @@
 {
-  "name": "editor.runjs.cool",
+  "name": "mdxnotes.com",
   "private": true,
   "scripts": {
     "postinstall": "patch-package",

@@ -51,16 +51,16 @@ export const createDefaultDirPath = async (dirPath: string) => {
 
   if (!res) {
     const documentDirPath = await documentDir()
-    const path = await resolve(documentDirPath, 'mdx-editor')
+    const path = await resolve(documentDirPath, 'mdx-notes')
 
     if (!(await exists(path))) {
-      await mkdir('mdx-editor', {
+      await mkdir('mdx-notes', {
         baseDir: BaseDirectory.Document,
       })
-      await mkdir('mdx-editor/plugins', {
+      await mkdir('mdx-notes/plugins', {
         baseDir: BaseDirectory.Document,
       })
-      await mkdir('mdx-editor/plugins/themes', {
+      await mkdir('mdx-notes/plugins/themes', {
         baseDir: BaseDirectory.Document,
       })
 

@@ -118,8 +118,8 @@ export const compileMdx = async (
     html = ReactDOMServer.renderToStaticMarkup(
       <Context.Provider value={{ isMac, codeTheme }}>
         <section
-          data-tool="mdx editor"
-          data-website="https://editor.runjs.cool/"
+          data-tool="MDX Notes"
+          data-website="https://mdxnotes.com/"
           className={codeTheme}
         >
           <Content components={{ ...MDXComponents, ...RootComponents }} />

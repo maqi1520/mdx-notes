@@ -7,7 +7,7 @@ const Layout = dynamic(() => import('@/components/Layout'), {
   ssr: false,
 })
 
-const TITLE = ' MDX Editor | 一个微信排版编辑器，使用 MDX 来排版'
+const TITLE = ' MDX Notes | 一个微信排版编辑器，使用 MDX 来排版'
 const DESCRIPTION =
   '微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF'
 const FAVICON_VERSION = 3
@@ -48,8 +48,8 @@ export default function App({ Component, pageProps }) {
           color="#38bdf8"
         />
         <link rel="shortcut icon" href={v('/favicons/favicon.ico')} />
-        <meta name="apple-mobile-web-app-title" content="MDX Editor" />
-        <meta name="application-name" content="MDX Editor" />
+        <meta name="apple-mobile-web-app-title" content="MDX Notes" />
+        <meta name="application-name" content="MDX Notes" />
         <meta name="msapplication-TileColor" content="#38bdf8" />
         <meta
           name="msapplication-config"

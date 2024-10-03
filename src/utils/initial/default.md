@@ -68,4 +68,4 @@ function Chart({ data = [], color }) {
 />
 ```
 
-感谢你的阅读和使用，若遇到问题，可以在 [Github](https://github.com/maqi1520/mdx-editor) 提 issues，也可以关注微信公众号 “JS 酷”留言反馈，希望更够帮助到您。
+感谢你的阅读和使用，若遇到问题，可以在 [Github](https://github.com/maqi1520/mdx-notes) 提 issues，也可以关注微信公众号 “JS 酷”留言反馈，希望更够帮助到您。

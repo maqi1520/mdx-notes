@@ -68,4 +68,4 @@ Now you can use the `Chart` component for rendering.
 />
 ```
 
-Thank you for reading and using this. If you encounter any issues, you can raise them on [Github](https://github.com/maqi1520/mdx-editor). We hope it can be helpful to you.
+Thank you for reading and using this. If you encounter any issues, you can raise them on [Github](https://github.com/maqi1520/mdx-notes). We hope it can be helpful to you.
