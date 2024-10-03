@@ -88,5 +88,6 @@
     "commitizen": {
       "path": "./node_modules/git-cz"
     }
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
