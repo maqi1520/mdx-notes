@@ -41,7 +41,7 @@
     }
   },
   "productName": "MDX Notes",
-  "version": "0.9.12",
+  "version": "1.0.0",
   "identifier": "mdxnotes.com",
   "plugins": {
     "updater": {
