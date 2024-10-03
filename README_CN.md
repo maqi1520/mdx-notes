@@ -57,24 +57,24 @@ Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版�
     <td><img src="https://user-images.githubusercontent.com/9312044/262275149-3310abc1-5a6d-45cb-aa9a-3359381ec429.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://mdxnotes.com/64b51328337a9f4db79fe677" >浅绿色卡片</a></td>
-    <td><a href="https://mdxnotes.com/64c0fca121821b2af589cf6e">初夏风格</a></td>
+    <td><a href="https://mdxnotes.com/post?id=64b51328337a9f4db79fe677" >浅绿色卡片</a></td>
+    <td><a href="https://mdxnotes.com/post?id=64c0fca121821b2af589cf6e">初夏风格</a></td>
 </tr> 
 <tr>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275160-41c30692-b554-4da6-bcc7-3fb00169ed5d.png"/></td>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275117-fdf35fe4-0b70-45ad-995d-b6622586c6d8.png"/></td>
 </tr>
 <tr>
-  <td><a href="https://mdxnotes.com/624688ccb6fe2900015728ac">简历模板</a></td>
-  <td><a href="https://mdxnotes.com/625550658cc5730001809f0c">代码 diff 高亮</a></td>
+  <td><a href="https://mdxnotes.com/post?id=624688ccb6fe2900015728ac">简历模板</a></td>
+  <td><a href="https://mdxnotes.com/post?id=625550658cc5730001809f0c">代码 diff 高亮</a></td>
 </tr>
 <tr>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275165-766ff817-7c09-4288-b8dd-55d7424c2fd6.png"/></td>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275168-6dd4b05c-a604-4ab1-abe3-b2d2dc759d8e.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://mdxnotes.com/6492ae0109e298c79055dfab">生成二维码</a></td>
-    <td><a href="https://mdxnotes.com/6492aa37f5cf3a54f14493a8">旅行计划</a></td>
+    <td><a href="https://mdxnotes.com/post?id=6492ae0109e298c79055dfab">生成二维码</a></td>
+    <td><a href="https://mdxnotes.com/post?id=6492aa37f5cf3a54f14493a8">旅行计划</a></td>
 </tr> 
 </table>
 
@@ -127,7 +127,7 @@ sudo spctl --master-disable
 然后放行 MDX Notes :
 
 ```bash
-xattr -cr /Applications/MDX\ Editor.app
+xattr -cr /Applications/MDX\ Notes.app
 ```
 
 然后就能正常打开。
@@ -159,13 +159,13 @@ options:
 执行命令
 
 ```bash
-xattr -c /Applications/MDX\ Editor.app/*
+xattr -c /Applications/MDX\ Notes.app/*
 ```
 
 如果上述命令依然没有效果，可以尝试下面的命令：
 
 ```bash
-sudo xattr -d com.apple.quarantine /Applications/MDX\ Editor.app/
+sudo xattr -d com.apple.quarantine /Applications/MDX\ Notes.app/
 ```
 
 ## 部署
