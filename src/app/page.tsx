@@ -140,7 +140,10 @@ export default function Page() {
 
             <div className="mt-6 flex justify-center">
               <video controls className="rounded-xl" width="1200" height="780">
-                <source src="/demo.mp4" type="video/mp4" />
+                <source
+                  src="https://img.maqib.cn/img/mdx-notes.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
           </section>
