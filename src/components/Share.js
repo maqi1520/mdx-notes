@@ -4,6 +4,7 @@ import { getLayoutQueryString } from '../utils/getLayoutQueryString'
 import { Button } from '@/components/ui/button'
 import { ShareIcon, LinkIcon, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { clipboardWriteText } from '@/lib/bindings'
 
 const HOSTNAME = 'https://mdxnotes.com'
 
@@ -31,10 +32,6 @@ export function Share({ resultRef, layout, responsiveSize }) {
             css: markdownTheme,
             config: jsx,
           }),
-        })
-        .then((res) => {
-          if (!res.ok) throw res
-          return res
         })
         .then((res) => res.json())
         .then((res) => {
@@ -145,7 +142,7 @@ export function Share({ resultRef, layout, responsiveSize }) {
           className="max-w-[270px] flex-auto min-w-0 flex items-center space-x-2 text-sm leading-6 font-semibold text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
           title={`${HOSTNAME}${path}`}
           onClick={() => {
-            writeText(HOSTNAME + path).then(() => {
+            clipboardWriteText(HOSTNAME + path).then(() => {
               setState((currentState) => ({
                 ...currentState,
                 state: 'copied',
