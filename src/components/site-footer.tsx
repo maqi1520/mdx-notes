@@ -18,7 +18,7 @@ export function SiteFooter() {
           </a>
           &nbsp;on&nbsp;
           <a
-            href="https://github.com/maqi1520/mdx-editor"
+            href="https://github.com/maqi1520/mdx-notes"
             target="_blank"
             rel="noreferrer"
             className="font-bold underline-offset-2 transition hover:text-primary hover:underline"

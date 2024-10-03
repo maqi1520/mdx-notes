@@ -101,7 +101,7 @@ export default function Hero({ children }) {
         {children}
         <div className="terminal bg-slate-800  dark:bg-slate-900/70 dark:backdrop-blur dark:ring-1 dark:ring-inset dark:ring-white/10">
           <div className="text-sm opacity-50 text-center text-white border-b border-slate-500/30 leading-relaxed pb-2 -mx-2">
-            MDX Editor
+            MDX Notes
           </div>
           <pre style={{ background: 'none' }} className="language-markdown">
             <TypeCode pause={pause} setCode={setCode} />

@@ -1,21 +1,21 @@
-<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-editor/blob/main/README_EN.md">简体中文</a></h4>
+<h4 align="right"><strong>English</strong> | <a href="https://github.com/maqi1520/mdx-notes/blob/main/README_EN.md">简体中文</a></h4>
 
 <div align="center">
 <a href="https://editor.runjs.cool/">
 <img width="500" src="./public/social-card.jpg"/>
 </a>
 </div>
-<div align="center"> <a href="https://github.com/maqi1520/mdx-editor/actions">
-    <img src="https://github.com/maqi1520/mdx-editor/actions/workflows/release.yml/badge.svg" alt="">
+<div align="center"> <a href="https://github.com/maqi1520/mdx-notes/actions">
+    <img src="https://github.com/maqi1520/mdx-notes/actions/workflows/release.yml/badge.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases">
-    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-editor/total.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases">
+    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-notes/total.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases/latest">
-    <img src="https://img.shields.io/github/release/maqi1520/mdx-editor.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases/latest">
+    <img src="https://img.shields.io/github/release/maqi1520/mdx-notes.svg" alt="">
   </a>
 </div>
-<h1 align="center">MDX Editor</h1>
+<h1 align="center">MDX Notes</h1>
 
 > A versatile WeChat typesetting editor, also serving as a cross-platform Markdown note-taking software.
 
@@ -100,7 +100,7 @@ Please give it a star ⭐ ☝️ if it's helpful to you.
 
 ### 1. After installing on macOS, it shows "The file is damaged" or there is no response when opening it
 
-Because MDX Editor is not signed, it is blocked by macOS security checks.
+Because MDX Notes is not signed, it is blocked by macOS security checks.
 
 If you encounter the "The file is damaged" error after installation, follow these steps:
 
@@ -110,10 +110,10 @@ Trust the developer, and it will prompt you to enter your password:
 sudo spctl --master-disable
 ```
 
-Then allow MDX Editor:
+Then allow MDX Notes:
 
 ```bash
-xattr -cr /Applications/MDX\ Editor.app
+xattr -cr /Applications/MDX\ Notes.app
 ```
 
 After that, you should be able to open it normally.

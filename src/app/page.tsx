@@ -90,7 +90,10 @@ export default function Page() {
           <Hero>
             <div className="mt-12 text-center">
               <div className="mt-12 text-3xl sm:text-5xl">
-                一个微信排版编辑器，使用 MDX
+                一个微信排版编辑器，使用
+                <span className="underline decoration-wavy underline-offset-4 decoration-primary">
+                  MDX
+                </span>
               </div>
               <div className="mt-12 flex justify-center space-x-4">
                 <Link
@@ -105,7 +108,7 @@ export default function Page() {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  href="https://github.com/maqi1520/mdx-editor/releases"
+                  href="https://github.com/maqi1520/mdx-notes/releases"
                   className={buttonVariants({ size: 'lg' })}
                 >
                   <DownloadIcon className="w-5 h-5" />
@@ -143,7 +146,7 @@ export default function Page() {
           </section>
           <section className=" mt-20 px-8 sm:mt-32 md:mt-40">
             <h2 className="text-center text-3xl tracking-tight sm:text-5xl">
-              MDX Editor 的能力
+              MDX Notes 的能力
             </h2>
             <ul className="mt-10 grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2 xl:grid-cols-4 xl:gap-y-10">
               {features.map((f, index) => (
@@ -229,12 +232,12 @@ export default function Page() {
           <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">觉得不错？</h2>
             <p className="mx-auto mt-6 max-w-3xl text-lg">
-              将 MDX Editor 分享给你的朋友{' '}
+              将 MDX Notes 分享给你的朋友
               <a
                 target="_blank"
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                   '推荐一个微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF，也是一款跨平台 Markdown 笔记软件'
-                )}&url=https://editor.runjs.cool`}
+                )}&url=https://mdxnotes.com/`}
                 className={buttonVariants()}
               >
                 一键分享到 Twitter

@@ -1,21 +1,21 @@
-<h4 align="right"><a href="https://github.com/maqi1520/mdx-editor/blob/main/README_EN.md">English</a> | <strong>简体中文</strong></h4>
+<h4 align="right"><a href="https://github.com/maqi1520/mdx-notes/blob/main/README_EN.md">English</a> | <strong>简体中文</strong></h4>
 
 <div align="center">
 <a href="https://editor.runjs.cool/">
 <img width="500" src="./public/social-card.jpg"/>
 </a>
 </div>
-<div align="center"> <a href="https://github.com/maqi1520/mdx-editor/actions">
-    <img src="https://github.com/maqi1520/mdx-editor/actions/workflows/release.yml/badge.svg" alt="">
+<div align="center"> <a href="https://github.com/maqi1520/mdx-notes/actions">
+    <img src="https://github.com/maqi1520/mdx-notes/actions/workflows/release.yml/badge.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases">
-    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-editor/total.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases">
+    <img src="https://img.shields.io/github/downloads/maqi1520/mdx-notes/total.svg" alt="">
   </a>
-  <a href="https://github.com/maqi1520/mdx-editor/releases/latest">
-    <img src="https://img.shields.io/github/release/maqi1520/mdx-editor.svg" alt="">
+  <a href="https://github.com/maqi1520/mdx-notes/releases/latest">
+    <img src="https://img.shields.io/github/release/maqi1520/mdx-notes.svg" alt="">
   </a>
 </div>
-<h1 align="center">MDX Editor</h1>
+<h1 align="center">MDX Notes</h1>
 
 > 一个好用的微信排版编辑器，更是一个跨平台 Markdown 笔记软件
 
@@ -41,7 +41,7 @@ Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版�
 
 ### 桌面版
 
-[下载地址](https://github.com/maqi1520/mdx-editor/releases)
+[下载地址](https://github.com/maqi1520/mdx-notes/releases)
 
 桌面版除了网页版的功能之外，还支持
 
@@ -103,10 +103,10 @@ yarn tauri dev
 </tr>
 <tr>
 <td>
-<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/603e1826-4be7-49de-a65d-c415b52e434b" width="180" alt="支付宝赞赏码">
+<img src="https://github.com/maqi1520/mdx-notes/assets/9312044/603e1826-4be7-49de-a65d-c415b52e434b" width="180" alt="支付宝赞赏码">
 </td>
 <td>
-<img src="https://github.com/maqi1520/mdx-editor/assets/9312044/047b369a-0458-48bd-96a1-64dd2c06a6bd" width="190" alt="微信赞赏码"></td>
+<img src="https://github.com/maqi1520/mdx-notes/assets/9312044/047b369a-0458-48bd-96a1-64dd2c06a6bd" width="190" alt="微信赞赏码"></td>
 </tr>
 </table>
 
@@ -114,7 +114,7 @@ yarn tauri dev
 
 ### 1. macOS 系统安装完后显示「文件已损坏」或者安装完打开没有反应
 
-因为 MDX Editor 没有签名，所以会被 macOS 的安全检查所拦下。
+因为 MDX Notes 没有签名，所以会被 macOS 的安全检查所拦下。
 
 1. 安装后打开遇到「文件已损坏」的情况，请按如下方式操作：
 
@@ -124,10 +124,10 @@ yarn tauri dev
 sudo spctl --master-disable
 ```
 
-然后放行 MDX Editor :
+然后放行 MDX Notes :
 
 ```bash
-xattr -cr /Applications/MDX\ Editor.app
+xattr -cr /Applications/MDX\ Notes.app
 ```
 
 然后就能正常打开。

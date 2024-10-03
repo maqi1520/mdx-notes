@@ -8,14 +8,6 @@ import QRCodeBlock from './QRCodeBlock'
 import Blockquote from './Blockquote'
 
 export const MDXComponents = {
-  wrapper: (props) => (
-    <section
-      data-tool="mdx 编辑器"
-      data-website="https://editor.runjs.cool/"
-      className="markdown-body"
-      {...props}
-    />
-  ),
   h1: H1,
   h2: H2,
   h3: H3,

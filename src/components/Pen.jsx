@@ -108,7 +108,7 @@ export default function Pen({
       content.config,
       content.html,
       theme.isMac,
-      theme.codeTheme,
+      'markdown-body',
       theme.formatMarkdown,
       theme.raw
     ).then((res) => {
