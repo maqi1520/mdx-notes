@@ -40,7 +40,7 @@ export default function Hero({ children }) {
 
   useEffect(() => {
     if (code) {
-      compileMdx('', code).then((res) => {
+      compileMdx('', code, true, 'markdown-body').then((res) => {
         if (res.err) {
           setError(res.err)
         } else {
