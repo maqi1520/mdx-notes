@@ -1,7 +1,7 @@
-<h4 align="right"><a href="https://github.com/maqi1520/mdx-notes/blob/main/README_EN.md">English</a> | <strong>简体中文</strong></h4>
+<h4 align="right"><a href="https://github.com/maqi1520/mdx-notes/blob/tauri-app/README.md">English</a> | <strong>简体中文</strong></h4>
 
 <div align="center">
-<a href="https://editor.runjs.cool/">
+<a href="https://mdxnotes.com/">
 <img width="500" src="./public/social-card.jpg"/>
 </a>
 </div>
@@ -27,7 +27,7 @@ Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版�
 
 ### 网页版
 
-[在线体验](https://editor.runjs.cool/)
+[在线体验](https://mdxnotes.com/)
 
 - 支持一键复制到微信公众号
 - 支持自定义样式组件，自定义样式，生成二维码、代码 diff 高亮，
@@ -57,24 +57,24 @@ Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版�
     <td><img src="https://user-images.githubusercontent.com/9312044/262275149-3310abc1-5a6d-45cb-aa9a-3359381ec429.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/64b51328337a9f4db79fe677" >浅绿色卡片</a></td>
-    <td><a href="https://editor.runjs.cool/64c0fca121821b2af589cf6e">初夏风格</a></td>
+    <td><a href="https://mdxnotes.com/64b51328337a9f4db79fe677" >浅绿色卡片</a></td>
+    <td><a href="https://mdxnotes.com/64c0fca121821b2af589cf6e">初夏风格</a></td>
 </tr> 
 <tr>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275160-41c30692-b554-4da6-bcc7-3fb00169ed5d.png"/></td>
   <td><img src="https://user-images.githubusercontent.com/9312044/262275117-fdf35fe4-0b70-45ad-995d-b6622586c6d8.png"/></td>
 </tr>
 <tr>
-  <td><a href="https://editor.runjs.cool/624688ccb6fe2900015728ac">简历模板</a></td>
-  <td><a href="https://editor.runjs.cool/625550658cc5730001809f0c">代码 diff 高亮</a></td>
+  <td><a href="https://mdxnotes.com/624688ccb6fe2900015728ac">简历模板</a></td>
+  <td><a href="https://mdxnotes.com/625550658cc5730001809f0c">代码 diff 高亮</a></td>
 </tr>
 <tr>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275165-766ff817-7c09-4288-b8dd-55d7424c2fd6.png"/></td>
     <td><img src="https://user-images.githubusercontent.com/9312044/262275168-6dd4b05c-a604-4ab1-abe3-b2d2dc759d8e.png"/></td>
 </tr> 
 <tr>
-    <td><a href="https://editor.runjs.cool/6492ae0109e298c79055dfab">生成二维码</a></td>
-    <td><a href="https://editor.runjs.cool/6492aa37f5cf3a54f14493a8">旅行计划</a></td>
+    <td><a href="https://mdxnotes.com/6492ae0109e298c79055dfab">生成二维码</a></td>
+    <td><a href="https://mdxnotes.com/6492aa37f5cf3a54f14493a8">旅行计划</a></td>
 </tr> 
 </table>
 
@@ -176,4 +176,3 @@ sudo xattr -d com.apple.quarantine /Applications/MDX\ Editor.app/
 
 - [mdxjs playground](https://mdxjs.com/playground/)
 - [play.tailwindcss.com](https://play.tailwindcss.com/)
-- [mdnice.com](https://mdnice.com/)
