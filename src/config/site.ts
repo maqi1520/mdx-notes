@@ -2,8 +2,9 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: 'MDX Notes',
+  title: 'MDX Notes - 跨平台笔记软件，公众号排版编辑器，使用 MDX 来排版',
   description:
-    '微信排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF',
+    'MDX Notes 是一个跨平台笔记软件，也是一个微信公众号排版编辑器，使用MDX，可自定义组件、样式、生成二维码、代码 diff 高亮，可导出 markdown 和 PDF',
   mainNav: [
     {
       title: '首页',

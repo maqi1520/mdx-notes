@@ -89,12 +89,14 @@ export default function Page() {
         <div className="min-h-[712px]">
           <Hero>
             <div className="mt-12 text-center">
-              <div className="mt-12 text-3xl sm:text-5xl">
-                一个微信排版编辑器，使用
+              <h1 className="mt-12 text-4xl leading-loose">
+                跨平台笔记软件
+                <br /> 公众号排版编辑器，使用
                 <span className="underline decoration-wavy underline-offset-4 decoration-primary">
                   MDX
                 </span>
-              </div>
+                来排版
+              </h1>
               <div className="mt-12 flex justify-center space-x-4">
                 <Link
                   className={buttonVariants({
@@ -122,7 +124,7 @@ export default function Page() {
         <div className="relative">
           <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">
-              更是一个跨平台 Markdown 笔记软件
+              跨平台 Markdown 笔记软件
             </h2>
             <p className="mx-auto mt-6 max-w-5xl text-lg">
               使用

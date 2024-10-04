@@ -2,6 +2,11 @@ import { GridIcon } from '@/components/icons'
 import AuthUI from './form'
 
 import { Logo } from '@/components/Logo'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '注册',
+}
 
 export default async function Page() {
   return (

@@ -1,6 +1,11 @@
+import { Metadata } from 'next'
 import AuthUI from './form'
 
 import { Logo } from '@/components/Logo'
+
+export const metadata: Metadata = {
+  title: '重置密码',
+}
 
 export default async function Page() {
   return (
