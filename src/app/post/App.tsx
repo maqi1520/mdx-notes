@@ -6,6 +6,7 @@ import { sizeToObject } from '@/utils/size'
 import { useSearchParams } from 'next/navigation'
 import { postData } from '@/utils/helpers'
 import dynamic from 'next/dynamic'
+import Loading from '@/components/Loading'
 const Pen = dynamic(() => import('@/components/Pen'), {
   ssr: false,
 })
@@ -81,5 +82,5 @@ export default function App() {
   if (initialContent) {
     return <Pen {...layoutProps} id={id} initialContent={initialContent} />
   }
-  return null
+  return <Loading />
 }
