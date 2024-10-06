@@ -77,7 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <TailwindIndicator />
           </ThemeProvider>
         </body>
-        <GoogleTagManager gtmId="G-CWXELVQ40Y" />
+        <GoogleTagManager gtmId="G-5JNZYV86WB" />
       </html>
     </>
   )

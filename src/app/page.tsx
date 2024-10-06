@@ -22,6 +22,7 @@ import { OpenAIIcon, WechatIcon } from '@/components/icons'
 import Image from 'next/image'
 import { useTemplates } from '@/hooks/useTemplates'
 import Hero from '@/components/hero'
+import { sendGAEvent } from '@next/third-parties/google'
 
 const features = [
   {
@@ -103,11 +104,13 @@ export default function Page() {
                     variant: 'outline',
                     size: 'lg',
                   })}
+                  onClick={() => sendGAEvent('event', 'demo')}
                   href="/post/?id=demo"
                 >
                   Web 版
                 </Link>
                 <a
+                  onClick={() => sendGAEvent('event', 'download')}
                   target="_blank"
                   rel="noreferrer"
                   href="https://github.com/maqi1520/mdx-notes/releases"
