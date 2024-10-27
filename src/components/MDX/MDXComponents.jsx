@@ -27,16 +27,27 @@ export const MDXComponents = {
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
-    const { src } = props
+    const { src, alt = '' } = props
     const url = convertSrc(src)
 
-    if (!props.alt) {
-      return <img {...props} src={url} />
+    console.log('props', props)
+
+    const [desc, size = ''] = alt.split('|')
+    const [width, height] = size.split(/x/)
+
+    if (!desc) {
+      return <img {...props} width={width} height={height} src={url} />
     }
     return (
       <figure>
-        <img {...props} style={{ margin: '0 auto' }} src={url} />
-        <figcaption>{props.alt}</figcaption>
+        <img
+          {...props}
+          style={{ margin: '0 auto' }}
+          width={width}
+          height={height}
+          src={url}
+        />
+        <figcaption>{desc}</figcaption>
       </figure>
     )
   },
