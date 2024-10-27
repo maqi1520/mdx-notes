@@ -157,10 +157,6 @@ const FileTree = ({
 
     const actionObj = {
       rename: async () => {
-        const isDir = e.target.dataset.dir === 'true'
-        if (!isDir && !isMdFile(name)) {
-          name = name + '.md'
-        }
         const newPath = renamePath(path, name)
         //  重命名文件名不变
         if (path === newPath) {
