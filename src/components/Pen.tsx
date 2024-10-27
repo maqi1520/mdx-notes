@@ -428,7 +428,7 @@ title: ${file}
                       }
                     />
                     <CopyBtn resultRef={resultRef} />
-                    <JournalButton openMd={openMd} />
+                    <JournalButton dirPath={dirPath} openMd={openMd} />
                   </div>
                 </>
               }

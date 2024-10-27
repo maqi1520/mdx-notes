@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { makeDoc, makePrintDoc } from './utils/index'
 import { downloadFile } from '@/lib/bindings'
 import CheckUpdate from './CheckUpdate'
+import { clear } from '@/utils/storage'
 
 type Props = {
   resultRef: any
@@ -27,7 +28,7 @@ export default function MoreDropdown({ resultRef }: Props) {
   const { t } = useTranslation()
 
   const handleClear = () => {
-    localStorage.clear()
+    clear()
     window.location.reload()
   }
 

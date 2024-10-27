@@ -16,6 +16,12 @@ export function setItem(key: string, value: any) {
   storage.setItem(`${windowName}-config`, JSON.stringify(config))
 }
 
+export function clear() {
+  const windowName = getCurrent().label
+  const storage = windowName === 'main' ? localStorage : sessionStorage
+  storage.clear()
+}
+
 export const useStorage = <T>(
   key: string,
   initialValue: T

@@ -1,23 +1,25 @@
 import { readTextFile, resolve } from '@/lib/bindings'
 import dayjs from 'dayjs'
 import { Pencil } from 'lucide-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { useTranslation } from 'react-i18next'
+import { Context } from './Layout'
 
 type Props = {
   openMd: (file: string, content?: string) => void
+  dirPath: string
 }
 
-export default function JournalButton({ openMd }: Props) {
+export default function JournalButton({ openMd, dirPath }: Props) {
   const { t } = useTranslation()
   const { toast } = useToast()
 
+  let { config } = useContext(Context)
+
   const createOrOpenDailyNote = async () => {
     const fileName = dayjs().format('YYYY-MM-DD')
-    const dirPath = JSON.parse(localStorage.getItem('dir-path') ?? '')
-    const config = JSON.parse(localStorage.getItem('config') ?? '{}')
 
     const fullPath = config.journalDir
       ? config.journalDir + '/' + fileName
