@@ -22,7 +22,7 @@ import { SettingsIcon } from 'lucide-react'
 
 export default function ThemeDropdown({ themes, codeThemes, onChange, value }) {
   return (
-    <Popover>
+    <Popover modal>
       <PopoverTrigger asChild>
         <Button size="icon" variant="secondary">
           <SettingsIcon

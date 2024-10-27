@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable jsx-a11y/anchor-has-content */
 
 import React from 'react'
 
@@ -26,13 +26,22 @@ export const MDXComponents = {
   //pre: CodeBlock,
   QRCodeBlock,
   img: (props) => {
-    if (!props.alt) {
-      return <img {...props} />
+    const { alt = '' } = props
+    const [desc, size = ''] = alt.split('|')
+    const [width, height] = size.split(/x/)
+
+    if (!desc) {
+      return <img {...props} width={width} height={height} />
     }
     return (
       <figure>
-        <img {...props} />
-        <figcaption>{props.alt}</figcaption>
+        <img
+          {...props}
+          style={{ margin: '0 auto' }}
+          width={width}
+          height={height}
+        />
+        <figcaption>{desc}</figcaption>
       </figure>
     )
   },
