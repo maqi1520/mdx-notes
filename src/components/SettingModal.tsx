@@ -28,9 +28,8 @@ const data = [
 const uploadOptions = [
   { value: 'none', name: 'None' },
   { value: 'PicGo', name: 'PicGo' },
+  { value: 'uPic', name: 'uPic(only for mac)' },
   { value: 'custom', name: 'Custom' },
-  { value: 'uPic', name: 'uPic(develop)' },
-  { value: 'Picsee', name: 'Picsee(develop)' },
 ]
 
 export default function SettingModal() {
@@ -117,6 +116,9 @@ export default function SettingModal() {
               </label>
               <Input defaultValue={config?.command} name="command" />
             </div>
+          </div>
+          <div className="pl-28 text-xs mt-1 text-gray-500">
+            {t('图床设置选择 custom，会将本地图片路径传递在自定义命令后')}
           </div>
 
           <div className="mt-4">

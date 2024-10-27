@@ -66,5 +66,6 @@
   "Downloading": "下载中",
   "Continue": "确认",
   "Cancel": "取消",
-  "Support HTML": "支持HTML"
+  "Support HTML": "支持HTML",
+  "图床设置选择 custom，会将本地图片路径传递在自定义命令后": "图床设置选择 custom，会将本地图片路径传递在自定义命令后"
 }

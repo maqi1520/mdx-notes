@@ -66,5 +66,6 @@
   "Downloading": "Downloading",
   "Continue": "Continue",
   "Cancel": "Cancel",
-  "Support HTML": "Support HTML"
+  "Support HTML": "Support HTML",
+  "图床设置选择 custom，会将本地图片路径传递在自定义命令后": "Upload Picture select custom, will pass the local image path after the custom command"
 }

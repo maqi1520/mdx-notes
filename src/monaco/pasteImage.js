@@ -1,9 +1,12 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { uploadImage } from '@/lib/bindings'
+import { uploadImage, remove } from '@/lib/bindings'
 import { getItem } from '@/utils/storage'
+import { Command } from '@tauri-apps/plugin-shell'
 
 const codeToUpload = {
-  none: uploadImage,
+  none: async (blob) => {
+    return uploadImage(blob).path
+  },
   PicGo: async () => {
     try {
       const res = await fetch('http://127.0.0.1:36677/upload', {
@@ -14,11 +17,40 @@ const codeToUpload = {
       return '上传失败'
     }
   },
-  uPic: async () => {
-    return '上传失败'
+  uPic: async (blob) => {
+    // 上传图片
+    const res = await uploadImage(blob)
+    try {
+      let result = await Command.create('exec-sh', [
+        '-c',
+        `/Applications/uPic.app/Contents/MacOS/uPic -o url -u ${escape(
+          res.fullPath
+        )}`,
+      ]).execute()
+
+      // 上传成功后删除图片
+      await remove(res.fullPath)
+      return result?.stdout.split('Output URL:')[1]?.trim()
+    } catch (error) {
+      return '上传失败'
+    }
   },
-  custom: async () => {
-    return '上传失败'
+  custom: async (blob, command) => {
+    // 上传图片
+    const res = await uploadImage(blob)
+    try {
+      let result = await Command.create('exec-sh', [
+        '-c',
+        `${command} ${escape(res.fullPath)}`,
+      ]).execute()
+      // 上传成功后删除图片
+      await remove(res.fullPath)
+
+      return result?.stdout?.trim() || '执行失败'
+    } catch (error) {
+      console.log('error', error)
+      return '上传失败'
+    }
   },
 }
 
@@ -38,7 +70,10 @@ export function listenPaste(editor) {
             upload: 'none',
             command: '',
           }
-          const fileName = await codeToUpload[config.upload](blob)
+          const fileName = await codeToUpload[config.upload](
+            blob,
+            config.command
+          )
 
           editor.executeEdits('', [
             {

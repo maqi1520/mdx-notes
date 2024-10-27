@@ -22,6 +22,22 @@
       "allow": [{ "path": "**" }]
     },
     "shell:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "exec-sh",
+          "cmd": "sh",
+          "args": [
+            "-c",
+            {
+              "validator": "\\S+"
+            }
+          ],
+          "sidecar": false
+        }
+      ]
+    },
     "dialog:allow-save",
     "dialog:allow-message",
     "dialog:allow-open",

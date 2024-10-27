@@ -155,7 +155,10 @@ export const uploadImage = async (blob) => {
     fileName = `/img/${time}.png`
   }
   await writeFile(`${dirPath}${fileName}`, contents)
-  return `./img/${time}.png`
+  return {
+    path: `./img/${time}.png`,
+    fullPath: `${dirPath}${fileName}`,
+  }
 }
 
 export const downloadFile = async (fileName: string, content: string) => {
