@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import type { Viewport } from 'next'
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <head />
+        <GoogleTagManager gtmId="GTM-5NXS7JR9" />
         <body
           className={cn(
             'min-h-screen bg-background font-sans antialiased',
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <TailwindIndicator />
           </ThemeProvider>
         </body>
-        <GoogleTagManager gtmId="G-5JNZYV86WB" />
+        <GoogleAnalytics gaId="G-5JNZYV86WB" />
       </html>
     </>
   )
