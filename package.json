@@ -48,7 +48,7 @@
     "markmap-view": "^0.15.0",
     "mathjax-full": "3.0.1",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "next": "^14.2.5",
+    "next": "^14.2.21",
     "node-fetch": "^3.2.3",
     "qrcode": "^1.5.0",
     "react": "^18.2.0",
