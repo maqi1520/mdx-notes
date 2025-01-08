@@ -139,10 +139,16 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
         {state === 'copied' ? t('Copy Success') : t('Copy')}
       </Button>
 
-      <Button variant="secondary" size="sm" onClick={handleExport}>
+      <Button
+        className="hidden sm:inline-flex"
+        variant="secondary"
+        size="sm"
+        onClick={handleExport}
+      >
         <SaveIcon className="w-4 h-4 mr-1" /> {t('Save As')}
       </Button>
       <Button
+        className="hidden sm:inline-flex"
         variant="secondary"
         size="sm"
         type="button"

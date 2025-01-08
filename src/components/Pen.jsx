@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { debounce } from 'debounce'
-import Editor from './EditorDesktop'
+import { Editor } from './Editor'
 import SplitPane from 'react-split-pane'
 import Count from 'word-count'
 import useMedia from 'react-use/lib/useMedia'
@@ -394,7 +394,7 @@ export default function Pen({
           </>
         }
       >
-        <div className="hidden sm:flex space-x-2">
+        <div className="flex space-x-2">
           {author_id !== currentUserId && (
             <Button size="sm" onClick={handleFork}>
               <GitForkIcon className="w-4 h-4 mr-1" />

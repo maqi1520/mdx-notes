@@ -137,11 +137,133 @@
 /* DEFAULT THEME */
 
 .cm-s-light .cm-header {
-  color: blue;
+  color: theme('colors.blue.700');
+  font-weight: 600;
+  line-height: 1.6;
 }
+
+/* 标题大小和间距优化 */
+.cm-s-light .cm-header-1 {
+  color: theme('colors.blue.800');
+}
+.cm-s-light .cm-header-2 {
+  color: theme('colors.blue.700');
+}
+.cm-s-light .cm-header-3 {
+  color: theme('colors.blue.600');
+}
+.cm-s-light .cm-header-4,
+.cm-s-light .cm-header-5,
+.cm-s-light .cm-header-6 {
+  color: theme('colors.blue.500');
+}
+
+/* 强调和加粗 */
+.cm-s-light .cm-em {
+  color: theme('colors.gray.700');
+  font-style: italic;
+}
+
+.cm-s-light .cm-strong {
+  color: theme('colors.gray.900');
+  font-weight: 600;
+}
+
+/* 引用块 */
 .cm-s-light .cm-quote {
-  color: #090;
+  color: theme('colors.green.600');
+  font-style: italic;
 }
+
+/* 代码相关 */
+.cm-s-light .cm-inline-code,
+.cm-s-light .cm-fenced-code {
+  color: theme('colors.pink.600');
+  background: theme('colors.gray.50');
+  border-radius: 3px;
+  padding: 0 0.2em;
+}
+
+/* 列表 */
+.cm-s-light .cm-list {
+  color: theme('colors.purple.600');
+}
+
+/* 任务列表 */
+.cm-s-light .cm-task {
+  color: theme('colors.blue.600');
+}
+
+/* 链接相关 */
+.cm-s-light .cm-url,
+.cm-s-light .cm-link {
+  color: theme('colors.blue.500');
+  text-decoration: none;
+}
+
+.cm-s-light .cm-image {
+  color: theme('colors.green.600');
+}
+
+/* 删除线 */
+.cm-s-light .cm-strikethrough {
+  color: theme('colors.gray.400');
+  text-decoration: line-through;
+}
+
+/* 表格 */
+.cm-s-light .cm-table {
+  color: theme('colors.gray.700');
+}
+
+/* HTML 标签 */
+.cm-s-light .cm-tag {
+  color: theme('colors.purple.600');
+}
+
+.cm-s-light .cm-attribute {
+  color: theme('colors.blue.600');
+}
+
+/* 水平分割线 */
+.cm-s-light .cm-hr {
+  color: theme('colors.gray.300');
+}
+
+/* 数学公式 */
+.cm-s-light .cm-math {
+  color: theme('colors.purple.700');
+  background: theme('colors.gray.50');
+}
+
+/* 脚注 */
+.cm-s-light .cm-footnote {
+  color: theme('colors.amber.600');
+}
+
+/* 高亮块 */
+.cm-s-light .cm-highlight {
+  background-color: theme('colors.yellow.100');
+  padding: 0 0.2em;
+  border-radius: 3px;
+}
+
+/* 选中文本 */
+.cm-s-light .CodeMirror-selected {
+  background: theme('colors.blue.100');
+}
+
+/* 当前行高亮 */
+.cm-s-light .CodeMirror-activeline-background {
+  background: theme('colors.gray.50');
+}
+
+/* 匹配的括号 */
+.cm-s-light .CodeMirror-matchingbracket {
+  color: theme('colors.green.600') !important;
+  background: theme('colors.green.50');
+}
+
 .cm-negative {
   color: #d44;
 }

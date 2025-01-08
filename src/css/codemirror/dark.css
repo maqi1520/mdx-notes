@@ -118,3 +118,151 @@
 .cm-s-dark .cm-property.cm-m-javascript {
   color: inherit;
 }
+
+/* 运算符样式 */
+.cm-s-dark .cm-operator {
+  color: theme('colors.gray.300');
+}
+
+/* 变量样式 */
+.cm-s-dark .cm-variable {
+  color: theme('colors.sky.200');
+}
+
+/* 内置函数/对象样式 */
+.cm-s-dark .cm-builtin {
+  color: theme('colors.teal.300');
+}
+
+/* 特殊字符样式 */
+.cm-s-dark .cm-atom {
+  color: theme('colors.purple.300');
+}
+
+/* 链接样式 */
+.cm-s-dark .cm-link {
+  color: theme('colors.blue.400');
+  text-decoration: underline;
+}
+
+/* 标点符号样式 */
+.cm-s-dark .cm-punctuation {
+  color: theme('colors.gray.400');
+}
+
+/* 搜索高亮样式 */
+.cm-s-dark .CodeMirror-searching {
+  background-color: theme('colors.yellow.500/40');
+}
+
+/* 选中行背景 */
+.cm-s-dark .CodeMirror-selectedtext {
+  background-color: theme('colors.gray.700/60');
+}
+
+/* 折叠标记样式 */
+.cm-s-dark .CodeMirror-foldmarker {
+  color: theme('colors.yellow.400');
+  text-shadow: none;
+  cursor: pointer;
+}
+
+/* 行内错误标记 */
+.cm-s-dark .cm-error-line {
+  background-color: theme('colors.red.900/30');
+}
+
+/* 行内警告标记 */
+.cm-s-dark .cm-warning-line {
+  background-color: theme('colors.yellow.900/30');
+}
+
+/* Markdown 标题 */
+.cm-s-dark .cm-header {
+  color: theme('colors.blue.300');
+  font-weight: bold;
+}
+
+/* Markdown 强调 */
+.cm-s-dark .cm-em {
+  color: theme('colors.gray.100');
+  font-style: italic;
+}
+
+/* Markdown 加粗 */
+.cm-s-dark .cm-strong {
+  color: theme('colors.gray.100');
+  font-weight: bold;
+}
+
+/* Markdown 删除线 */
+.cm-s-dark .cm-strikethrough {
+  text-decoration: line-through;
+  color: theme('colors.gray.400');
+}
+
+/* Markdown 引用 */
+.cm-s-dark .cm-quote {
+  color: theme('colors.green.300');
+  font-style: italic;
+}
+
+/* Markdown 列表符号 */
+.cm-s-dark .cm-list {
+  color: theme('colors.purple.300');
+}
+
+/* Markdown 任务列表 */
+.cm-s-dark .cm-task {
+  color: theme('colors.blue.300');
+}
+
+/* Markdown 代码块 */
+.cm-s-dark .cm-fenced-code {
+  color: theme('colors.gray.300');
+  background-color: theme('colors.gray.900/50');
+}
+
+/* Markdown 行内代码 */
+.cm-s-dark .cm-inline-code {
+  color: theme('colors.pink.300');
+  background-color: theme('colors.gray.900/50');
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+}
+
+/* Markdown 表格 */
+.cm-s-dark .cm-table {
+  color: theme('colors.gray.300');
+}
+
+/* Markdown 图片 */
+.cm-s-dark .cm-image {
+  color: theme('colors.green.300');
+}
+
+/* Markdown URL */
+.cm-s-dark .cm-url {
+  color: theme('colors.blue.300');
+  text-decoration: underline;
+}
+
+/* Markdown 脚注 */
+.cm-s-dark .cm-footnote {
+  color: theme('colors.yellow.300');
+}
+
+/* Markdown HTML 标签 */
+.cm-s-dark .cm-tag.cm-bracket {
+  color: theme('colors.gray.400');
+}
+
+/* Markdown 水平分割线 */
+.cm-s-dark .cm-hr {
+  color: theme('colors.gray.500');
+}
+
+/* Markdown 数学公式 */
+.cm-s-dark .cm-math {
+  color: theme('colors.purple.300');
+}
