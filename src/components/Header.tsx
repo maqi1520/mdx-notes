@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { LayoutTemplate } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { UserInfo } from '@/components/user-account-nav'
+import { cn } from '@/lib/utils'
 
 interface Props {
   children?: React.ReactNode
@@ -18,7 +19,7 @@ export function Header({ children, rightBtn }: Props) {
       style={{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }}
     >
       <div className="flex-auto sm:flex items-center min-w-0">
-        <Logo className="flex-none" />
+        <Logo className={cn(children && 'hidden md:flex mr-3')} />
         {children}
       </div>
       <div className="flex items-center space-x-2">

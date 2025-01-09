@@ -396,7 +396,11 @@ export default function Pen({
       >
         <div className="flex space-x-2">
           {author_id !== currentUserId && (
-            <Button size="sm" onClick={handleFork}>
+            <Button
+              className="hidden sm:inline-flex"
+              size="sm"
+              onClick={handleFork}
+            >
               <GitForkIcon className="w-4 h-4 mr-1" />
               Fork
             </Button>
