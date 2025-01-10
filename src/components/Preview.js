@@ -336,7 +336,7 @@ export const Preview = forwardRef(function Page(
             onLoad={onLoad}
             className={clsx(
               iframeClassName,
-              'absolute inset-0 w-full h-full bg-white',
+              'absolute z-10 inset-0 w-full h-full bg-white',
               {
                 'pointer-events-none select-none': resizing,
               }

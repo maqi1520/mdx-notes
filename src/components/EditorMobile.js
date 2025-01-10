@@ -1,12 +1,12 @@
 import { useRef, useEffect, useState } from 'react'
 import {
-  Copy,
   ClipboardPaste,
-  TextCursorInput,
   Heading2Icon,
   BoldIcon,
   Link2Icon,
   CodeIcon,
+  TableIcon,
+  Code2Icon,
 } from 'lucide-react'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import CodeMirror from 'codemirror'
@@ -29,48 +29,6 @@ const modeToDoc = {
 }
 
 function EditorToolbar({ editor }) {
-  const ref = useRef()
-  useEffect(() => {
-    const fixedElement = ref.current
-    if (window.visualViewport) {
-      const updatePosition = () => {
-        const offset = window.innerHeight - window.visualViewport.height
-        fixedElement.style.transform = `translateY(-${offset}px)`
-      }
-
-      window.visualViewport.addEventListener('resize', updatePosition)
-      window.visualViewport.addEventListener('scroll', updatePosition)
-      updatePosition()
-
-      return () => {
-        window.visualViewport.removeEventListener('resize', updatePosition)
-        window.visualViewport.removeEventListener('scroll', updatePosition)
-      }
-    } else {
-      const updatePosition = () => {
-        const offset =
-          window.innerHeight - document.documentElement.clientHeight
-        fixedElement.style.bottom = `${offset}px`
-      }
-      window.addEventListener('resize', updatePosition)
-      updatePosition()
-      return () => {
-        window.removeEventListener('resize', updatePosition)
-      }
-    }
-  }, [])
-  const handleSelectAll = () => {
-    setTimeout(() => {
-      editor.focus()
-      editor.execCommand('selectAll')
-    }, 0)
-  }
-
-  const handleCopy = async () => {
-    const text = editor.getSelection()
-    await navigator.clipboard.writeText(text)
-  }
-
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText()
@@ -91,11 +49,17 @@ function EditorToolbar({ editor }) {
       case 'bold':
         text = selection ? `**${selection}**` : '**粗体文本**'
         break
-      case 'code':
-        text = selection ? `\`${selection}\`` : '`代码`'
-        break
       case 'link':
         text = selection ? `[${selection}](url)` : '[链接文本](url)'
+        break
+      case 'table':
+        text = `| 列1 | 列2 | 列3 |\n|------|------|------|\n| 内容1 | 内容2 | 内容3 |`
+        break
+      case 'inlineCode':
+        text = selection ? `\`${selection}\`` : '`行内代码`'
+        break
+      case 'codeBlock':
+        text = selection ? `\`\`\`\n${selection}\n\`\`\`` : '```\n代码块\n```'
         break
     }
 
@@ -117,23 +81,18 @@ function EditorToolbar({ editor }) {
         case 'link':
           editor.setCursor({ line: cursor.line, ch: 1 })
           break
+        case 'inlineCode':
+          editor.setCursor({ line: cursor.line, ch: 1 })
+          break
+        case 'codeBlock':
+          editor.setCursor({ line: cursor.line + 1, ch: 0 })
+          break
       }
     }
   }
 
   return (
-    <div
-      ref={ref}
-      className="bg-background border-t fixed z-10 w-full bottom-0 overflow-x-auto whitespace-pre space-x-2 p-2"
-    >
-      <Button variant="secondary" onClick={handleSelectAll} size="sm">
-        <TextCursorInput className="w-4 h-4 mr-1" />
-        全选
-      </Button>
-      <Button variant="secondary" onClick={handleCopy} size="sm">
-        <Copy className="w-4 h-4 mr-1" />
-        复制
-      </Button>
+    <div className="bg-background border-t absolute z-10 w-full bottom-0 overflow-x-auto whitespace-pre space-x-2 p-2">
       <Button variant="secondary" onClick={handlePaste} size="sm">
         <ClipboardPaste className="w-4 h-4 mr-1" />
         粘贴
@@ -154,17 +113,31 @@ function EditorToolbar({ editor }) {
       </Button>
       <Button
         variant="secondary"
-        onClick={() => insertMarkdown('code')}
+        onClick={() => insertMarkdown('link')}
+        size="sm"
+      >
+        <Link2Icon className="w-4 h-4" />
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => insertMarkdown('table')}
+        size="sm"
+      >
+        <TableIcon className="w-4 h-4" />
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => insertMarkdown('inlineCode')}
         size="sm"
       >
         <CodeIcon className="w-4 h-4" />
       </Button>
       <Button
         variant="secondary"
-        onClick={() => insertMarkdown('link')}
+        onClick={() => insertMarkdown('codeBlock')}
         size="sm"
       >
-        <Link2Icon className="w-4 h-4" />
+        <Code2Icon className="w-4 h-4 rotate-90" />
       </Button>
     </div>
   )
