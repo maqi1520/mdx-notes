@@ -42,3 +42,37 @@ export const copyHtml = (text) => {
   })
   document.execCommand('copy')
 }
+
+export function toDataURL(src, outputFormat, quality = 1.0) {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.crossOrigin = 'Anonymous'
+    img.onload = function () {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d', { alpha: true })
+
+      // 设置 canvas 尺寸为原图的 2 倍
+      const scale = 2
+      canvas.height = img.height * scale
+      canvas.width = img.width * scale
+
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
+
+        // 直接绘制放大后的图片，不使用 ctx.scale()
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          img.width * scale, // 目标宽度
+          img.height * scale // 目标高度
+        )
+      }
+
+      const dataURL = canvas.toDataURL(outputFormat || 'image/png', quality)
+      resolve(dataURL)
+    }
+    img.src = src
+  })
+}
