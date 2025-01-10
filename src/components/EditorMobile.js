@@ -29,8 +29,41 @@ const modeToDoc = {
 }
 
 function EditorToolbar({ editor }) {
+  const ref = useRef()
+  useEffect(() => {
+    const fixedElement = ref.current
+    if (window.visualViewport) {
+      const updatePosition = () => {
+        const offset = window.innerHeight - window.visualViewport.height
+        fixedElement.style.transform = `translateY(-${offset}px)`
+      }
+
+      window.visualViewport.addEventListener('resize', updatePosition)
+      window.visualViewport.addEventListener('scroll', updatePosition)
+      updatePosition()
+
+      return () => {
+        window.visualViewport.removeEventListener('resize', updatePosition)
+        window.visualViewport.removeEventListener('scroll', updatePosition)
+      }
+    } else {
+      const updatePosition = () => {
+        const offset =
+          window.innerHeight - document.documentElement.clientHeight
+        fixedElement.style.bottom = `${offset}px`
+      }
+      window.addEventListener('resize', updatePosition)
+      updatePosition()
+      return () => {
+        window.removeEventListener('resize', updatePosition)
+      }
+    }
+  }, [])
   const handleSelectAll = () => {
-    editor.execCommand('selectAll')
+    setTimeout(() => {
+      editor.focus()
+      editor.execCommand('selectAll')
+    }, 0)
   }
 
   const handleCopy = async () => {
@@ -89,7 +122,10 @@ function EditorToolbar({ editor }) {
   }
 
   return (
-    <div className="bg-background border-t absolute z-10 w-full bottom-0 overflow-x-auto whitespace-pre space-x-2 p-2">
+    <div
+      ref={ref}
+      className="bg-background border-t fixed z-10 w-full bottom-0 overflow-x-auto whitespace-pre space-x-2 p-2"
+    >
       <Button variant="secondary" onClick={handleSelectAll} size="sm">
         <TextCursorInput className="w-4 h-4 mr-1" />
         全选
