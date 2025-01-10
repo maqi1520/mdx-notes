@@ -197,6 +197,8 @@ pre {
 /*引用*/
 .markdown-body blockquote {
   background-color: var(--weui-BG-0);
+  border-left: 4px solid var(--weui-BRAND);
+  color: var(--weui-FG-HALF);
   padding: 1px 16px;
   margin: 16px 0;
   border-radius: 5px;

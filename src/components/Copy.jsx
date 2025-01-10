@@ -63,7 +63,7 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
 
     for (let index = 0; index < $('img').length; index++) {
       const item = $('img')[index]
-      const src = $element.attr('src') || ''
+      const src = item.attribs.src || ''
       if (src.includes('/api/qrcode') || src.includes('data:image/svg+xml')) {
         const dataUrl = await toDataURL(item.attribs.src)
         item.attribs.src = dataUrl
@@ -77,7 +77,7 @@ export const CopyBtn = ({ editorRef, inject, htmlRef, baseCss }) => {
         .replace(/<div/g, '<section')
         .replace(/<\/div>/g, '</section>')
         //暗黑皮肤颜色变量在微信不生效
-        .replace(/var\(--weui-BG-0\)/g, '#ededed')
+        .replace(/var\(--weui-BG-0\)/g, '#fafafa')
     )
 
     setState({ state: 'copied' })
