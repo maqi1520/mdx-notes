@@ -99,14 +99,6 @@ body {
   list-style-type: decimal;
 }
 
-.markdown-body li section {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  line-height: 26px;
-  text-align: left;
-  font-weight: 500;
-}
-
 /*引用*/
 .markdown-body blockquote {
   background-color: var(--weui-BG-0);

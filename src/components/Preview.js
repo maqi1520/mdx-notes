@@ -412,6 +412,9 @@ export const Preview = forwardRef(function Page(
                     var hasHtml = false
                     var hasCss = false
                     window.addEventListener('message', (e) => {
+                      if(!e.data){
+                        return
+                      }
                       if(e.data.theme==='dark'){
                         document.body.classList.add('dark')
                       }

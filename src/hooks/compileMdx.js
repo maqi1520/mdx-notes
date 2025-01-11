@@ -20,6 +20,10 @@ import rehypeDivToSection, {
 } from '../components/utils/rehype-div'
 import { rehypeCodeTitle } from '../components/utils/rehype-code-title'
 import reHypeLinkFoot from '../components/utils/rehype-link-foot'
+import {
+  rehypeWavyUnderline,
+  rehypeMark,
+} from '../components/utils/rehype-mark'
 
 export const Context = React.createContext({ isMac: true })
 
@@ -89,6 +93,8 @@ export const compileMdx = async (
     rehypeDivToSection,
     reHypeLinkFoot,
     rehypeMathjax,
+    rehypeWavyUnderline,
+    rehypeMark,
     [rehypeMermaid, { strategy: 'img-svg' }],
     [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
     [rehypeCodeTitle, { isMac }],
