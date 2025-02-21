@@ -12,10 +12,7 @@ import type { Viewport } from 'next'
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
-  ],
+  themeColor: '#f9fbfc',
 }
 
 export const metadata: Metadata = {

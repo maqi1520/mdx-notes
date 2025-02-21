@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { ComputerIcon, MoonStarIcon, SunIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -13,7 +13,35 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export function ThemeToggle({ variant }) {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
+
+  const updateThemeColor = (theme?: string) => {
+    let themeColor = '#f9fbfc' // 默认浅色
+
+    if (theme === 'system') {
+      // 检测系统主题
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
+        .matches
+        ? 'dark'
+        : 'light'
+      themeColor = systemTheme === 'dark' ? '#0a1121' : '#f9fbfc'
+    } else {
+      themeColor = theme === 'dark' ? '#0a1121' : '#f9fbfc'
+    }
+
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', themeColor)
+  }
+
+  const handleSetTheme = (theme: string) => {
+    setTheme(theme)
+  }
+
+  // 添加系统主题变化监听
+  useEffect(() => {
+    updateThemeColor(theme)
+  }, [theme])
 
   return (
     <DropdownMenu>
@@ -25,14 +53,14 @@ export function ThemeToggle({ variant }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
+        <DropdownMenuItem onClick={() => handleSetTheme('light')}>
           <SunIcon className="mr-2 h-5 w-5" /> Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
+        <DropdownMenuItem onClick={() => handleSetTheme('dark')}>
           <MoonStarIcon className="mr-2 h-5 w-5" />
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
+        <DropdownMenuItem onClick={() => handleSetTheme('system')}>
           <ComputerIcon className="mr-2 h-5 w-5" />
           System
         </DropdownMenuItem>
