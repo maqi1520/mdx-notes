@@ -1,0 +1,17 @@
+{
+  "name": "MDX Nodes",
+  "short_name": "MDX Nodes",
+  "description": "跨平台笔记软件，公众号排版编辑器",
+  "start_url": "/",
+  "display": "fullscreen",
+  "scope": "/",
+  "background_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "favicons/apple-touch-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}

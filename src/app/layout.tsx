@@ -10,6 +10,7 @@ import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import type { Viewport } from 'next'
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
+
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
@@ -28,6 +29,11 @@ export const metadata: Metadata = {
     shortcut: '/favicons/favicon-32x32.png',
     apple: '/favicons/apple-touch-icon.png',
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+  },
+  manifest: '/manifest.json',
   openGraph: {
     type: 'website',
     siteName: siteConfig.name,
