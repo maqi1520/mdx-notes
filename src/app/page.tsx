@@ -89,7 +89,7 @@ const features = [
 const users = ['JS酷', 'web技术学院', '前端充电宝', '云谦和他的朋友们']
 
 export default function Page() {
-  const { value: data } = useTemplates(6)
+  const { value: data } = useTemplates(8)
   return (
     <div className="relative min-h-full">
       <div className="absolute inset-0 h-[860px] bg-no-repeat bg-slate-50 dark:bg-[#0B1120] index_beams">
@@ -135,7 +135,7 @@ export default function Page() {
         </div>
 
         <div className="relative">
-          <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
+          <section className="mt-20 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">
               跨平台 Markdown 笔记软件
             </h2>
@@ -188,11 +188,11 @@ export default function Page() {
               </DialogContent>
             </Dialog>
           </section>
-          <section className=" mt-20 px-8 sm:mt-32 md:mt-40">
+          <section className="mt-20 sm:mt-32 md:mt-40">
             <h2 className="text-center text-3xl tracking-tight sm:text-5xl">
               MDX Notes 的能力
             </h2>
-            <ul className="mt-10 grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2 xl:grid-cols-4 xl:gap-y-10">
+            <ul className="mt-10 grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
               {features.map((f, index) => (
                 <li
                   key={index}
@@ -206,15 +206,17 @@ export default function Page() {
               ))}
             </ul>
           </section>
-          <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
-            <h2 className="text-3xl tracking-tight sm:text-5xl">丰富模板</h2>
-            <p className="mx-auto mt-6 max-w-3xl text-lg">
+          <section className="mt-20 sm:mt-32 md:mt-40">
+            <h2 className="text-3xl tracking-tight sm:text-5xl text-center">
+              丰富模板
+            </h2>
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-loose">
               MDX 结合了 Markdown 和 JSX 的优点，它让你可以在 Markdown
               文档中直接使用 React 组件，构建复杂的交互式文档。如果你熟悉
               React，你可以在 Config
               标签页中自定义你的组件；如果你不是一个程序员，不会使用JSX，那么你也可以基于现有模板进行创作。
             </p>
-            <div className="mt-10 grid grid-cols-2 gap-10">
+            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
               {data &&
                 data.map((item) => (
                   <div key={item.docId}>
@@ -241,9 +243,11 @@ export default function Page() {
                 ))}
             </div>
           </section>
-          <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
-            <h2 className="text-3xl tracking-tight sm:text-5xl">项目灵感</h2>
-            <p className="mx-auto mt-6 max-w-3xl text-lg">
+          <section className="mt-20 sm:mt-32 md:mt-40">
+            <h2 className="text-3xl tracking-tight sm:text-5xl text-center">
+              项目灵感
+            </h2>
+            <p className="mx-auto mt-6 max-w-3xl text-lg leading-loose">
               Markdown 是广大程序员酷爱的写作方式，但满足不了微信排版的需求，MDX
               正好弥补了 Markdown 的缺陷。我的博客正好也是使用 MDX
               来书写的，如何做到一次书写，排版统一？ 当我看到
@@ -258,10 +262,10 @@ export default function Page() {
               的时候，我就在思考，能否实现类似的方案？
             </p>
           </section>
-          <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
+          <section className="mt-20 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">他们都在用</h2>
             <div>
-              <ul className="mt-10 grid grid-cols-2 gap-x-16 gap-y-8 md:grid-cols-4 xl:gap-y-10">
+              <ul className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
                 {users.map((user) => (
                   <li
                     key={user}
@@ -273,9 +277,9 @@ export default function Page() {
               </ul>
             </div>
           </section>
-          <section className="mt-20 px-8 text-center sm:mt-32 md:mt-40">
+          <section className="mt-20 text-center sm:mt-32 md:mt-40">
             <h2 className="text-3xl tracking-tight sm:text-5xl">觉得不错？</h2>
-            <p className="mx-auto mt-6 max-w-3xl text-lg">
+            <p className="mx-auto mt-6 max-w-3xl text-lg flex gap-2 items-center">
               将 MDX Notes 分享给你的朋友
               <a
                 target="_blank"

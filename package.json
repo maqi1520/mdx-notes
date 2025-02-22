@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@next/third-parties": "^14.2.8",
+    "@openpanel/nextjs": "^1.0.7",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",

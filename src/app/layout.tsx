@@ -10,6 +10,7 @@ import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { ThemeProvider } from '@/components/theme-provider'
 import type { Viewport } from 'next'
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
+import { OpenPanelComponent } from '@openpanel/nextjs'
 
 export const viewport: Viewport = {
   themeColor: '#f9fbfc',
@@ -79,6 +80,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Toaster />
             <TailwindIndicator />
           </ThemeProvider>
+          <OpenPanelComponent
+            clientId="2bc47e6a-df50-4e0b-93b0-7645ff33f796"
+            trackScreenViews={true}
+            trackAttributes={true}
+            trackOutgoingLinks={true}
+          />
         </body>
         <GoogleAnalytics gaId="G-5JNZYV86WB" />
       </html>

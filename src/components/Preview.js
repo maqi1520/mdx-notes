@@ -456,7 +456,6 @@ export const Preview = forwardRef(function Page(
                             window.scrollTo({
                               top: 999,
                               left: 0,
-                              behavior: 'smooth'
                             });
                           }, 100); // 延迟 100 毫秒
                         }
