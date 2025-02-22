@@ -452,11 +452,13 @@ export const Preview = forwardRef(function Page(
                       if (typeof e.data.html !== 'undefined') {
                         setHtml(e.data.html)
                         if(e.data.scrollEnd){
-                          window.scrollTo({
-                            top: 999,
-                            left: 0,
-                            behavior: 'smooth'
-                          });
+                          setTimeout(() => {
+                            window.scrollTo({
+                              top: 999,
+                              left: 0,
+                              behavior: 'smooth'
+                            });
+                          }, 100); // 延迟 100 毫秒
                         }
                       }
                     })

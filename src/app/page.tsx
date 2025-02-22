@@ -17,12 +17,22 @@ import {
   PrinterIcon,
   QrCodeIcon,
   ShareIcon,
+  PlayIcon,
 } from 'lucide-react'
 import { OpenAIIcon, WechatIcon } from '@/components/icons'
 import Image from 'next/image'
 import { useTemplates } from '@/hooks/useTemplates'
 import Hero from '@/components/hero'
 import { sendGAEvent } from '@next/third-parties/google'
+
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogOverlay,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 const features = [
   {
@@ -143,14 +153,40 @@ export default function Page() {
               MacOS、Windows、Linux，整个应用非常轻量，安装程序小于 10 MB
             </p>
 
-            <div className="mt-6 flex justify-center">
-              <video controls className="rounded-xl" width="1200" height="780">
-                <source
-                  src="https://img.maqib.cn/img/mdx-notes.mp4"
-                  type="video/mp4"
-                />
-              </video>
-            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="relative cursor-pointer group">
+                  <Image
+                    src="/img/video.png"
+                    alt="mdx notes 笔记软件效果"
+                    width="1920"
+                    height="1080"
+                    className="w-full transition-all duration-200 group-hover:brightness-[0.8] ease-out rounded-md shadow-lg border"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center group-hover:scale-100 scale-[0.9] transition-all duration-200 ease-out rounded-2xl">
+                    <div className="bg-primary/10 flex items-center justify-center rounded-full backdrop-blur-md size-20 sm:size-24 md:size-28">
+                      <div className="flex items-center justify-center bg-gradient-to-b from-primary/30 to-primary shadow-md rounded-full size-14 sm:size-16 md:size-20 transition-all ease-out duration-200 relative group-hover:scale-[1.2] scale-100">
+                        <PlayIcon className="size-6 sm:size-7 md:size-8 text-white fill-white group-hover:scale-105 scale-100 transition-transform duration-200 ease-out" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="max-w-5xl">
+                <DialogHeader>
+                  <DialogTitle>视频演示</DialogTitle>
+                </DialogHeader>
+                <iframe
+                  className="size-full aspect-video"
+                  src="https://www.youtube.com/embed/26X1Y5e5T9g?si=Pc_n_zLvcX4SbgwG"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </DialogContent>
+            </Dialog>
           </section>
           <section className=" mt-20 px-8 sm:mt-32 md:mt-40">
             <h2 className="text-center text-3xl tracking-tight sm:text-5xl">

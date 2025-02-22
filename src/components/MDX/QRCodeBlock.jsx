@@ -15,8 +15,10 @@ export default function QRCodeBlock({ url, text, image }) {
           <img
             width="90"
             height="90"
-            src={`${process?.env?.NEXT_PUBLIC_SITE_API_URL}/api/auth/qrcode?url=${url}&type=image`}
-            alt=""
+            src={`https://api.qrcode-monkey.com/qr/custom?size=90&data=${encodeURIComponent(
+              url
+            )}`}
+            alt={text}
           />
         </div>
       </section>
