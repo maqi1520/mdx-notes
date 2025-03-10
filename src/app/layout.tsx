@@ -12,6 +12,7 @@ import type { Viewport } from 'next'
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 import { OpenPanelComponent } from '@openpanel/nextjs'
 import Script from 'next/script'
+import { AdContainer } from '@/components/AdContainer'
 
 export const viewport: Viewport = {
   themeColor: '#f9fbfc',
@@ -100,6 +101,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
             {children}
             <Toaster />
             <TailwindIndicator />
+
+            {/* 添加浮动广告容器 */}
+            <AdContainer
+              client="ca-pub-9163539254569883"
+              slot="1984888091" // 请替换为您实际的广告单元ID
+              width={200}
+            />
           </ThemeProvider>
           <OpenPanelComponent
             clientId="2bc47e6a-df50-4e0b-93b0-7645ff33f796"
