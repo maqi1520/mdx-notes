@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import type { Viewport } from 'next'
 import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
 import { OpenPanelComponent } from '@openpanel/nextjs'
+import Script from 'next/script'
 
 export const viewport: Viewport = {
   themeColor: '#f9fbfc',
@@ -22,6 +23,25 @@ export const metadata: Metadata = {
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  authors: [
+    {
+      name: 'mdxnotes',
+      url: 'https://mdxnotes.com',
+    },
+  ],
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  creator: 'mdxnotes.com',
+  publisher: 'mdxnotes.com',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://mdxnotes.com'),
   icons: {
     icon: '/favicons/favicon.ico',
     shortcut: '/favicons/favicon-32x32.png',
@@ -33,6 +53,7 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   openGraph: {
+    url: 'https://mdxnotes.com',
     type: 'website',
     siteName: siteConfig.name,
     title: siteConfig.name,
@@ -88,6 +109,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           />
         </body>
         <GoogleAnalytics gaId="G-5JNZYV86WB" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9163539254569883"
+          crossOrigin="anonymous"
+        ></Script>
       </html>
     </>
   )
