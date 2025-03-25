@@ -5,7 +5,8 @@ import { Command } from '@tauri-apps/plugin-shell'
 
 const codeToUpload = {
   none: async (blob) => {
-    return uploadImage(blob).path
+    const result = await uploadImage(blob)
+    return result.path
   },
   PicGo: async () => {
     try {

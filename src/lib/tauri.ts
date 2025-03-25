@@ -141,23 +141,51 @@ export const clipboardWriteText = async (text: string) => {
   return writeText(text)
 }
 
+// 修改图片保存路径为选择目录的同级目录
 export const uploadImage = async (blob) => {
   const contents = await blob.arrayBuffer()
-  const time = new Date().valueOf()
-  let fileName = `\\img\\${time}.png`
+  const now = new Date()
+  // 时间格式 2025-3-25_09-20-27_875 ，用于保存图片2025-3-25_09-20-27_875.png
+  const time =
+    [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-') +
+    '_' +
+    [
+      String(now.getHours()).padStart(2, '0'),
+      String(now.getMinutes()).padStart(2, '0'),
+      String(now.getSeconds()).padStart(2, '0'),
+    ].join('-') +
+    '_' +
+    String(now.getMilliseconds()).padStart(3, '0')
 
-  const dirPath = getItem('dir-path') || ''
-  const path = await resolve(dirPath, 'img')
-  if (!(await exists(path))) {
-    await mkdir(path)
+  // 获取当前编辑的文件
+  const filePath = (getItem('filePath') || '').replace(/\\/g, '/')
+  const dirDepth = filePath.split('/').slice(0, -1).length
+
+  // 获取当前的工作目录
+  const dirPath = (getItem('dir-path') || '').replace(/\\/g, '/')
+  const parentDirPath = dirPath.split('/').slice(0, -1).join('/')
+
+  // 计算出工作目录与文件有多少层目录，然后得出图片位置
+  const parentDepth = parentDirPath.split('/').length
+  const extraDepth = dirDepth - parentDepth
+  const relativePathPrefix = '../'.repeat(extraDepth)
+
+  const imageDirPath = await resolve(parentDirPath, 'images')
+  const isWindowsPath = !dirPath.includes('/')
+  const fileName = `${isWindowsPath ? '\\' : '/'}images${
+    isWindowsPath ? '\\' : '/'
+  }${time}.png`
+
+  if (!(await exists(imageDirPath))) {
+    await mkdir(imageDirPath)
   }
-  if (dirPath.includes('/')) {
-    fileName = `/img/${time}.png`
-  }
-  await writeFile(`${dirPath}${fileName}`, contents)
+
+  const fullPath = `${parentDirPath}${fileName}`
+  await writeFile(fullPath, contents)
+
   return {
-    path: `./img/${time}.png`,
-    fullPath: `${dirPath}${fileName}`,
+    path: `${relativePathPrefix}images/${time}.png`,
+    fullPath,
   }
 }
 
