@@ -12,6 +12,7 @@ import {
 import { useUpdateEffect } from 'react-use'
 import { listenPaste } from '../monaco/pasteImage'
 import { openLink } from '@/lib/bindings'
+import { initializeLatexSupport, disposeLatexSupport } from '../monaco/latexSupport'
 
 export default function Editor({
   onMount,
@@ -24,6 +25,7 @@ export default function Editor({
   const editorRef = useRef()
   const subscriptionRef = useRef()
   const scrollSubscriptionRef = useRef()
+  const latexSupportRef = useRef()
 
   useEffect(() => {
     const disposables = []
@@ -56,6 +58,12 @@ export default function Editor({
     //粘贴上传图片
     disposables.push(listenPaste(editor))
 
+    // 为MDX/Markdown文件初始化LaTeX支持
+    if (language === 'markdown') {
+      latexSupportRef.current = initializeLatexSupport(editor, monaco)
+      disposables.push(latexSupportRef.current)
+    }
+
     disposables.push(editor)
 
     window.open = openLink
@@ -63,6 +71,11 @@ export default function Editor({
 
     return () => {
       disposables.forEach((disposable) => disposable.dispose())
+      // 清理LaTeX支持
+      if (latexSupportRef.current) {
+        disposeLatexSupport()
+        latexSupportRef.current = null
+      }
     }
   }, [])
 
@@ -99,6 +112,16 @@ export default function Editor({
     const model = getOrCreateModel(value, language, path)
     if (model !== editorRef.current?.getModel()) {
       editorRef.current.setModel(model)
+
+      // 当切换到不同文件时，重新初始化LaTeX支持
+      if (latexSupportRef.current) {
+        disposeLatexSupport()
+        latexSupportRef.current = null
+      }
+
+      if (language === 'markdown') {
+        latexSupportRef.current = initializeLatexSupport(editorRef.current, monaco)
+      }
     }
   }, [path])
 
