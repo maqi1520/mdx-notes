@@ -14,7 +14,7 @@ const createMathCounter = (() => {
 
 // 高阶组件工厂 - 生成数学环境组件
 function createMathEnvironment(config) {
-  return function ({ title, children }) {
+  const MathEnvironmentComponent = function ({ title, children }) {
     // 获取序号（如果需要）
     const number = config.numbered ? createMathCounter.getNext() : null
 
@@ -72,6 +72,9 @@ function createMathEnvironment(config) {
       </div>
     )
   }
+  
+  MathEnvironmentComponent.displayName = `MathEnvironment_${config.label || 'Default'}`
+  return MathEnvironmentComponent
 }
 
 // 数学环境配置
@@ -512,7 +515,7 @@ function ConceptCard({ title, definition, examples = [], applications = [] }) {
   )
 }
 
-export default {
+const MathComponents = {
   Theorem,
   Lemma,
   Example,
@@ -534,3 +537,5 @@ export default {
   Answer,
   ConceptCard,
 }
+
+export default MathComponents
