@@ -42,7 +42,7 @@
   },
   "productName": "MDX Notes",
   "version": "1.0.4",
-  "identifier": "https://github.com/Jw-23",
+  "identifier": "org.junwei.mdxnote",
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc0QzQ0MkFBRjE1OTZBQTQKUldTa2Fsbnhxa0xFZENNcHlWdnJCeDFPSExDcUE1NHlXSTZwVXVYNzkyaGdFZkNFb080bkR5SVgK",
