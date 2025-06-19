@@ -1,0 +1,105 @@
+/* 数学主题 - CSS Counter 和全局变量 */
+
+:root {
+  /* 数学主题色彩变量 */
+  --math-primary: #3b82f6;
+  --math-secondary: #8b5cf6;
+  --math-accent: #06b6d4;
+  --math-theorem: #10b981;
+  --math-lemma: #f59e0b;
+  --math-corollary: #ef4444;
+  --math-proof: #6366f1;
+  --math-solution: #84cc16;
+  --math-exercise: #ec4899;
+  
+  /* 背景和前景色 */
+  --math-bg-primary: #fafafa;
+  --math-bg-secondary: #ffffff;
+  --math-text-primary: #1f2937;
+  --math-text-secondary: #6b7280;
+  --math-border: #e5e7eb;
+  
+  /* 毛玻璃效果变量 */
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-backdrop: blur(8px);
+}
+
+/* 暗色主题 - 苹果风格 */
+body.dark {
+  --math-bg-primary: #000000;
+  --math-bg-secondary: #1c1c1e;
+  --math-text-primary: #ffffff;
+  --math-text-secondary: #8e8e93;
+  --math-border: #38383a;
+  
+  --glass-bg: rgba(28, 28, 30, 0.8);
+  --glass-border: rgba(84, 84, 88, 0.2);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* 基础样式重置 - 苹果风格 */
+body {
+  background: var(--math-bg-primary);
+  color: var(--math-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  line-height: 1.6;
+}
+
+/* 初始化全局计数器 */
+.markdown-body {
+  counter-reset: math-counter 0;
+}
+
+/* 数学环境序号递增 - 所有数学环境共用一个计数器 */
+.theorem-card,
+.lemma-card, 
+.corollary-card,
+.exercise-card {
+  counter-increment: math-counter;
+}
+
+/* 显示序号 - 苹果风格 */
+.theorem-card .math-counter::before {
+  content: "定理 " counter(math-counter);
+}
+
+.lemma-card .math-counter::before {
+  content: "引理 " counter(math-counter);
+}
+
+.corollary-card .math-counter::before {
+  content: "推论 " counter(math-counter);
+}
+
+.exercise-card .math-counter::before {
+  content: "练习 " counter(math-counter);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body {
+    font-size: 0.95rem;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+}

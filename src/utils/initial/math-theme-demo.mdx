@@ -1,0 +1,93 @@
+---
+title: 导数入门
+theme: math
+displaystyle: true
+---
+
+本文档通过介绍导数的基本概念，演示 `math.js` 中各种组件的用法。
+
+## 1. 导数的定义
+
+<Definition>
+设函数 $y=f(x)$ 在点 $x_0$ 的某个邻域内有定义，当自变量 $x$ 在 $x_0$ 处有增量 $\Delta x$ 时，函数 $y$ 相应地有增量 $\Delta y = f(x_0 + \Delta x) - f(x_0)$。如果极限
+<MathBlock>
+  $\lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} = \lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x}$
+</MathBlock>
+存在，则称函数 $f(x)$ 在点 $x_0$ 处**可导**，并称该极限为函数 $f(x)$ 在点 $x_0$ 处的**导数**，记作 $f'(x_0)$、$\left. \frac{\mathrm{d}y}{\mathrm{d}x} \right|_{x=x_0}$ 或 $y'|_{x=x_0}$。
+</Definition>
+
+## 2. 基本求导法则
+
+<Theorem title="乘法法则">
+如果函数 $u(x)$ 和 $v(x)$ 都在点 $x$ 处可导，那么它们的乘积 $u(x)v(x)$ 在点 $x$ 处也可导，并且其导数为：
+<MathBlock>
+$(uv)' = u'v + uv'$
+</MathBlock>
+</Theorem>
+
+<Proof title="乘法法则证明">
+设 $f(x) = u(x)v(x)$，我们来计算其导数：
+<MathSteps>
+  <Step>
+    根据定义，$f'(x) = \lim_{\Delta x \to 0} \frac{u(x+\Delta x)v(x+\Delta x) - u(x)v(x)}{\Delta x}$
+  </Step>
+  <Step>
+    在分子中减去并加上 $u(x)v(x+\Delta x)$：
+    $$ \lim_{\Delta x \to 0} \frac{u(x+\Delta x)v(x+\Delta x) - u(x)v(x+\Delta x) + u(x)v(x+\Delta x) - u(x)v(x)}{\Delta x} $$
+  </Step>
+  <Step>
+    分组并提取公因式：
+    $$ \lim_{\Delta x \to 0} \left[ \frac{u(x+\Delta x) - u(x)}{\Delta x} v(x+\Delta x) + u(x) \frac{v(x+\Delta x) - v(x)}{\Delta x} \right] $$
+  </Step>
+  <Step>
+    由于 $v(x)$ 可导，所以它在点 $x$ 连续，即 $\lim_{\Delta x \to 0} v(x+\Delta x) = v(x)$。因此，应用极限的运算法则得到：
+    $$ u'(x)v(x) + u(x)v'(x) $$
+  </Step>
+</MathSteps>
+证毕。
+</Proof>
+
+## 3. 重要公式
+
+<FormulaBox title="链式法则">
+<br/>
+如果函数 $y=f(u)$ 和 $u=g(x)$ 都可导，则复合函数 $y=f(g(x))$ 的导数为：
+$$ \frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}y}{\mathrm{d}u} \cdot \frac{\mathrm{d}u}{\mathrm{d}x} $$
+</FormulaBox>
+
+## 4. 练习与解答
+
+<Exercise title="求导练习">
+求函数 $f(x) = x^3 \cos(x)$ 的导数。
+</Exercise>
+
+<Solution>
+根据乘法法则，令 $u(x) = x^3$，$v(x) = \cos(x)$。
+我们有 $u'(x) = 3x^2$ 和 $v'(x) = -\sin(x)$。
+因此，
+<MathBlock>
+f'(x) = (x^3)' \cos(x) + x^3 (\cos(x))' = 3x^2 \cos(x) - x^3 \sin(x)
+</MathBlock>
+</Solution>
+
+<Exercise title="基础求导" >
+<ExerciseItem>求 $f(x) = \sin(2x)$ 的导数。</ExerciseItem>
+<ExerciseItem>求 $f(x) = \frac{e^x}{x}$ 的导数。</ExerciseItem>
+</Exercise>
+
+## 5. 核心概念与常见问题
+
+<ConceptCard
+title="可导性与连续性"
+definition="函数在一点可导，必定在该点连续。但反之不成立，即函数在一点连续，不一定在该点可导。"
+examples={['$f(x)=|x|$ 在 $x=0$ 处连续但不可导。']}
+applications={['可导性是比连续性更强的条件，在优化问题和微分方程中至关重要。']}
+/>
+<QA>
+<Question>
+为什么 $f(x)=|x|$ 在 $x=0$ 处不可导？
+</Question>
+<Answer>
+因为它在 $x=0$ 处的左导数（-1）不等于右导数（+1），导数的极限不存在。
+</Answer>
+</QA>

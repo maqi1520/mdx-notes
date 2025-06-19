@@ -1,0 +1,92 @@
+---
+title: LaTeX补全功能测试
+theme: math
+displaystyle: true
+---
+
+# LaTeX补全功能测试
+
+这个文件专门用于测试Monaco Editor中的LaTeX补全功能。
+
+## 基本数学符号测试
+
+请在下面的数学环境中测试输入`\`来触发LaTeX补全：
+
+### 行内数学
+测试行内数学：$\alpha + \beta = \gamma$
+
+### 显示数学
+$$
+\sum_{i=1}^{n} x_i = \frac{\pi}{2}
+$$
+
+## 测试区域
+
+请在下面的数学环境中测试LaTeX补全：
+
+### 测试1：希腊字母
+$\$ （在这里输入反斜杠测试补全）
+
+### 测试2：数学函数
+$$
+\$$ （在这里输入反斜杠测试补全）
+
+### 测试3：复杂公式
+$$
+\int_{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$$
+
+### 测试4：正体符号（数学规范）
+$$
+\int_{0}^{\infty} e^{-x^2} \, \mathrm{d}x = \frac{\sqrt{\pi}}{2}
+$$
+
+### 测试5：微分方程
+$$
+\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{y}{x}
+$$
+
+### 测试6：矩阵
+$$
+\begin{pmatrix}
+a & b \\
+c & d
+\end{pmatrix}
+$$
+
+## 测试列表
+
+请测试以下LaTeX命令的补全：
+
+1. **希腊字母**：`\alpha`, `\beta`, `\gamma`, `\delta`, `\theta`, `\pi`, `\lambda`, `\sigma`
+2. **数学运算符**：`\sum`, `\int`, `\lim`, `\frac`, `\sqrt`
+3. **关系符号**：`\leq`, `\geq`, `\neq`, `\approx`, `\in`, `\subset`
+4. **箭头符号**：`\rightarrow`, `\leftarrow`, `\Rightarrow`, `\Leftrightarrow`
+5. **数学字体**：`\mathbb`, `\mathbf`, `\mathcal`, `\text`
+6. **正体符号**：`\mathrm`, `\d`, `\dx`, `\dy`, `\dt`, `\upe`, `\upi`
+
+## 新功能验证
+
+✅ 输入`\`后是否显示补全列表？
+✅ 选择补全项后是否正确插入？
+✅ 是否避免了双反斜杠问题？
+✅ snippet功能是否正常（如`\frac`有参数占位符）？
+✅ 符号预览是否显示？
+
+## 空白测试区
+
+请在下面自由测试各种LaTeX命令：
+
+$$ $$
+
+$$ $$
+
+$$ $$
+
+---
+
+**使用说明**：
+1. 在数学环境（`$...$`或`$$...$$`）中输入`\`
+2. 观察是否出现LaTeX命令补全列表
+3. 选择命令并验证是否正确插入
+4. 测试复杂的snippet命令（如`\frac`, `\sum`, `\int`等）

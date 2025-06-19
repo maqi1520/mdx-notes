@@ -34,6 +34,7 @@ export function pathToLanguage(path: string) {
     html: 'html',
     css: 'css',
     md: 'markdown',
+    mdx: 'markdown',  // MDX文件也当作markdown处理
   }
 
   return extMap[ext] || 'markdown'
