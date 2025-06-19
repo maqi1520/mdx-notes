@@ -332,3 +332,17 @@ pre {
 .callout-tip .callout-title {
   color: rgb(0, 191, 188);
 }
+
+/* MathJax 块级公式居中显示 */
+mjx-container[display="true"] {
+  display: block !important;
+  text-align: center;
+  margin: 1em auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* 确保父容器也居中对齐 */
+.markdown-body mjx-container[display="true"] {
+  text-align: center;
+}

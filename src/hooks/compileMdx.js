@@ -30,16 +30,16 @@ export function getFrontMatter(md = '') {
   if (match && match.length > 1) {
     const lines = match[1].split(/\r?\n/)
     let currentKey = null
-    
+
     lines.forEach((line) => {
       const trimmedLine = line.trim()
       if (!trimmedLine) return
-      
+
       if (trimmedLine.includes(':')) {
         const colonIndex = trimmedLine.indexOf(':')
         const key = trimmedLine.substring(0, colonIndex).trim()
         const value = trimmedLine.substring(colonIndex + 1).trim()
-        
+
         if (value) {
           // 如果同一行有值
           frontmatter[key] = value
@@ -67,20 +67,20 @@ export const Context = React.createContext({ isMac: true })
 function rehypeMathDisplaystyle(mdxContent) {
   const frontmatter = getFrontMatter(mdxContent)
   const forceDisplaystyle = frontmatter?.math?.forceDisplaystyle === 'true' || frontmatter?.displaystyle === 'true'
-  
-  return function() {
+
+  return function () {
     return function transformer(tree) {
       if (!forceDisplaystyle) return
-      
+
       function visit(node) {
         // 查找数学公式的 code 元素
-        if (node.type === 'element' && 
-            node.tagName === 'code' && 
-            node.properties && 
-            node.properties.className &&
-            Array.isArray(node.properties.className) &&
-            node.properties.className.includes('language-math')) {
-          
+        if (node.type === 'element' &&
+          node.tagName === 'code' &&
+          node.properties &&
+          node.properties.className &&
+          Array.isArray(node.properties.className) &&
+          node.properties.className.includes('language-math')) {
+
           // 查找文本子节点
           if (node.children && node.children.length > 0) {
             const textNode = node.children[0]
@@ -91,12 +91,12 @@ function rehypeMathDisplaystyle(mdxContent) {
             }
           }
         }
-        
+
         if (node.children && Array.isArray(node.children)) {
           node.children.forEach(visit)
         }
       }
-      
+
       visit(tree)
     }
   }
@@ -175,7 +175,12 @@ export const compileMdx = async (
     rehypeDivToSection,
     reHypeLinkFoot,
     rehypeMathDisplaystyle(mdx), // 在 MathJax 之前修改数学公式
-    rehypeMathjax, // MathJax 渲染
+    [rehypeMathjax, {
+      svg: {
+        displayAlign: 'center',
+        fontCache:'none'
+      },
+    }], // MathJax 渲染
     [rehypeMermaid, { strategy: 'img-svg' }],
     [rehypePrismPlus, { ignoreMissing: true, defaultLanguage: 'js' }],
     [rehypeCodeTitle, { isMac }],
